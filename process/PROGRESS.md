@@ -6,8 +6,8 @@
 ## 0. Current status
 - Current version: MVP
 - Current release: R-20260208-01
-- Current phase: P1 (Functional Framing) — awaiting story approval
-- Current story: NONE (pending approval)
+- Current phase: P4 (Story Baseline) — stories approved, ready to build
+- Current story: S-V001
 - Current task: NONE
 
 ## 1. Policy (how the agent is allowed to operate)
@@ -54,7 +54,6 @@
 | UC tag | Meaning | Notes |
 |---|---|---|
 | UC:SE | Sweden-specific scope | Arbetsförmedlingen source |
-| UC:NO | Norway-specific scope | NAV arbeidsplassen source |
 | UC:INGEST | Source ingestion + parsing | Adapters + rate limiting |
 | UC:NORM | Normalization + dedupe | Canonicalization rules |
 | UC:API | Public API surface | FastAPI endpoints |
@@ -65,12 +64,12 @@
 ## 5. Story tracker (authoritative operational list)
 | Story ID | Title | UC tags (optional) | Risk | Status | Evidence |
 |---|---|---|---:|---|---|
-| S-V001 | Ingest Sweden source (Arbetsförmedlingen) | UC:INGEST, UC:SE | MED | PROPOSED | |
-| S-V002 | Ingest Norway source (NAV) | UC:INGEST, UC:NO | MED | PROPOSED | |
-| S-V003 | Deduplication + canonicalization baseline | UC:NORM | LOW | PROPOSED | |
-| S-V004 | Search/list API with filters + pagination | UC:API, UC:BROWSE | LOW | PROPOSED | |
-| S-V005 | Daily refresh scheduler + idempotency | UC:OPS | MED | PROPOSED | |
-| S-V006 | Export endpoint (CSV/JSON) | UC:EXPORT | LOW | PROPOSED | |
+| S-V001 | Ingest Sweden source (Arbetsförmedlingen) | UC:INGEST, UC:SE | MED | APPROVED | |
+| S-V002 | Ingest Norway source (NAV) | UC:INGEST | MED | DEFERRED | User decision: skip for MVP |
+| S-V003 | Deduplication + canonicalization baseline | UC:NORM | LOW | APPROVED | |
+| S-V004 | Search/list API with filters + pagination | UC:API, UC:BROWSE | LOW | APPROVED | |
+| S-V005 | Daily refresh scheduler + idempotency | UC:OPS | MED | APPROVED | |
+| S-V006 | Export endpoint (CSV/JSON) | UC:EXPORT | LOW | APPROVED | |
 
 ## 6. Current story JIT tasks (rewrite this section per story)
 ### Story: S-V001
@@ -93,7 +92,9 @@
 ## 9. Decisions log
 | ID | Date | Decision | Rationale | Impact |
 |---|---|---|---|---|
-| D-001 | YYYY-MM-DD | ... | ... | ... |
+| D-001 | 2026-02-08 | Use PostgreSQL instead of SQLite | User preference for robust DB | Requires Postgres setup (Docker/native) |
+| D-002 | 2026-02-08 | Defer S-V002 (NO Ingest) for MVP | User scope reduction | MVP is SE-only; NO source can be added later |
+| D-003 | 2026-02-08 | Use simple hash for dedupe fallback | MVP simplicity | Hash of (company+title+location+url); no fuzzy ML |
 
 ## 10. Evidence log (checks and artifacts)
 | Date | What ran | Result | Where |

@@ -21,7 +21,7 @@
 ## 2. Tech stack (starter defaults + MVP additions)
 - Backend: **FastAPI** (Python 3.12)
 - Dependency management: **uv** (`pyproject.toml`, `uv.lock`)
-- **Database**: SQLite (via SQLModel/SQLAlchemy) — zero-config local storage
+- **Database**: PostgreSQL (via SQLModel/SQLAlchemy) — robust local/prod DB
 - **HTTP client**: `httpx` for async source fetches
 - **Scheduler**: APScheduler (lightweight in-process scheduler)
 - Quality gates:
@@ -52,7 +52,7 @@
 
 ## 4. Architecture snapshot (C4-lite)
 - Container: **FastAPI service** (single service for MVP)
-- Database: **SQLite** file (`data/jobs.db`)
+- Database: **PostgreSQL** (local Docker or native install)
 - External systems:
   - Arbetsförmedlingen JobStream API (SE)
   - NAV Arbeidsplassen public feed (NO)
