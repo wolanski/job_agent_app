@@ -4,11 +4,11 @@
 > Human guide: `process/guides/HUMAN_OPERATOR_GUIDE.md`.
 
 ## 0. Current status
-- Current version: [MVP]
-- Current release: [R-YYYYMMDD-01]
-- Current phase: [P0..P12]
-- Current story: [S-V001 or NONE]
-- Current task: [T-... or NONE]
+- Current version: MVP
+- Current release: R-20260208-01
+- Current phase: P1 (Functional Framing) — awaiting story approval
+- Current story: NONE (pending approval)
+- Current task: NONE
 
 ## 1. Policy (how the agent is allowed to operate)
 - Approval level: STORY (human approves story set and acceptance; tasks JIT)
@@ -49,18 +49,28 @@
 | P12 | Post-release Feedback | PENDING | |
 
 ## 4. Optional UC tag glossary (lightweight)
-> UC tags are optional labels used only to group stories. Keep this table tiny or leave it empty.
+> UC tags are optional labels used only to group stories.
 
 | UC tag | Meaning | Notes |
 |---|---|---|
-| UC:AUTH | Authentication/session | |
-| UC:... | ... | |
+| UC:SE | Sweden-specific scope | Arbetsförmedlingen source |
+| UC:NO | Norway-specific scope | NAV arbeidsplassen source |
+| UC:INGEST | Source ingestion + parsing | Adapters + rate limiting |
+| UC:NORM | Normalization + dedupe | Canonicalization rules |
+| UC:API | Public API surface | FastAPI endpoints |
+| UC:BROWSE | Search/browse UX (API-level) | Filters + pagination |
+| UC:EXPORT | Dataset export | CSV/JSON |
+| UC:OPS | Operations/scheduling | Daily refresh |
 
 ## 5. Story tracker (authoritative operational list)
 | Story ID | Title | UC tags (optional) | Risk | Status | Evidence |
 |---|---|---|---:|---|---|
-| S-V001 | ... | UC:AUTH | MED | TODO | |
-| S-V002 | ... | | LOW | TODO | |
+| S-V001 | Ingest Sweden source (Arbetsförmedlingen) | UC:INGEST, UC:SE | MED | PROPOSED | |
+| S-V002 | Ingest Norway source (NAV) | UC:INGEST, UC:NO | MED | PROPOSED | |
+| S-V003 | Deduplication + canonicalization baseline | UC:NORM | LOW | PROPOSED | |
+| S-V004 | Search/list API with filters + pagination | UC:API, UC:BROWSE | LOW | PROPOSED | |
+| S-V005 | Daily refresh scheduler + idempotency | UC:OPS | MED | PROPOSED | |
+| S-V006 | Export endpoint (CSV/JSON) | UC:EXPORT | LOW | PROPOSED | |
 
 ## 6. Current story JIT tasks (rewrite this section per story)
 ### Story: S-V001
