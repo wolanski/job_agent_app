@@ -1,0 +1,298 @@
+@startuml
+title PROCESS STEWARD - Detailed Sequence (Lite Agentic Dev)\nDocument-driven + Gates + Loops + CCR (ASCII-safe)\nGates must match process/PROGRESS.md (G0..G5)
+
+skinparam shadowing false
+skinparam ArrowColor #333333
+skinparam SequenceLifeLineBorderColor #333333
+skinparam SequenceParticipantBorderColor #333333
+skinparam SequenceParticipantFontColor #111111
+skinparam NoteBackgroundColor #FFF9D6
+skinparam NoteBorderColor #333333
+skinparam ParticipantPadding 25
+skinparam BoxPadding 10
+
+actor Human
+participant Agent
+database RepoFS as "Repo/FS"
+participant CI
+participant Cloud
+
+note over Human,Agent
+Truth sources (files in repo):
+- product/PRD.md      : scope truth (stories S-V###, acceptance, DoD, sequence; optional UC tags)
+- process/PROGRESS.md : state truth (trackers, evidence, decisions, policy, CCR log)
+- product/ARCH.md     : architecture truth (approval-controlled; RO during build P5-P7)
+- product/contracts/* : executable contracts (RO during build unless CCR approved)
+Verifier (deterministic):
+- `make check` runs lint/typecheck/tests (and contract validation if enabled)
+end note
+
+loop VERSION LIFECYCLE (MVP -> V1.1 -> V2 ...)
+  Agent -> RepoFS: READ process/PROGRESS.md (current_version, gates, policy)
+  Agent -> RepoFS: READ product/PRD.md (roadmap, scope, story sequence)
+
+  alt First run OR no current_version
+    Agent -> RepoFS: SET PROGRESS.current_version = MVP
+    Agent -> RepoFS: INIT gates G0..G5 = PENDING
+    Agent -> RepoFS: WRITE process/PROGRESS.md
+    Agent --> Human: PROMPT "Confirm version label MVP (or provide another)"
+    Human --> Agent: RESP "OK" (or provide version id)
+  else Next version
+    Agent --> Human: PROMPT "Proceed with next version? Provide version id or STOP"
+    Human --> Agent: RESP (e.g., V1.1) OR STOP
+    alt STOP
+      break
+    else Continue
+      Agent -> RepoFS: UPDATE PROGRESS.current_version = <new version>
+      Agent -> RepoFS: RESET phase/gate statuses for version
+      Agent -> RepoFS: WRITE process/PROGRESS.md
+    end
+  end
+
+  ' ---------------------------
+  ' P0 INSTALL AND WIRE
+  ' ---------------------------
+  group P0 INSTALL AND WIRE (Setup)
+    Agent -> RepoFS: VERIFY required artifacts exist (process/*, product/*, Makefile, pyproject.toml)
+    alt Missing artifacts
+      Agent --> Human: PROMPT "Missing artifacts detected. Approve creation of templates?"
+      Human --> Agent: APPROVE
+      Agent -> RepoFS: CREATE missing templates (minimal)
+    end
+
+    Agent -> CI: RUN `make check` (baseline wiring validation)
+    CI --> Agent: RESULT pass/fail + diagnostics + evidence
+
+    alt `make check` FAIL
+      loop Verification loop (setup fixes)
+        Agent -> RepoFS: APPLY wiring/config fixes based on diagnostics
+        Agent -> CI: RUN `make check`
+        CI --> Agent: RESULT pass/fail + evidence
+      end
+    end
+
+    Agent -> RepoFS: WRITE process/PROGRESS.md (G0 = PASS: Installed (artifacts exist + check runnable) + evidence)
+    Agent --> Human: NOTICE "G0 PASS: Installed (artifacts exist + check runnable)"
+  end
+
+  ' ---------------------------
+  ' P1-P4 READY TO BUILD
+  ' ---------------------------
+  group P1-P4 READY TO BUILD (Scope, Architecture, Contracts, Policy)
+    ' P1 Functional framing: agent can propose PRD from vision-only seed
+    Agent -> RepoFS: READ product/PRD.md (vision + seed)
+    Agent -> RepoFS: DRAFT missing PRD sections (S-V###, acceptance/DoD, sequence, optional UC tags)
+    Agent --> Human: PROMPT "Approve PRD scope (stories S-V###, acceptance/DoD, sequence; optional UC tags). Stories must be vertical slices deliverable in <=1 day."
+    alt Human EDIT
+      Human --> Agent: EDITS (patch/notes)
+      Agent -> RepoFS: APPLY patch to product/PRD.md
+      Agent -> RepoFS: WRITE process/PROGRESS.md (decisions/questions logged)
+      Agent --> Human: PROMPT "Re-approve updated PRD scope"
+      Human --> Agent: APPROVE
+    else Human REJECT
+      Human --> Agent: REJECT reasons
+      loop Rework scope until approved
+        Agent -> RepoFS: REVISE product/PRD.md proposal
+        Agent --> Human: PROMPT "Approve revised PRD scope"
+        Human --> Agent: APPROVE or EDIT
+      end
+    else Human APPROVE
+      Human --> Agent: APPROVE
+    end
+    Agent -> RepoFS: WRITE process/PROGRESS.md (G1 = PASS: Scope approved (PRD accepted))
+
+    ' P2 Architecture (approval-controlled)
+    Agent -> RepoFS: PROPOSE updates to product/ARCH.md (repo map, conventions, boundaries, extension points)
+    Agent --> Human: PROMPT "Approve ARCH tradeoffs only (boundaries/conventions/stack). ARCH becomes RO during build."
+    alt Human edits
+      Human --> Agent: EDITS
+      Agent -> RepoFS: APPLY patch to product/ARCH.md
+    end
+    Agent -> RepoFS: WRITE process/PROGRESS.md (decisions logged)
+
+    ' P3 Contracts baseline (optional but supported by pack)
+    Agent -> RepoFS: PROPOSE minimal product/contracts/* baseline (OpenAPI + schemas/types) OR confirm not needed
+    Agent --> Human: PROMPT "Enable contracts? If yes, approve baseline semantics (names/fields/errors). If no, confirm 'contracts disabled' policy."
+    alt Contracts ENABLED
+      Human --> Agent: APPROVE contracts enabled
+      Agent -> CI: RUN `make check` (includes contract validation if configured)
+      CI --> Agent: RESULT pass/fail + diagnostics + evidence
+      alt FAIL
+        loop Fix contracts until validate
+          Agent -> RepoFS: FIX product/contracts/* per diagnostics
+          Agent -> CI: RUN `make check`
+          CI --> Agent: RESULT
+        end
+      end
+    else Contracts DISABLED
+      Human --> Agent: CONFIRM disabled
+      Agent -> RepoFS: UPDATE PROGRESS policy "contracts disabled for this version"
+    end
+
+    ' P4 Policy + story baseline
+    Agent -> RepoFS: UPDATE process/PROGRESS.md policy (story-level approval; high-risk task review only; CCR rules)
+    Agent --> Human: PROMPT "Approve policy (story-level approval, high-risk-only review; CCR required if contracts enabled)"
+    alt Human edits policy
+      Human --> Agent: EDITS
+      Agent -> RepoFS: APPLY policy edits (process/PROGRESS.md)
+    end
+
+    Agent -> CI: RUN `make check` (final Ready-to-Build gate)
+    CI --> Agent: RESULT pass/fail + evidence
+    alt FAIL
+      loop Fix pre-build issues until green
+        Agent -> RepoFS: FIX (config/contracts/tests) per diagnostics
+        Agent -> CI: RUN `make check`
+        CI --> Agent: RESULT
+      end
+    end
+
+    Agent -> RepoFS: WRITE process/PROGRESS.md (G2 = PASS: Ready-to-build (contracts validate + check green) + evidence)
+    Agent --> Human: NOTICE "G2 PASS: Ready-to-build (contracts validate + check green)"
+  end
+
+  ' ---------------------------
+  ' P5-P7 STORY DELIVERY LOOP
+  ' ---------------------------
+  group P5-P7 STORY DELIVERY (Story loop -> Task loop -> Verification + CCR)
+    Agent -> RepoFS: READ product/PRD.md (story sequence + acceptance)
+    Agent -> RepoFS: READ process/PROGRESS.md (trackers + policy)
+
+    loop STORY LOOP (for each S-V### in PRD sequence)
+      Agent -> RepoFS: MARK Story S-V### = IN_PROGRESS (process/PROGRESS.md)
+
+      ' P5 JIT planning per story
+      Agent -> RepoFS: GENERATE JIT task checklist (5-15 tasks T-V###.## + deps + risk)
+      Agent -> RepoFS: WRITE process/PROGRESS.md (tasks planned + risk flags)
+
+      alt High-risk tasks exist
+        Agent --> Human: PROMPT "Approve HIGH-risk tasks only for this story (T-V###.## set)"
+        alt Human edits/rejects
+          Human --> Agent: EDITS / REJECT
+          Agent -> RepoFS: ADJUST tasks in process/PROGRESS.md
+          Agent --> Human: PROMPT "Re-approve high-risk set"
+          Human --> Agent: APPROVE
+        else Approved
+          Human --> Agent: APPROVE
+        end
+      else No high-risk tasks
+        Agent --> Human: FYI "Proceeding with LOW/MED tasks per policy"
+      end
+
+      ' P6 Task loop
+      loop TASK LOOP (for each T-V###.## in checklist order)
+        Agent -> RepoFS: MARK Task T-V###.## = IN_PROGRESS (process/PROGRESS.md)
+        Agent -> RepoFS: IMPLEMENT minimal code change + unit tests
+        Agent -> CI: RUN `make check`
+        CI --> Agent: RESULT pass/fail + diagnostics + evidence
+        Agent -> RepoFS: APPEND evidence to process/PROGRESS.md (for this task)
+
+        alt `make check` PASS and no contract issue
+          Agent -> RepoFS: MARK Task = DONE (process/PROGRESS.md)
+        else `make check` FAIL OR contract mismatch suspected
+          alt Contract gap/drift detected AND contracts enabled
+            Agent -> RepoFS: CREATE CCR entry (CCR-###) with evidence + minimal proposal
+            Agent -> RepoFS: MARK Task = BLOCKED (reason: CCR-###)
+            Agent --> Human: PROMPT "CCR decision required: APPROVE/REJECT/DEFER (no workaround)"
+
+            alt CCR APPROVED
+              Human --> Agent: APPROVE CCR
+              Agent -> RepoFS: UPDATE product/contracts/* (minimal change)
+              Agent -> CI: RUN `make check`
+              CI --> Agent: RESULT pass/fail
+              alt still FAIL
+                loop Post-CCR verification fixes
+                  Agent -> RepoFS: FIX implementation to match approved contract
+                  Agent -> CI: RUN `make check`
+                  CI --> Agent: RESULT
+                end
+              end
+              Agent -> RepoFS: MARK CCR = APPLIED+VERIFIED
+              Agent -> RepoFS: MARK Task = IN_PROGRESS (resume)
+            else CCR REJECTED/DEFERRED
+              Human --> Agent: REJECT or DEFER
+              Agent -> RepoFS: MARK Task = BLOCKED or CANCELLED (per decision)
+              break
+            end
+
+          else Non-contract failures (verification loop)
+            loop Verification loop (fix until green)
+              Agent -> RepoFS: FIX code/tests per diagnostics
+              Agent -> CI: RUN `make check`
+              CI --> Agent: RESULT pass/fail + evidence
+              Agent -> RepoFS: APPEND evidence to process/PROGRESS.md
+            end
+            Agent -> RepoFS: MARK Task = DONE (process/PROGRESS.md)
+          end
+        end
+      end
+
+      ' P7 Story handshake
+      Agent --> Human: PROMPT "Validate story S-V### acceptance (PASS/FAIL + notes)"
+      alt Human FAIL
+        Human --> Agent: FAIL + feedback
+        Agent -> RepoFS: LOG feedback in process/PROGRESS.md
+        Agent -> RepoFS: APPLY fixes + tests
+        Agent -> CI: RUN `make check`
+        CI --> Agent: RESULT
+        alt still FAIL
+          loop Fix acceptance until green
+            Agent -> RepoFS: FIX
+            Agent -> CI: RUN `make check`
+            CI --> Agent: RESULT
+          end
+        end
+        Agent --> Human: PROMPT "Re-validate acceptance"
+        Human --> Agent: PASS
+      else Human PASS
+        Human --> Agent: PASS
+      end
+
+      Agent -> RepoFS: MARK Story = DONE (process/PROGRESS.md)
+      Agent -> RepoFS: RECORD G3 evidence for this story (process/PROGRESS.md)
+      Agent --> Human: NOTICE "G3 PASS for story: Story done (repeats per story)"
+    end
+  end
+
+  ' ---------------------------
+  ' P8-P12 HARDENING + RELEASE
+  ' ---------------------------
+  group P8-P12 HARDENING AND RELEASE
+    Agent -> CI: RUN hardening (integration/e2e) if enabled by policy
+    CI --> Agent: RESULT pass/fail + evidence
+    alt FAIL
+      loop Fix hardening until green
+        Agent -> RepoFS: FIX
+        Agent -> CI: RUN hardening stage
+        CI --> Agent: RESULT
+      end
+    end
+    Agent -> RepoFS: WRITE process/PROGRESS.md (G4 = PASS: Release candidate (hardening complete))
+
+    Agent -> RepoFS: DRAFT release notes + deploy checklist (process/PROGRESS.md)
+    Agent --> Human: PROMPT "Deploy now and confirm outcome"
+    Human -> Cloud: DEPLOY (staging/prod)
+    Cloud --> Human: DEPLOY RESULT (ok/fail)
+
+    alt Deploy failed
+      Human --> Agent: FAIL + logs
+      loop Fix and retry deploy
+        Agent -> RepoFS: FIX deploy issues
+        Agent -> CI: RUN `make check`
+        CI --> Agent: RESULT
+        Human -> Cloud: RETRY DEPLOY
+        Cloud --> Human: RESULT
+      end
+    else Deploy ok
+      Human --> Agent: DEPLOYED_OK + smoke result
+    end
+
+    Agent -> RepoFS: WRITE process/PROGRESS.md (G5 = PASS: Released (deployed + smoke + notes))
+    Agent --> Human: PROMPT "Provide feedback/telemetry summary for backlog"
+    Human --> Agent: Feedback + next priorities
+    Agent -> RepoFS: UPDATE product/PRD.md (roadmap candidates) + process/PROGRESS.md (learnings/issues)
+  end
+
+end loop
+
+@enduml

@@ -1,0 +1,50 @@
+@startuml
+title STATE_MODEL — Story + Task + CCR (Semantics)
+
+skinparam shadowing false
+skinparam ArrowColor #333333
+skinparam StateBorderColor #333333
+skinparam StateFontColor #111111
+skinparam NoteBackgroundColor #FFF9D6
+skinparam NoteBorderColor #333333
+
+state "TASK" as TASK {
+  [*] --> Planned
+  Planned --> InProgress : start
+  InProgress --> Verifying : code+tests written
+  Verifying --> Done : check green
+  Verifying --> InProgress : check failed/fix
+  InProgress --> Blocked : CCR raised or dependency missing
+  Blocked --> InProgress : CCR approved/unblocked
+  Blocked --> Cancelled : rescope/reject
+  Done --> [*]
+  Cancelled --> [*]
+}
+
+state "STORY" as STORY {
+  [*] --> Planned
+  Planned --> InProgress : start story
+  InProgress --> AcceptanceReview : all tasks done
+  AcceptanceReview --> Done : acceptance met
+  AcceptanceReview --> InProgress : feedback/fix
+  InProgress --> Blocked : CCR or external blocker
+  Blocked --> InProgress : unblocked
+  Done --> [*]
+}
+
+state "CCR" as CCR {
+  [*] --> Raised
+  Raised --> Decided : human decision
+  Decided --> Applied : approved
+  Decided --> Rejected : reject/defer
+  Applied --> Verified : re-run check green
+  Verified --> [*]
+  Rejected --> [*]
+}
+
+note right of CCR
+CCR exists to force STOP-and-ask
+instead of hacking around contracts.
+end note
+
+@enduml
