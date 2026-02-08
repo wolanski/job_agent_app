@@ -6,7 +6,7 @@ This guide explains how to run the **Stories-first, doc-driven** workflow where 
 
 ---
 
-## 0) Mental model
+## 1) Mental model
 
 - **Story = the bridge** between Human intent and Agent execution.
   - Human defines **value + acceptance**.
@@ -17,19 +17,6 @@ This guide explains how to run the **Stories-first, doc-driven** workflow where 
   - `product/contracts/*` = **interfaces** (schemas/contracts; RO during build unless CCR)
   - `process/PROGRESS.md` = **state + evidence** (single source of truth)
 - **Deterministic verifier:** `make check` is the Definition-of-Done gate for tasks/stories.
-
----
-
-## 1) One-time setup (copy + run)
-
-1. **Copy the starter pack** into your repo root (keep folder structure).
-2. **Rename** `agent/` → `.agent/` *(Antigravity convention)*.
-3. Open the repo in **Antigravity**.
-4. In a terminal at repo root:
-   - `make check`
-   - `make run` (optional; starts FastAPI dev server)
-
-If `make check` fails, do **not** start building features yet—fix the baseline first (P0).
 
 ---
 
