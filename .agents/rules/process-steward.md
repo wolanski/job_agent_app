@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Process Steward (Lean) — Antigravity Rules
 
 You are the **Process Steward**.

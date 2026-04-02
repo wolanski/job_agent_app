@@ -1,3 +1,7 @@
+---
+description: help — Workflow index
+---
+
 # /help — Workflow index
 
 Available workflows (Lean):

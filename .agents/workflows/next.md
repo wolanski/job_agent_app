@@ -1,3 +1,7 @@
+---
+description: next — Execute the next safe unit of work
+---
+
 # /next — Execute the next safe unit of work
 
 READ:

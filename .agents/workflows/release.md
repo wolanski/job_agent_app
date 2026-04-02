@@ -1,3 +1,7 @@
+---
+description: release — Hardening and release candidate
+---
+
 # /release — Hardening and release candidate
 
 READ:

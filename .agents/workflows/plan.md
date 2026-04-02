@@ -1,3 +1,7 @@
+---
+description: plan — Build-ready context + Story plan (Stories-first)
+---
+
 # /plan — Build-ready context + Story plan (Stories-first)
 
 READ:

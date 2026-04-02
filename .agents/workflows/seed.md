@@ -1,3 +1,7 @@
+---
+description: seed — Seed workspace & validate prerequisites
+---
+
 # /seed — Seed workspace & validate prerequisites
 
 READ:

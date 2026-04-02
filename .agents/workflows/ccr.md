@@ -1,3 +1,7 @@
+---
+description: ccr — Raise a Contract Change Request (CCR)
+---
+
 # /ccr — Raise a Contract Change Request (CCR)
 
 READ:
