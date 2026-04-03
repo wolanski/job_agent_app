@@ -21,5 +21,3 @@ DO:
 3) Create trackers in PROGRESS (stories + risks + policy) and record open questions.
 4) Update phase to P1–P4 as appropriate (see Phase Model in PROCESS_REFERENCE).
 5) Ask for **STORY-level approval** and any critical tradeoffs.
-
-RESPONSE: Follow the READ/DECIDE/ACT/VERIFY/UPDATE/ASK protocol.

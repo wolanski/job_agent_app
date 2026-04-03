@@ -1,7 +1,7 @@
 # PROGRESS (Dashboard + Trackers + Evidence + CCR Log)
 > **Dynamic truth**: this file changes frequently.
 > Reference: `process/diagrams/PROCESS_MAIN.puml`, `process/diagrams/STATE_MODEL.puml`, and `process/diagrams/PROCESS_STEWARD_SEQUENCE.puml`.
-> Human guide: `process/guides/HUMAN_OPERATOR_GUIDE.md`.
+> Human guide: see `process/guides/` directory.
 
 ## 0. Current status
 - Current version: [MVP]
@@ -16,10 +16,7 @@
 - Reorder: agent may reorder LOW-risk tasks within a story if dependencies allow
 - Contracts: **RO during build** unless CCR approved
 - ARCH: **RO during build** unless explicit decision at a gate
-- Definition of "Done":
-  - `make check` green (tests + lint/typecheck + contract validation)
-  - evidence logged (link to CI output or command output)
-  - PRD acceptance satisfied (story handshake)
+- Definition of "Done": see `process/PROCESS_REFERENCE.md` § Definition of Done
 
 ## 2. Gates (Milestones)
 | Gate | Meaning | Status | Evidence |

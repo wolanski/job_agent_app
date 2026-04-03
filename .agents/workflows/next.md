@@ -20,5 +20,3 @@ DO:
    - If it fails due to **code/lint/test issue** → fix minimally and re-run.
 6) Log evidence in PROGRESS.
 7) If HIGH-risk task: ask for approval before acting.
-
-RESPONSE: Follow the READ/DECIDE/ACT/VERIFY/UPDATE/ASK protocol.

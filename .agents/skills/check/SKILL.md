@@ -16,14 +16,12 @@ description: Run the authoritative project validation suite (Definition of Done 
      - **Contract failure** (schema mismatch, OpenAPI generation error, field drift) → this is a **contract issue**, not a code bug. **STOP** and raise a CCR (see `/ccr` workflow). Do not attempt a code workaround.
      - **Lint / format / typecheck failure** → propose the minimal code fix and re-run `make check`.
      - **Test failure** → investigate whether the test or the code is wrong. If the test reflects a contract expectation, treat as contract failure above.
+     - **Environment / infra failure** (missing `uv`, broken venv, network timeout, missing system tool) → this is not a code issue. Log as Issue (I-###) in PROGRESS, fix the environment, and re-run. Do not conflate with code or contract failures.
 3) If it passes:
    - Log evidence in `process/PROGRESS.md` (command + outcome).
 
-## Definition of Done (unified)
-A task/story is Done only when all three are true:
-1. `make check` passes (Green).
-2. Evidence logged in `process/PROGRESS.md`.
-3. Acceptance criteria in `product/PRD.md` are satisfied.
+## Definition of Done
+See `process/PROCESS_REFERENCE.md` § Definition of Done (single source of truth).
 
 ## Notes
 - This skill is optional. The process works without it.

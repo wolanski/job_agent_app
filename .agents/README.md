@@ -32,3 +32,11 @@ The **rules** file is thin (constraints + pointers). **PROCESS_REFERENCE** is th
 
 Use `/explore` for investigatory or ad-hoc work outside the linear pipeline.
 Use `/ccr` to raise a Contract Change Request at any time.
+
+## Frontmatter schema
+
+| Type | Required fields | Notes |
+|------|----------------|-------|
+| Rule | `trigger:` (`always_on` or condition) | Loaded automatically by Antigravity |
+| Skill | `name:`, `description:` | Loaded on demand via `view_file` |
+| Workflow | `description:` | Triggered by `/command` slash syntax |

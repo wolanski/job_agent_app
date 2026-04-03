@@ -19,5 +19,3 @@ DO:
    - set current phase to P0
    - log any missing prerequisites as Issues (I-###)
 5) Ask only for missing information required to proceed.
-
-RESPONSE: Follow the READ/DECIDE/ACT/VERIFY/UPDATE/ASK protocol.

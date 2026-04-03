@@ -37,6 +37,14 @@ Every response must contain exactly:
 
 **Note:** Workflow steps (`/seed`, `/plan`, `/next`, etc.) define *what* to do. The response protocol defines *how* to structure every response. Always apply both.
 
+### Lightweight mode (informational queries)
+For purely informational questions ("What phase are we in?", "Summarize PROGRESS", "Explain X") that involve **no code changes, no state mutations, and no decisions**, you may collapse the protocol to:
+- **READ** — what you consulted
+- **ACT** — your answer
+- **ASK** — follow-up questions (if any)
+
+Use the full 6-section protocol for anything that changes code, state, contracts, or requires a decision.
+
 ## Phase model (P0–P12)
 Phases define where the project is in its lifecycle. ARCH and contracts are **RO during build phases (P5–P7)**.
 
@@ -54,9 +62,15 @@ Phases define where the project is in its lifecycle. ARCH and contracts are **RO
 | P9 | E2E Automation | Automated end-to-end tests | `/release` | — |
 | P10 | Manual E2E (optional) | Human-run smoke tests | `/release` | G4 |
 | P11 | Deploy | Ship release candidate | `/release` | G5 |
-| P12 | Post-release Feedback | Retrospective, backlog grooming | — | — |
+| P12 | Post-release Feedback | Retrospective, backlog grooming | `/explore` | — |
 
 **P5–P7 repeat per story** (loop via `/next`). Contracts/ARCH are frozen during these phases unless a CCR is approved.
+
+### Phase regression
+Real projects sometimes need to revisit earlier phases:
+- **Requirements change during build (P5–P7):** If the change invalidates the story baseline (P4), raise a CCR if contracts are affected, or log a Decision (D-###) in PROGRESS. Update the affected stories/tasks and re-enter P4 (story baseline) before resuming P5.
+- **Architecture change needed during build:** Requires a CCR (since ARCH is RO during P5–P7). If approved, re-enter P2/P3 to stabilize ARCH and contracts before resuming P5.
+- **General rule:** Log the regression as a Decision in PROGRESS with rationale. Update the phase tracker to reflect the current phase accurately.
 
 ## Story & task naming conventions
 - **Stories:** `S-V###` (e.g., `S-V001`, `S-V002`). The `V` prefix denotes the product version.
@@ -113,3 +127,4 @@ In every response, the **UPDATE** section must state:
 | 2026-02-08T17:32:05Z | Seed (generator) | Reorganized process folder (guides vs canonical truth) | Clarify that `process/` holds canonical truth and that operator docs live under `process/guides/human/`; updated new-artifact paths accordingly. |
 | 2026-02-08T19:58:27Z | Seed (generator) | Updated operator guide path | Consolidated operator guidance into `process/guides/HUMAN_OPERATOR_GUIDE.md`; updated process artifact path. |
 | 2026-04-03T11:06:00Z | Agent (audit fix) | Fixed `.agent/` → `.agents/` path; added Phase Model (P0–P12) section; added Story & Task naming conventions; connected workflows to response protocol | Audit findings: undefined phases, missing naming spec, broken path, workflow-protocol disconnect. |
+| 2026-04-03T12:35:00Z | Agent (audit fix) | Added lightweight response mode; added phase regression guidance; mapped P12 to `/explore` | Fixes W-03, W-05, I-06 from `.agents/` audit. |

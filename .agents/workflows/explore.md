@@ -13,6 +13,7 @@ Use this workflow for tasks that don't fit the linear `/seed → /plan → /next
 
 READ:
 - process/PROGRESS.md (current state awareness)
+- product/PRD.md and product/ARCH.md (optional — read if the investigation may touch scope or architecture)
 - Relevant source files or docs for the investigation
 
 DO:
@@ -23,8 +24,7 @@ DO:
    - Log it as an Issue (I-###) or Decision (D-###) in PROGRESS.
    - If it affects contracts or ARCH, raise a CCR via `/ccr`.
 5) Do **not** make production code changes unless explicitly requested.
-6) Still follow the READ/DECIDE/ACT/VERIFY/UPDATE/ASK response protocol.
 
 NOTES:
-- This workflow is intentionally lightweight. The response protocol still applies.
+- This workflow is intentionally lightweight.
 - Exploratory findings that lead to stories should be fed back into `/plan`.
