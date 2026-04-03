@@ -24,5 +24,5 @@ description: Run the authoritative project validation suite (Definition of Done 
 See `process/PROCESS_REFERENCE.md` § Definition of Done (single source of truth).
 
 ## Notes
-- This skill is optional. The process works without it.
 - Determinism comes from the repo's `Makefile` and the `check` target, not from markdown.
+- This skill provides the **triage protocol** referenced by the `/check` workflow. The `make check` gate itself works without it, but correct failure triage depends on the guidance above.

@@ -93,8 +93,8 @@ UC tags are **optional labels** used only to group related stories.
 
 | UC tag | Meaning | Notes |
 |---|---|---|
-| UC:AUTH | Authentication/session | |
-| UC:... | ... | |
+| [UC:AUTH] | [Authentication/session] | |
+| [UC:...] | [...] | |
 
 ---
 
@@ -109,7 +109,7 @@ UC tags are **optional labels** used only to group related stories.
 
 ## 7. Open questions (optional)
 > Canonical Qs should be tracked in `process/PROGRESS.md` as Issues (`I-###`).
-- **I-001:** What persistence layer should this project use? (SQLite for dev, PostgreSQL for prod, or another option?) Tracked in PROGRESS.md. Use `/advise` to explore.
+- What persistence layer should this project use? (SQLite for dev, PostgreSQL for prod, or another option?) Use `/advise` to explore.
 
 ---
 

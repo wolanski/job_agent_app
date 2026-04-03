@@ -2,6 +2,7 @@
 > **Dynamic truth**: this file changes frequently.
 > Reference: `process/diagrams/PROCESS_MAIN.puml`, `process/diagrams/STATE_MODEL.puml`, and `process/diagrams/PROCESS_STEWARD_SEQUENCE.puml`.
 > Human guide: see `README.md` (repo root).
+> Archives: `process/archive/` (shipped releases; see PROCESS_REFERENCE § PROGRESS archiving)
 
 ## 0. Current status
 - Current version: [NONE]
@@ -19,14 +20,14 @@
 - Definition of "Done": see `process/PROCESS_REFERENCE.md` § Definition of Done
 
 ## 2. Gates (Milestones)
-| Gate | Meaning | Status | Evidence |
-|---|---|---|---|
-| G0 | Installed (artifacts exist + check runnable) | PENDING | |
-| G1 | Scope approved (PRD accepted) | PENDING | |
-| G2 | Ready-to-build (contracts validate + check green) | PENDING | |
-| G3 | Story done (repeats per story) | PENDING | |
-| G4 | Release candidate (hardening complete) | PENDING | |
-| G5 | Released (deployed + smoke + notes) | PENDING | |
+| Gate | Phase | Meaning | Status | Evidence |
+|---|---|---|---|---|
+| G0 | P0 | Installed (artifacts exist + check runnable) | PENDING | |
+| G1 | P1 | Scope approved (PRD accepted) | PENDING | |
+| G2 | P4 | Ready-to-build (contracts validate + check green) | PENDING | |
+| G3 | P7 | Story done (repeats per story) | PENDING | |
+| G4 | P10 | Release candidate (hardening complete) | PENDING | |
+| G5 | P11 | Released (deployed + smoke + notes) | PENDING | |
 
 ## 3. Phase tracker (P0..P12)
 | Phase | Name | Status | Notes |
