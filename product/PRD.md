@@ -109,7 +109,7 @@ UC tags are **optional labels** used only to group related stories.
 
 ## 7. Open questions (optional)
 > Canonical Qs should be tracked in `process/PROGRESS.md` as Issues (`I-###`).
-- [Question]
+- **I-001:** What persistence layer should this project use? (SQLite for dev, PostgreSQL for prod, or another option?) Tracked in PROGRESS.md. Use `/advise` to explore.
 
 ---
 
@@ -120,3 +120,4 @@ UC tags are **optional labels** used only to group related stories.
 | 2026-02-08T15:52:05Z | Seed (generator) | Aligned PRD IDs with process gates and FastAPI+uv assumptions | Keep templates consistent with starter pack wiring. |
 | 2026-02-08T17:32:05Z | Seed (generator) | Reorganized repo folders (product vs process) | Clarify what belongs to product truth vs process truth. |
 | 2026-02-08T18:18:12Z | Seed (generator) | Converted PRD to stories-first with optional UC tags | Reduce bureaucracy; keep Stories as the Human–Agent handshake boundary. |
+| 2026-04-03T15:30:00Z | Agent (review fix) | Added persistence open question (I-001) | W-02: no database/persistence guidance; flagged as prerequisite decision. |

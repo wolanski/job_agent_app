@@ -1,7 +1,7 @@
 # PROGRESS (Dashboard + Trackers + Evidence + CCR Log)
 > **Dynamic truth**: this file changes frequently.
 > Reference: `process/diagrams/PROCESS_MAIN.puml`, `process/diagrams/STATE_MODEL.puml`, and `process/diagrams/PROCESS_STEWARD_SEQUENCE.puml`.
-> Human guide: see `process/guides/` directory.
+> Human guide: see `README.md` (repo root).
 
 ## 0. Current status
 - Current version: [MVP]
@@ -75,12 +75,13 @@
 ## 8. Issues log
 | ID | Date | Type | Summary | Status | Link |
 |---|---|---|---|---|---|
-| I-001 | YYYY-MM-DD | Bug/TechDebt/Question | ... | OPEN | |
+| I-001 | 2026-04-03 | Question | Persistence/database strategy not yet decided. Use `/advise` to explore options (SQLite, PostgreSQL, etc.) before P5. | OPEN | product/PRD.md § Open questions |
 
 ## 9. Decisions log
 | ID | Date | Decision | Rationale | Impact |
 |---|---|---|---|---|
 | D-001 | 2026-04-03 | Adopted two-phase model (Collaborative Design + Disciplined Build); added /advise workflow | ML/Architect user benefits from exploratory design before committing to frozen-ARCH build. Reduces ceremony in P0–P4, preserves rigor in P5+. | README, help, SKILL.md, PROCESS_REFERENCE, rules/process-steward updated; advise.md created |
+| D-002 | 2026-04-03 | Added contract conformance test; fixed health endpoint contract mismatch; updated root README for /explore and /advise; flagged persistence as I-001 | Review identified runtime contract gap, missing /explore+/advise in human guide, stale references, and no persistence guidance. | main.py, test_health.py, test_contract_conformance.py, schemas.py, Makefile, README.md, PROCESS_REFERENCE.md, PRD.md, PROGRESS.md, SKILL.md, check/SKILL.md, plan.md updated |
 
 ## 10. Evidence log (checks and artifacts)
 | Date | What ran | Result | Where |

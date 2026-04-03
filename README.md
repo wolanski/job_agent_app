@@ -49,6 +49,8 @@ The agent owns:
 ### Phase A — Design (functional + technical)
 Goal: converge on a stable **Story backlog** + minimal architecture/contracts so implementation can run smoothly.
 
+Phase A typically starts with `/explore` (investigate unfamiliar areas) and `/advise` (get structured recommendations on key decisions), then moves to `/seed` (validate workspace) and `/plan` (draft stories + architecture).
+
 You can run Phase A:
 - **A1: Human-led** (you write PRD/ARCH; agent reviews), or
 - **A2: Agent-augmented** (you provide vision; agent drafts; you approve).
@@ -72,10 +74,11 @@ Goal: the Agent implements each story as a vertical slice, with tests and eviden
    - Set basic constraints, repo conventions, and boundaries
 3. (Optional) edit `product/contracts/*`:
    - Keep it minimal at first (schemas, basic endpoints)
-4. Start Antigravity agent in Process Steward mode:
+4. (Optional) Use `/explore` to investigate unfamiliar areas or `/advise` for key architectural decisions before proceeding.
+5. Start Antigravity agent in Process Steward mode:
 
 **Prompt:**
-> You are Process Steward. Read `process/PROCESS_REFERENCE.md` and `process/PROGRESS.md`. Validate prerequisites with `/seed`. Then review `product/PRD.md` and propose improvements (story sizing, acceptance clarity, ordering), without implementing code yet.
+> You are Process Steward. Read `process/PROCESS_REFERENCE.md` and `process/PROGRESS.md`. Use `/explore` for any areas I should investigate, and `/advise` for key decisions. Then validate prerequisites with `/seed` and review `product/PRD.md` — propose improvements (story sizing, acceptance clarity, ordering), without implementing code yet.
 
 
 ### A2) Agent-augmented design (vision-only from Human)
@@ -85,7 +88,7 @@ Use this if you want the agent to draft most initial content.
 2. Start agent in Process Steward mode.
 
 **Prompt:**
-> Process Steward mode. I only provided the vision in `product/PRD.md`. Run `/seed`, then `/plan`. Draft a stories-first PRD backlog (S-V###) with <= 1-day vertical slices and clear acceptance criteria. Draft minimal `product/ARCH.md` and baseline `product/contracts/*`. Propose changes and ask me to approve story-level scope and critical tradeoffs.
+> Process Steward mode. I only provided the vision in `product/PRD.md`. Start with `/explore` for any unfamiliar areas, then `/advise` for key architectural decisions. Run `/seed`, then `/plan`. Draft a stories-first PRD backlog (S-V###) with <= 1-day vertical slices and clear acceptance criteria. Draft minimal `product/ARCH.md` and baseline `product/contracts/*`. Propose changes and ask me to approve story-level scope and critical tradeoffs.
 
 3. You approve in batches:
    - Approve stories + acceptance (PRD)
@@ -103,7 +106,7 @@ Use this if you want the agent to draft most initial content.
 2. Only intervene when the agent asks (high-risk tasks, CCR, acceptance handshake).
 
 **Session starter prompt:**
-> Process Steward mode. Execute `/next`. Follow READ/DECIDE/ACT/VERIFY/UPDATE/ASK. Implement only what is in `product/PRD.md`. Record evidence in `process/PROGRESS.md`.
+> Process Steward mode. Execute `/next`. Follow READ/DECIDE/ACT/VERIFY/UPDATE/ASK. Implement only what is in `product/PRD.md`. Record evidence in `process/PROGRESS.md`. Use `/advise` if architectural questions arise.
 
 ### Story sizing policy
 - Stories must be **vertical slices deliverable in <= 1 day**.
@@ -190,5 +193,5 @@ If you need an explicit uvicorn command:
 
 Use a hard reset prompt:
 
-> Stop. Re-read `process/PROCESS_REFERENCE.md` and `process/PROGRESS.md`. Resume in Process Steward mode. Your next response must contain exactly: READ / DECIDE / ACT / VERIFY / UPDATE / ASK. Do not modify approval-controlled files without explicit approval.
+> Stop. Re-read `process/PROCESS_REFERENCE.md` and `process/PROGRESS.md`. Resume in Process Steward mode. Use the response protocol appropriate for the current phase (see PROCESS_REFERENCE § Lightweight mode). Do not modify approval-controlled files without explicit approval.
 

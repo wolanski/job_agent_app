@@ -4,8 +4,8 @@
 
 ## Source of truth
 - Scope: `product/PRD.md`
-- Architecture (static): `product/ARCH.md` (**approval-controlled**; RO during build)
-- Interfaces: `product/contracts/*` (**RO during build unless CCR approved**)
+- Architecture (static): `product/ARCH.md` (**drafts in P0–P4**; **approval-controlled / RO during build P5+**)
+- Interfaces: `product/contracts/*` (**drafts in P0–P4**; **RO during build P5+ unless CCR approved**)
 - State + evidence: `process/PROGRESS.md` (single source of truth)
 - Process diagrams (human reference):
   - `process/diagrams/PROCESS_MAIN.puml`
@@ -69,6 +69,9 @@ Phases define where the project is in its lifecycle. During **P0–P4**, ARCH an
 | P12 | Post-release Feedback | Retrospective, backlog grooming | `/explore` | — |
 
 **P5–P7 repeat per story** (loop via `/next`). Contracts/ARCH are frozen during these phases unless a CCR is approved.
+
+### Contracts-first projects
+In some projects (especially architect-led ones), detailed contracts may exist before stories are written. In this case, `/plan` should derive stories from the existing contracts rather than designing contracts from stories. The stories-first principle still applies to the _approval boundary_ (stories are what the Human approves), even if contracts were the design starting point.
 
 ### Phase regression
 Real projects sometimes need to revisit earlier phases:
@@ -135,3 +138,4 @@ In every response, the **UPDATE** section must state:
 | 2026-04-03T11:06:00Z | Agent (audit fix) | Fixed `.agent/` → `.agents/` path; added Phase Model (P0–P12) section; added Story & Task naming conventions; connected workflows to response protocol | Audit findings: undefined phases, missing naming spec, broken path, workflow-protocol disconnect. |
 | 2026-04-03T12:35:00Z | Agent (audit fix) | Added lightweight response mode; added phase regression guidance; mapped P12 to `/explore` | Fixes W-03, W-05, I-06 from `.agents/` audit. |
 | 2026-04-03T14:00:00Z | Agent (process update) | Expanded lightweight mode to P0–P4 design phases; made ARCH/contract draft status during P0–P4 explicit; added /advise workflow reference | Shift to two-phase model: relaxed ceremony in design, disciplined build in P5+. |
+| 2026-04-03T15:30:00Z | Agent (review fix) | Added P0–P4 draft status to Source of Truth header; added contracts-first project note | Fixes I-07 (missing draft status in header) and W-03 (inverted stories-first guidance). |

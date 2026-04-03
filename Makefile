@@ -30,6 +30,7 @@ contractcheck:
 	@echo "--- Validating executable contracts (schemas + OpenAPI generation) ---"
 	uv run python -m py_compile product/contracts/schemas.py
 	uv run python -c "from app.main import app; app.openapi(); print('OpenAPI generation OK')"
+	@echo "--- Contract conformance (committed spec vs generated) runs in pytest (test_contract_conformance.py) ---"
 
 test:
 	uv run pytest -q

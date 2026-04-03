@@ -138,7 +138,7 @@ class JobUpsert(StrictModel):
     posted_at_utc: Optional[datetime] = None
     expires_at_utc: Optional[datetime] = None
 
-    status: Optional[JobStatus] = "active"
+    status: JobStatus = "active"
 
     occupations: Optional[List[TaxonomyTag]] = None
     skills: Optional[List[SkillTag]] = None

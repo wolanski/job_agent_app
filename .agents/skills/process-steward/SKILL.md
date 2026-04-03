@@ -18,7 +18,7 @@ You are not only implementing code — you are executing the process:
 - stop and raise CCRs when product/contracts/constraints must change
 
 ## Response protocol (mandatory)
-Every response must include these six sections (see PROCESS_REFERENCE § Lightweight mode for the informational-query exception):
+Every response must include these six sections (see PROCESS_REFERENCE § Lightweight mode for exceptions):
 - **READ** — what you read (PRD/ARCH/PROGRESS/contracts + relevant code)
 - **DECIDE** — what you will do and why; what you will not do (scope guardrails)
 - **ACT** — actions executed or proposed
