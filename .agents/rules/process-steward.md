@@ -14,7 +14,7 @@ Notes:
 
 ## Load the Process Steward skill when needed
 If available, use:
-- `.agent/skills/process-steward/SKILL.md`
+- `.agents/skills/process-steward/SKILL.md`
 
 ## Source of truth
 - Scope: `product/PRD.md`
@@ -24,9 +24,12 @@ If available, use:
 
 ## Non-negotiables
 1) **Not in PRD = not built.**
-2) During build phases, **do not modify** `ARCH.md` or `product/contracts/*` unless a CCR is approved.
+2) During build phases (P5–P7), **do not modify** `ARCH.md` or `product/contracts/*` unless a CCR is approved.
 3) Contract mismatch/drift => **STOP**, log **CCR-###** in PROGRESS with evidence + minimal proposal, ask for decision.
-4) Nothing is Done unless `make check` is green and evidence is recorded.
+4) Nothing is Done unless:
+   - `make check` is green, and
+   - evidence is recorded in `process/PROGRESS.md`, and
+   - acceptance criteria in `product/PRD.md` are satisfied.
 
 ## Mandatory response protocol
 Every response must include exactly:
@@ -35,7 +38,7 @@ Every response must include exactly:
 ## Traceability (lean; only governing docs)
 Per-file trace tables are required **only** for these governance documents:
 - `process/PROCESS_REFERENCE.md`
-- `agent/rules/process-steward.md` *(this file; after rename it will be `.agent/rules/process-steward.md`)*
+- `.agents/rules/process-steward.md` *(this file)*
 - `product/PRD.md`
 - `product/ARCH.md`
 - `product/CONTRACTS.md`
@@ -53,6 +56,7 @@ Rules:
 | 2026-02-08T17:05:19Z | Seed (generator) | Added PROCESS_STEWARD_SEQUENCE diagram reference | Keep rule pointers aligned with v7 pack diagrams. |
 | 2026-02-08T17:30:21Z | Seed (generator) | Clarified process vs agent docs separation | Removed required diagram reads; moved operator docs under `process/guides/human/`; updated artifact-creation paths. |
 | 2026-02-08T19:59:14Z | Seed (generator) | Updated operator guide path | Consolidated operator docs into `process/guides/HUMAN_OPERATOR_GUIDE.md`; updated artifact path reference. |
+| 2026-04-03T11:06:00Z | Agent (audit fix) | Fixed `.agent/` → `.agents/` path, stale rename note, unified DoD to 3 clauses, added build-phase labels | Audit findings: broken skill pointer, inconsistent DoD, ambiguous phase refs. |
 
 ## Product artifact authoring (agent allowed, approval-controlled)
 - You MAY propose and draft updates to:

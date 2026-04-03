@@ -44,8 +44,8 @@ Recommendation:
 Per the codelab, Antigravity supports:
 - Global rule: `~/.gemini/GEMINI.md`
 - Global workflows: `~/.gemini/antigravity/global_workflows/*.md`
-- Workspace rules: `<repo>/.agent/rules/`
-- Workspace workflows: `<repo>/.agent/workflows/`
+- Workspace rules: `<repo>/.agents/rules/`
+- Workspace workflows: `<repo>/.agents/workflows/`
 
 Recommendation:
 - Keep this process **workspace-scoped** (inside the repo) so it’s versioned with code.
@@ -55,7 +55,7 @@ Recommendation:
 
 Antigravity supports workspace **skills** that carry metadata (name/description) and load full instructions only when needed.
 This pack includes an optional skill:
-- `.agent/skills/process-steward/SKILL.md`
+- `.agents/skills/process-steward/SKILL.md`
 
 Recommendation:
 - Keep the always-on **rules** short.
@@ -63,7 +63,7 @@ Recommendation:
 
 ---
 If you need to tighten agent compliance further, see:
-- `.agent/rules/process-steward.md`
+- `.agents/rules/process-steward.md`
 - `process/PROCESS_REFERENCE.md`
 
 

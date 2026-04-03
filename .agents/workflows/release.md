@@ -11,7 +11,10 @@ READ:
 - product/ARCH.md
 
 DO:
-1) Ensure all stories are Done and `make check` is green.
-2) Run integration checks / agent-run E2E if available.
-3) Draft release notes + known issues + runbook steps into PROGRESS.
-4) Ask for optional manual E2E sign-off and deployment action.
+1) Ensure all stories are Done (3-clause DoD: `make check` green + evidence logged + acceptance met).
+2) Update phase to P8–P11 as work progresses (see Phase Model in PROCESS_REFERENCE).
+3) Run integration checks / agent-run E2E if available.
+4) Draft release notes + known issues + runbook steps into PROGRESS (§12 Release notes).
+5) Ask for optional manual E2E sign-off (P10) and deployment action (P11).
+
+RESPONSE: Follow the READ/DECIDE/ACT/VERIFY/UPDATE/ASK protocol.

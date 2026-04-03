@@ -35,6 +35,36 @@
 Every response must contain exactly:
 - READ / DECIDE / ACT / VERIFY / UPDATE / ASK
 
+**Note:** Workflow steps (`/seed`, `/plan`, `/next`, etc.) define *what* to do. The response protocol defines *how* to structure every response. Always apply both.
+
+## Phase model (P0–P12)
+Phases define where the project is in its lifecycle. ARCH and contracts are **RO during build phases (P5–P7)**.
+
+| Phase | Name | Activity | Workflow | Gate |
+|-------|------|----------|----------|------|
+| P0 | Install and Wire | Validate workspace, `make check` runs | `/seed` | G0 |
+| P1 | Functional Framing | Draft/refine PRD scope and acceptance | `/plan` | G1 |
+| P2 | Architecture (Lite) | Draft/stabilize ARCH | `/plan` | — |
+| P3 | Contract Baseline | Define executable contracts | `/plan` | — |
+| P4 | Story Baseline | Stories approved, trackers set | `/plan` | G2 |
+| P5 | JIT Planning | Create task list for next story | `/next` | — |
+| P6 | Iterative Implementation | Implement tasks, run `make check` | `/next` | — |
+| P7 | Story Handshake | Verify story acceptance criteria met | `/next` | G3 |
+| P8 | Integration Testing | Cross-story integration checks | `/release` | — |
+| P9 | E2E Automation | Automated end-to-end tests | `/release` | — |
+| P10 | Manual E2E (optional) | Human-run smoke tests | `/release` | G4 |
+| P11 | Deploy | Ship release candidate | `/release` | G5 |
+| P12 | Post-release Feedback | Retrospective, backlog grooming | — | — |
+
+**P5–P7 repeat per story** (loop via `/next`). Contracts/ARCH are frozen during these phases unless a CCR is approved.
+
+## Story & task naming conventions
+- **Stories:** `S-V###` (e.g., `S-V001`, `S-V002`). The `V` prefix denotes the product version.
+- **Tasks:** `T-V###.##` (e.g., `T-V001.01`). The prefix matches the parent story.
+- **Risk tags:** `LOW` (agent proceeds autonomously), `MED` (agent proceeds, human reviews), `HIGH` (agent stops and asks before acting).
+- **CCR IDs:** `CCR-###` (e.g., `CCR-001`). Sequential, logged in PROGRESS.
+- **Decision IDs:** `D-###`. **Issue IDs:** `I-###`. Sequential in PROGRESS.
+
 ## Creating new artifacts
 You may create new `.md` and `.puml` files when requested or beneficial:
 - Product artifacts: `product/docs/`, `product/diagrams/`
@@ -50,7 +80,7 @@ Governance note:
 ### Trace-controlled documents (per-file log required)
 If you modify any file in this list, you **must append exactly one new row** to its **Traceability Log** table (append-only, UTC `YYYY-MM-DDThh:mm:ssZ`).
 - `process/PROCESS_REFERENCE.md`
-- `.agent/rules/process-steward.md` *(in this pack: `agent/rules/process-steward.md` until you rename `agent/` → `.agent/`)*
+- `.agents/rules/process-steward.md`
 - `product/PRD.md`
 - `product/ARCH.md`
 - `product/CONTRACTS.md` *(policy/invariants/index)*
@@ -82,3 +112,4 @@ In every response, the **UPDATE** section must state:
 | 2026-02-08T17:05:19Z | Seed (generator) | Added explicit diagram list + referenced PROCESS_STEWARD_SEQUENCE + aligned verifier wording to `make check` | Keep process reference aligned with v7 pack artifacts and verifier. |
 | 2026-02-08T17:32:05Z | Seed (generator) | Reorganized process folder (guides vs canonical truth) | Clarify that `process/` holds canonical truth and that operator docs live under `process/guides/human/`; updated new-artifact paths accordingly. |
 | 2026-02-08T19:58:27Z | Seed (generator) | Updated operator guide path | Consolidated operator guidance into `process/guides/HUMAN_OPERATOR_GUIDE.md`; updated process artifact path. |
+| 2026-04-03T11:06:00Z | Agent (audit fix) | Fixed `.agent/` → `.agents/` path; added Phase Model (P0–P12) section; added Story & Task naming conventions; connected workflows to response protocol | Audit findings: undefined phases, missing naming spec, broken path, workflow-protocol disconnect. |

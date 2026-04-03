@@ -34,7 +34,7 @@
 | Product truth | `product/` | PRD, ARCH, contracts, product diagrams/docs |
 | Executable contracts | `product/contracts/` | OpenAPI + schemas/types (RO during build unless CCR approved) |
 | Process truth | `process/` | PROCESS_REFERENCE + PROGRESS + human guides + process diagrams |
-| Antigravity config | `.agent/` | rules/workflows/skills (pack ships `agent/` → rename) |
+| Antigravity config | `.agents/` | rules/workflows/skills |
 | Tooling | `Makefile`, `pyproject.toml` | deterministic `make check`, `make run`, dependencies |
 
 ### Recommended internal layout (create only when needed)
@@ -80,3 +80,4 @@ Rule: keep this list short; add items only when they influence today's design.
 | 2026-02-08T12:00:00Z | Seed (generator) | Initial v4 template | Pack created/updated for Antigravity and folder split (product vs process). |
 | 2026-02-08T18:10:00Z | Seed (consistency fix) | Updated repo map + stack to FastAPI/uv and folder names | Align ARCH with v9 starter structure (`app/`, `product/`, `process/`, `.agent/`) and deterministic `make check`. |
 | 2026-02-08T18:18:12Z | Seed (generator) | Replaced use-case driver links with stories/tag-based drivers | Align ARCH with stories-first PRD; UC tags are optional labels. |
+| 2026-04-03T11:06:00Z | Agent (audit fix) | Fixed `.agent/` → `.agents/` in repo map | Audit finding: stale path from starter-pack template. |
