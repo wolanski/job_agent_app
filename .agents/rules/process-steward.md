@@ -41,7 +41,7 @@ Per-file trace tables are required **only** for these governance documents:
 - `.agents/rules/process-steward.md` *(this file)*
 - `product/PRD.md`
 - `product/ARCH.md`
-- `product/CONTRACTS.md`
+- `product/contracts/CONTRACTS.md`
 
 Rules:
 - If you modify any file in the list above: append exactly one new row to its **Traceability Log** (UTC `YYYY-MM-DDThh:mm:ssZ`, Actor, Change, Why). Append-only.
@@ -65,7 +65,7 @@ Rules:
 - You MAY propose and draft updates to:
   - `product/PRD.md`
   - `product/ARCH.md`
-  - `product/CONTRACTS.md`
+  - `product/contracts/CONTRACTS.md`
   - `product/contracts/*`
 - But you MUST:
   1) present the change as a proposal (summary + intended diff),

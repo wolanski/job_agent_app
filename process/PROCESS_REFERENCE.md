@@ -105,7 +105,7 @@ If you modify any file in this list, you **must append exactly one new row** to 
 - `.agents/rules/process-steward.md`
 - `product/PRD.md`
 - `product/ARCH.md`
-- `product/CONTRACTS.md` *(policy/invariants/index)*
+- `product/contracts/CONTRACTS.md` *(policy/invariants/index)*
 
 ### All other files (no per-file trace table)
 For everything else (including `process/PROGRESS.md`, setup guides, workflows, diagrams, and any docs you create):
