@@ -12,8 +12,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-import yaml
 import pytest
+import yaml
+
 from app.main import app
 
 OPENAPI_PATH = Path(__file__).resolve().parent.parent / "product" / "contracts" / "openapi.yaml"
@@ -23,12 +24,14 @@ def _load_committed_spec() -> dict[str, Any]:
     """Load the committed OpenAPI YAML spec."""
     assert OPENAPI_PATH.exists(), f"Committed spec not found: {OPENAPI_PATH}"
     with open(OPENAPI_PATH) as f:
-        return yaml.safe_load(f)
+        spec: dict[str, Any] = yaml.safe_load(f)
+        return spec
 
 
 def _load_fastapi_spec() -> dict[str, Any]:
     """Load the spec FastAPI generates at runtime."""
-    return app.openapi()
+    spec: dict[str, Any] = app.openapi()  # type: ignore[no-any-return]
+    return spec
 
 
 class TestContractConformance:
@@ -71,11 +74,7 @@ class TestContractConformance:
         """Verify /health required fields are present in committed spec."""
         health = committed.get("paths", {}).get("/health", {})
         get_resp = health.get("get", {}).get("responses", {}).get("200", {})
-        schema = (
-            get_resp.get("content", {})
-            .get("application/json", {})
-            .get("schema", {})
-        )
+        schema = get_resp.get("content", {}).get("application/json", {}).get("schema", {})
         required = schema.get("required", [])
         assert "status" in required, "/health schema missing 'status' in required"
         assert "time_utc" in required, "/health schema missing 'time_utc' in required"

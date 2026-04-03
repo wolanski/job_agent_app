@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import FastAPI
 
@@ -9,5 +9,5 @@ app = FastAPI(title="Agentic FastAPI App")
 def health() -> dict[str, str]:
     return {
         "status": "ok",
-        "time_utc": datetime.now(timezone.utc).isoformat(),
+        "time_utc": datetime.now(UTC).isoformat(),
     }

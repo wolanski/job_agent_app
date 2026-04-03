@@ -10,9 +10,9 @@ Conventions:
 from __future__ import annotations
 
 from datetime import datetime
-from typing import List, Optional, Literal
+from typing import Literal
 
-from pydantic import BaseModel, Field, AnyUrl, ConfigDict
+from pydantic import AnyUrl, BaseModel, ConfigDict, Field
 
 
 class StrictModel(BaseModel):
@@ -20,55 +20,55 @@ class StrictModel(BaseModel):
 
 
 class ErrorDetail(StrictModel):
-    field: Optional[str] = None
+    field: str | None = None
     message: str
 
 
 class ErrorResponse(StrictModel):
     code: str
     message: str
-    trace_id: Optional[str] = None
-    details: Optional[List[ErrorDetail]] = None
+    trace_id: str | None = None
+    details: list[ErrorDetail] | None = None
 
 
 class VersionInfo(StrictModel):
     version: str
-    build_sha: Optional[str] = None
-    build_time_utc: Optional[datetime] = None
+    build_sha: str | None = None
+    build_time_utc: datetime | None = None
 
 
 class PageInfo(StrictModel):
-    next_cursor: Optional[str] = None
+    next_cursor: str | None = None
     has_more: bool
 
 
 class Location(StrictModel):
     country_code: str = Field(..., min_length=2, max_length=2)
-    region: Optional[str] = None
-    city: Optional[str] = None
-    postal_code: Optional[str] = None
-    raw: Optional[str] = None
+    region: str | None = None
+    city: str | None = None
+    postal_code: str | None = None
+    raw: str | None = None
 
 
 class Salary(StrictModel):
-    min_amount: Optional[float] = None
-    max_amount: Optional[float] = None
-    currency: Optional[str] = None
-    period: Optional[str] = None
+    min_amount: float | None = None
+    max_amount: float | None = None
+    currency: str | None = None
+    period: str | None = None
 
 
 class TaxonomyTag(StrictModel):
     taxonomy: str
     code: str
-    label: Optional[str] = None
-    confidence: Optional[float] = Field(default=None, ge=0, le=1)
+    label: str | None = None
+    confidence: float | None = Field(default=None, ge=0, le=1)
 
 
 class SkillTag(StrictModel):
     name: str
-    taxonomy: Optional[str] = None
-    code: Optional[str] = None
-    confidence: Optional[float] = Field(default=None, ge=0, le=1)
+    taxonomy: str | None = None
+    code: str | None = None
+    confidence: float | None = Field(default=None, ge=0, le=1)
 
 
 JobStatus = Literal["active", "expired", "removed"]
@@ -77,77 +77,77 @@ JobStatus = Literal["active", "expired", "removed"]
 class JobPosting(StrictModel):
     job_id: str
     source: str
-    external_id: Optional[str] = None
+    external_id: str | None = None
 
     title: str
-    description: Optional[str] = None
+    description: str | None = None
 
-    company_name: Optional[str] = None
-    company_id: Optional[str] = None
+    company_name: str | None = None
+    company_id: str | None = None
 
     location: Location
 
-    employment_type: Optional[str] = None
-    remote_type: Optional[str] = None
-    seniority: Optional[str] = None
+    employment_type: str | None = None
+    remote_type: str | None = None
+    seniority: str | None = None
 
-    salary: Optional[Salary] = None
+    salary: Salary | None = None
 
-    apply_url: Optional[AnyUrl] = None
-    apply_urls: Optional[List[AnyUrl]] = None
+    apply_url: AnyUrl | None = None
+    apply_urls: list[AnyUrl] | None = None
 
-    posted_at_utc: Optional[datetime] = None
-    expires_at_utc: Optional[datetime] = None
+    posted_at_utc: datetime | None = None
+    expires_at_utc: datetime | None = None
 
     ingested_at_utc: datetime
     updated_at_utc: datetime
 
     status: JobStatus
 
-    occupations: Optional[List[TaxonomyTag]] = None
-    skills: Optional[List[SkillTag]] = None
+    occupations: list[TaxonomyTag] | None = None
+    skills: list[SkillTag] | None = None
 
-    dedupe_key: Optional[str] = None
+    dedupe_key: str | None = None
 
 
 class JobListResponse(StrictModel):
-    items: List[JobPosting]
+    items: list[JobPosting]
     page_info: PageInfo
 
 
 class JobUpsert(StrictModel):
     source: str
-    external_id: Optional[str] = None
+    external_id: str | None = None
 
     title: str
-    description: Optional[str] = None
+    description: str | None = None
 
-    company_name: Optional[str] = None
+    company_name: str | None = None
 
     location: Location
 
-    employment_type: Optional[str] = None
-    remote_type: Optional[str] = None
-    seniority: Optional[str] = None
+    employment_type: str | None = None
+    remote_type: str | None = None
+    seniority: str | None = None
 
-    salary: Optional[Salary] = None
+    salary: Salary | None = None
 
-    apply_url: Optional[AnyUrl] = None
-    apply_urls: Optional[List[AnyUrl]] = None
+    apply_url: AnyUrl | None = None
+    apply_urls: list[AnyUrl] | None = None
 
-    posted_at_utc: Optional[datetime] = None
-    expires_at_utc: Optional[datetime] = None
+    posted_at_utc: datetime | None = None
+    expires_at_utc: datetime | None = None
 
     status: JobStatus = "active"
 
-    occupations: Optional[List[TaxonomyTag]] = None
-    skills: Optional[List[SkillTag]] = None
+    occupations: list[TaxonomyTag] | None = None
+    skills: list[SkillTag] | None = None
 
 
 class IngestJobsRequest(StrictModel):
     source: str
     fetched_at_utc: datetime
-    jobs: List[JobUpsert]
+    jobs: list[JobUpsert]
 
 
 class IngestJobsResponse(StrictModel):
@@ -157,4 +157,4 @@ class IngestJobsResponse(StrictModel):
     created_count: int
     updated_count: int
     skipped_count: int
-    warnings: Optional[List[str]] = None
+    warnings: list[str] | None = None
