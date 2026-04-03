@@ -97,8 +97,11 @@ You may create new `.md` and `.puml` files when requested or beneficial:
 Governance note:
 - If a change modifies the **rules**, **gates**, or **authority** model, treat it as approval-controlled and log a Decision in `process/PROGRESS.md`.
 
-## PROGRESS archiving (post-release)
-After a release gate (G5) is passed, archive shipped data to keep `process/PROGRESS.md` lean for the agent's context window:
+## PROGRESS archiving (Continuous & Post-release)
+To keep the agent's context window lean and maintain velocity, archive shipped or obsolete data from `process/PROGRESS.md` as needed. You can trigger this manually or via the `/archive` workflow.
+
+### Post-release Archiving
+After a release gate (G5) is passed:
 1. Create `process/archive/R-YYYYMMDD.md` (using the release ID from PROGRESS § Release notes).
 2. Move to the archive file:
    - Completed stories and their JIT task tables
@@ -112,6 +115,13 @@ After a release gate (G5) is passed, archive shipped data to keep `process/PROGR
    - Reset "Current story" and "Current task" to [NONE]
    - Update the phase tracker for the new version
 4. Register the archive file in PROGRESS § Artifacts added.
+
+### Continuous Archiving (Mid-Release)
+If `PROGRESS.md` becomes too large during development:
+1. Create or append to a mid-release archive file (e.g., `process/archive/WIP-YYYYMMDD.md`).
+2. Move old, non-relevant entries (e.g., Closed Issues, irrelevant Evidence logs, resolved CCRs).
+3. Do **not** remove active stories or JIT tasks for the current work.
+4. Register the WIP archive file in PROGRESS § Artifacts added.
 
 The archive files are read-only historical records. Do not modify them after creation.
 
@@ -150,3 +160,4 @@ In every response, the **UPDATE** section must state:
 | Timestamp (UTC) | Actor | Change | Why |
 |---|---|---|---|
 | 2026-04-03T17:11:00Z | Agent | Expanded lightweight protocol to include minor LOW-risk P5-P7 tasks. | Reduce context overhead for trivial bug fixes. |
+| 2026-04-03T17:20:00Z | Agent | Added Continuous Archiving policy to PROGRESS archiving section. | Prevent PROGRESS.md bloat mid-release to maintain token velocity. |

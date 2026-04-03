@@ -18,5 +18,6 @@ Available workflows (Lean):
 - /release : hardening + release candidate + notes
 
 **Any phase:**
+- /archive : continuously clean up PROGRESS.md by moving old logs to an archive
 - /ccr     : raise Contract Change Request (STOP)
 - /help    : this index
