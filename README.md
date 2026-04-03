@@ -184,7 +184,22 @@ For a new version (V1.1, V2, …):
 
 ---
 
-## 9) Command reference (FastAPI + uv)
+## 9) Workflow Playbook (How & When)
+
+Workflows are technically optional (you can dictate tasks via natural language), but using them acts as a "Macro Button" that instantly aligns the Agent with the canonical process protocol.
+
+- **`/seed`** : Run this immediately when starting a new project. Validates local environment and dependencies.
+- **`/explore`** & **`/advise`** : Use these during the Design phase to brainstorm architecture or research APIs before committing to code.
+- **`/plan`** : Run this when you have a general vision and want the agent to draft the official PRD Story Backlog.
+- **`/next`** : The main engine of Phase B. Once the plan is approved, spam `/next` to implement the next task, run tests, and log evidence.
+- **`/check`** : Fast command to trigger the test suite and ensure no regressions.
+- **`/ccr`** : Escalation trigger. Run this if the agent detects a contract mismatch that requires your approval to proceed.
+- **`/archive`** : Maintenance trigger to clear out obsolete logs from `PROGRESS.md` mid-build without losing active task contexts.
+- **`/release`** : Final workflow to close out the version loop and generate notes.
+
+---
+
+## 10) Command reference (FastAPI + uv)
 
 - `make check` — runs lint/format/typecheck/contractcheck/tests
 - `make run` — starts dev server (`uv run fastapi dev`)
@@ -195,7 +210,7 @@ If you need an explicit uvicorn command:
 
 ---
 
-## 10) If the agent stops following the process
+## 11) If the agent stops following the process
 
 Use a hard reset prompt:
 
