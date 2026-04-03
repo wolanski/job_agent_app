@@ -47,3 +47,4 @@ If implementation reveals a contract gap:
 | 2026-02-08T16:22:00Z | Seed (consistency fix) | Clarified contract file list and removed duplicate OpenAPI entry | Avoid confusion; align with v9 FastAPI+uv folder layout. |
 | 2026-02-08T19:14:13Z | Seed (docs cleanup) | Added  as canonical validation reference in CONTRACTS.md | Reduce README sprawl; keep contract guidance in canonical index file. |
 | 2026-02-08T19:14:26Z | Seed (docs cleanup) | Added make check as canonical validation reference in CONTRACTS.md | Reduce README sprawl; keep contract guidance in canonical index file. |
+| 2026-04-03T15:07:00Z | Agent (audit fix) | Moved to product/contracts/ directory | Clarified directory boundaries; product/ root isolated for human-authored docs. |

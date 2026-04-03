@@ -64,8 +64,8 @@
 ### Story index (plan)
 | Story ID | Title | UC tags (optional) | Notes |
 |---|---|---|---|
-| S-V001 | ... | UC:AUTH | |
-| S-V002 | ... | | |
+| [S-V001] | ... | [UC:AUTH] | |
+| [S-V002] | ... | | |
 
 ---
 
@@ -102,8 +102,8 @@ UC tags are **optional labels** used only to group related stories.
 
 | Version | Target stories (IDs) | Notes |
 |---|---|---|
-| MVP | S-V001, S-V002 | |
-| V1.1 | S-V003, ... | |
+| [MVP] | [S-V001, S-V002] | |
+| [V1.1] | [S-V003, ...] | |
 
 ---
 

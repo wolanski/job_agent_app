@@ -102,11 +102,11 @@ Use this if you want the agent to draft most initial content.
 ## 5) How to run Phase B (Implementation)
 
 ### Operating loop (what you do each session)
-1. Tell the agent to run `/next`.
+1. Tell the agent to run `/next` (to implement) or `/check` (to validate).
 2. Only intervene when the agent asks (high-risk tasks, CCR, acceptance handshake).
 
 **Session starter prompt:**
-> Process Steward mode. Execute `/next`. Follow READ/DECIDE/ACT/VERIFY/UPDATE/ASK. Implement only what is in `product/PRD.md`. Record evidence in `process/PROGRESS.md`. Use `/advise` if architectural questions arise.
+> Process Steward mode. Execute `/next`. Follow READ/DECIDE/ACT/VERIFY/UPDATE/ASK. Implement only what is in `product/PRD.md`. Record evidence in `process/PROGRESS.md`. Use `/advise` if architectural questions arise. (Run `/check` to validate independently when needed).
 
 ### Story sizing policy
 - Stories must be **vertical slices deliverable in <= 1 day**.

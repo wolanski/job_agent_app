@@ -10,5 +10,5 @@ READ:
 
 DO:
 1) Run `make check`.
-2) Triage failures per `.agents/skills/check/SKILL.md`.
+2) Triage failures per `.agents/skills/check/SKILL.md` (if unfamiliar with triage rules, use `view_file` to read it first).
 3) Log result in PROGRESS § Evidence log.

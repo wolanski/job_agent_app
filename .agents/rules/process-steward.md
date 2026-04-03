@@ -49,14 +49,9 @@ Rules:
 - In your response **UPDATE** section, list which trace-controlled files received a new trace row (if any).
 
 ## Traceability Log
+*(Historical rows pruned to keep context lean. Full history available in Git and `process/PROCESS_REFERENCE.md`)*
 | Timestamp (UTC) | Actor | Change | Why |
 |---|---|---|---|
-| 2026-02-08T12:00:00Z | Seed (generator) | Initial v4 template | Pack created/updated for Antigravity and folder split (product vs process). |
-| 2026-02-08T16:15:00Z | Seed (generator) | Scoped traceability to governing docs | Reduce noise; rely on PROGRESS + Git for everything else. |
-| 2026-02-08T17:05:19Z | Seed (generator) | Added PROCESS_STEWARD_SEQUENCE diagram reference | Keep rule pointers aligned with v7 pack diagrams. |
-| 2026-02-08T17:30:21Z | Seed (generator) | Clarified process vs agent docs separation | Removed required diagram reads; moved operator docs under `process/guides/human/`; updated artifact-creation paths. |
-| 2026-02-08T19:59:14Z | Seed (generator) | Updated operator guide path | Consolidated operator docs into `process/guides/HUMAN_OPERATOR_GUIDE.md`; updated artifact path reference. |
-| 2026-04-03T11:06:00Z | Agent (audit fix) | Fixed `.agent/` → `.agents/` path, stale rename note, unified DoD to 3 clauses, added build-phase labels | Audit findings: broken skill pointer, inconsistent DoD, ambiguous phase refs. |
 | 2026-04-03T12:35:00Z | Agent (audit fix) | Corrected dead HUMAN_OPERATOR_GUIDE.md reference | I-01: file was never created; PROGRESS.md reference updated to point to `process/guides/` directory. |
 | 2026-04-03T12:35:00Z | Agent (audit fix) | Deduplicated DoD to reference PROCESS_REFERENCE; defined skill loading trigger; added lightweight response mode exception | Fixes W-01, I-05, W-03 from `.agents/` audit. |
 | 2026-04-03T14:00:00Z | Agent (process update) | Added P0–P4 draft-mutability rule; updated response protocol to reflect two-phase lightweight/full split; added /advise to skill loading triggers | Align rules with two-phase model (design vs build). |

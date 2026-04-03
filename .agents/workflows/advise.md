@@ -31,4 +31,4 @@ DO:
 NOTES:
 - During P0–P4, ARCH and contracts are drafts — decisions can reshape them freely without CCR.
 - During P5–P7, if the chosen option requires ARCH/contract changes, raise a CCR via `/ccr`.
-- This workflow uses the lightweight response protocol (READ/ACT/ASK) unless the chosen option triggers implementation.
+- This workflow requires the full response protocol (including UPDATE) since recording a Decision (D-###) modifies the project state in PROGRESS.md.
