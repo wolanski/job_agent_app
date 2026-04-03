@@ -167,8 +167,13 @@ You (Human) decide if you require:
 
 ---
 
-## 8) Post-MVP versions (how the workflow scales)
+## 8) Continuous Maintenance & Post-MVP
 
+### Mid-Release Cleanup
+If `process/PROGRESS.md` becomes too large during development, you can safely archive old logs:
+- Run `/archive` to seamlessly sweep closed issues, resolved CCRs, and obsolete evidence into a `WIP-YYYYMMDD.md` holding file without disrupting active task state.
+
+### Post-MVP versions (how the workflow scales)
 For a new version (V1.1, V2, …):
 1. Archive the previous release: move shipped stories, evidence, and CCRs from `process/PROGRESS.md` to `process/archive/R-YYYYMMDD.md` (see PROCESS_REFERENCE § PROGRESS archiving).
 2. Add new stories to `product/PRD.md` (tag them for the new version in the roadmap section).

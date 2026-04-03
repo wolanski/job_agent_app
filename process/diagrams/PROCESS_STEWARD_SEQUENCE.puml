@@ -1,5 +1,9 @@
-@startuml
-title PROCESS STEWARD - Detailed Sequence (Lite Agentic Dev)\nDocument-driven + Gates + Loops + CCR (ASCII-safe)\nGates must match process/PROGRESS.md (G0..G5)
+@startuml PROCESS_STEWARD_SEQUENCE
+title
+PROCESS STEWARD - Detailed Sequence (Lite Agentic Dev)
+Document-driven + Gates + Loops + CCR (ASCII-safe)
+Gates must match process/PROGRESS.md (G0..G5)
+end title
 
 skinparam shadowing false
 skinparam ArrowColor #333333

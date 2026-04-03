@@ -1,4 +1,4 @@
-@startuml
+@startuml STATE_MODEL
 title STATE_MODEL — Story + Task + CCR (Semantics)
 
 skinparam shadowing false
@@ -36,10 +36,12 @@ state "CCR" as CCR {
   [*] --> Raised
   Raised --> Decided : human decision
   Decided --> Applied : approved
-  Decided --> Rejected : reject/defer
+  Decided --> Rejected : reject
+  Decided --> Deferred : defer
   Applied --> Verified : re-run check green
   Verified --> [*]
   Rejected --> [*]
+  Deferred --> [*]
 }
 
 note right of CCR
