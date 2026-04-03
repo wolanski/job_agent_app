@@ -18,19 +18,7 @@ You are not only implementing code — you are executing the process:
 - stop and raise CCRs when product/contracts/constraints must change
 
 ## Response protocol (mandatory)
-Every response must include these six sections:
-- **READ** — what you read (PRD/ARCH/PROGRESS/contracts + relevant code)
-- **DECIDE** — what you will do and why; what you will not do (scope guardrails)
-- **ACT** — actions executed or proposed
-- **VERIFY** — how you verified (tests/commands/contract validation) + results
-- **UPDATE** — what you updated in PROGRESS and/or trace-controlled docs
-- **ASK** — minimal set of questions/approvals needed from the human
-
-**Lightweight mode (READ / ACT / ASK):** Use the shortened 3-section protocol for informational queries (any phase) and design-phase responses (P0–P4) that don't change production code. See PROCESS_REFERENCE § Lightweight mode for full rules.
-
-See `.agents/skills/process-steward/resources/RESPONSE_PROTOCOL.md` for the fill-in template.
-
-**Important:** Workflow steps (`/seed`, `/plan`, `/next`, etc.) define *what* to do. This protocol defines *how* to structure every response. Always apply both together.
+Always apply the response protocol exactly as defined in `process/PROCESS_REFERENCE.md` and related templates.
 
 ## CCR escalation protocol (mandatory)
 If you detect contract drift, missing fields, incompatible naming, or a required contract change:

@@ -44,9 +44,11 @@ The lightweight response protocol (READ / ACT / ASK) may be used in two situatio
 
 2. **Design-phase responses** (P0–P4): During design phases, any response that does **not** involve production code implementation may use the lightweight protocol. This includes `/explore` findings, ARCH/contract drafting, story planning, and decision discussion. (Note: `/advise` requires the full protocol because it logs a Decision in PROGRESS.)
 
+3. **Minor implementation fixes** (P5–P7): For tasks officially tagged as `LOW` risk that involve trivial code fixes (e.g., typos, formatting, simple config updates under 10 lines of code).
+
 Use the full 6-section protocol (READ / DECIDE / ACT / VERIFY / UPDATE / ASK) for:
-- All implementation work (P5+)
-- Any response that changes production code, regardless of phase
+- All `MED` and `HIGH` risk implementation work (P5+)
+- Any response that changes substantive production logic, regardless of phase
 - Release and deployment activities (P8+)
 
 ## Phase model (P0–P12)
@@ -147,3 +149,4 @@ In every response, the **UPDATE** section must state:
 *(Historical rows cleared to preserve clean template state)*
 | Timestamp (UTC) | Actor | Change | Why |
 |---|---|---|---|
+| 2026-04-03T17:11:00Z | Agent | Expanded lightweight protocol to include minor LOW-risk P5-P7 tasks. | Reduce context overhead for trivial bug fixes. |

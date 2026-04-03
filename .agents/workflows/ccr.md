@@ -21,3 +21,4 @@ DO:
 3) Ask for a human decision (approve/reject/defer).
 4) Only apply contract changes after approval is recorded.
 5) If **rejected**: revert or discard partial implementation for the affected task. Update PROGRESS: mark the task as BLOCKED or re-plan, and log a Decision (D-###) explaining what was rolled back and why.
+6) If **deferred**: Mark the parent task as BLOCKED in `process/PROGRESS.md`, skip the task, and use `/next` to move to the next unblocked task.

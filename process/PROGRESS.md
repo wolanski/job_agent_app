@@ -29,22 +29,8 @@
 | G4 | P10 | Release candidate (hardening complete) | PENDING | |
 | G5 | P11 | Released (deployed + smoke + notes) | PENDING | |
 
-## 3. Phase tracker (P0..P12)
-| Phase | Name | Status | Notes |
-|---|---|---|---|
-| P0 | Install and Wire | PENDING | |
-| P1 | Functional Framing | PENDING | |
-| P2 | Architecture (Lite) | PENDING | |
-| P3 | Contract Baseline | PENDING | |
-| P4 | Story Baseline | PENDING | |
-| P5 | JIT Planning | PENDING | |
-| P6 | Iterative Implementation | PENDING | |
-| P7 | Story Handshake | PENDING | |
-| P8 | Integration Testing | PENDING | |
-| P9 | E2E Automation | PENDING | |
-| P10 | Manual E2E (optional) | PENDING | |
-| P11 | Deploy | PENDING | |
-| P12 | Post-release Feedback | PENDING | |
+## 3. Phase tracker
+> (See `process/PROCESS_REFERENCE.md` for phase definitions. The current phase is tracked in §0. Current status).
 
 ## 4. Optional UC tag glossary (lightweight)
 > UC tags are optional labels used only to group stories. Keep this table tiny or leave it empty.
@@ -73,6 +59,7 @@
 ## 9. Decisions log
 | ID | Date | Decision | Rationale | Impact |
 |---|---|---|---|---|
+| D-001 | 2026-04-03 | Simplified Phase Tracker | Eliminate duplicate 13-row phase table | Relies on single P0 value in section 0 |
 
 ## 10. Evidence log (checks and artifacts)
 | Date | What ran | Result | Where |

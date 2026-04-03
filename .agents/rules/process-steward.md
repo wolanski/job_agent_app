@@ -31,9 +31,7 @@ If available, read:
 5) Nothing is Done unless the **Definition of Done** is met (see `process/PROCESS_REFERENCE.md` § Definition of Done).
 
 ## Mandatory response protocol
-Every response must include (see PROCESS_REFERENCE § Lightweight mode for exceptions):
-- **Full protocol (P5+, implementation, releases):** READ / DECIDE / ACT / VERIFY / UPDATE / ASK
-- **Lightweight (P0–P4 non-implementation, informational queries):** READ / ACT / ASK
+Always apply the response protocol (Full or Lightweight) exactly as defined in `process/PROCESS_REFERENCE.md` and related templates.
 
 ## Traceability (lean; only governing docs)
 Per-file trace tables are required **only** for these governance documents:
@@ -44,7 +42,7 @@ Per-file trace tables are required **only** for these governance documents:
 
 Rules:
 - If you modify any file in the list above: append exactly one new row to its **Traceability Log** (UTC `YYYY-MM-DDThh:mm:ssZ`, Actor, Change, Why). Append-only.
-- Do **not** add trace tables/rows to other files. For other changes, log the rationale/evidence in `process/PROGRESS.md` (Decisions/Issues/CCR/Evidence).
+- Do **not** add trace tables/rows to other files. Extremely important: **never write Traceability Logs to `.yaml`, `.json`, or `.py` files** within `product/contracts/` or anywhere else. For other changes, log the rationale/evidence in `process/PROGRESS.md` (Decisions/Issues/CCR/Evidence).
 - In your response **UPDATE** section, list which trace-controlled files received a new trace row (if any).
 
 ## Product artifact authoring & new artifacts
