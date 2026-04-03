@@ -80,7 +80,7 @@
 ## 9. Decisions log
 | ID | Date | Decision | Rationale | Impact |
 |---|---|---|---|---|
-| D-001 | YYYY-MM-DD | ... | ... | ... |
+| D-001 | 2026-04-03 | Adopted two-phase model (Collaborative Design + Disciplined Build); added /advise workflow | ML/Architect user benefits from exploratory design before committing to frozen-ARCH build. Reduces ceremony in P0–P4, preserves rigor in P5+. | README, help, SKILL.md, PROCESS_REFERENCE, rules/process-steward updated; advise.md created |
 
 ## 10. Evidence log (checks and artifacts)
 | Date | What ran | Result | Where |

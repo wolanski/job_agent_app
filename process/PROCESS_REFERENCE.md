@@ -14,9 +14,9 @@
 
 ## Non-negotiable rules
 1. **Not in PRD = not built.**
-2. **RO during build (P5–P7):**
-   - `product/ARCH.md`
-   - `product/contracts/*`
+2. **ARCH and contract mutability:**
+   - **P0–P4 (design phases):** `product/ARCH.md` and `product/contracts/*` are **drafts** — freely modifiable without CCR. Log significant changes as Decisions (D-###) in PROGRESS.
+   - **P5–P7 (build phases):** `product/ARCH.md` and `product/contracts/*` are **read-only**. Changes require a CCR.
 3. Contract mismatch/drift → **STOP**, raise **CCR-###** in `process/PROGRESS.md` with evidence + minimal proposal; wait for human decision.
 4. Nothing is Done unless:
    - `make check` is green, and
@@ -37,16 +37,20 @@ Every response must contain exactly:
 
 **Note:** Workflow steps (`/seed`, `/plan`, `/next`, etc.) define *what* to do. The response protocol defines *how* to structure every response. Always apply both.
 
-### Lightweight mode (informational queries)
-For purely informational questions ("What phase are we in?", "Summarize PROGRESS", "Explain X") that involve **no code changes, no state mutations, and no decisions**, you may collapse the protocol to:
-- **READ** — what you consulted
-- **ACT** — your answer
-- **ASK** — follow-up questions (if any)
+### Lightweight mode
+The lightweight response protocol (READ / ACT / ASK) may be used in two situations:
 
-Use the full 6-section protocol for anything that changes code, state, contracts, or requires a decision.
+1. **Informational queries** (any phase): For purely informational questions ("What phase are we in?", "Summarize PROGRESS", "Explain X") that involve **no code changes, no state mutations, and no decisions**.
+
+2. **Design-phase responses** (P0–P4): During design phases, any response that does **not** involve production code implementation may use the lightweight protocol. This includes `/explore` findings, `/advise` recommendations, ARCH/contract drafting, story planning, and decision discussion.
+
+Use the full 6-section protocol (READ / DECIDE / ACT / VERIFY / UPDATE / ASK) for:
+- All implementation work (P5+)
+- Any response that changes production code, regardless of phase
+- Release and deployment activities (P8+)
 
 ## Phase model (P0–P12)
-Phases define where the project is in its lifecycle. ARCH and contracts are **RO during build phases (P5–P7)**.
+Phases define where the project is in its lifecycle. During **P0–P4**, ARCH and contracts are drafts (freely modifiable). During **P5–P7**, ARCH and contracts are **frozen** (RO unless CCR approved).
 
 | Phase | Name | Activity | Workflow | Gate |
 |-------|------|----------|----------|------|
@@ -71,6 +75,7 @@ Real projects sometimes need to revisit earlier phases:
 - **Requirements change during build (P5–P7):** If the change invalidates the story baseline (P4), raise a CCR if contracts are affected, or log a Decision (D-###) in PROGRESS. Update the affected stories/tasks and re-enter P4 (story baseline) before resuming P5.
 - **Architecture change needed during build:** Requires a CCR (since ARCH is RO during P5–P7). If approved, re-enter P2/P3 to stabilize ARCH and contracts before resuming P5.
 - **General rule:** Log the regression as a Decision in PROGRESS with rationale. Update the phase tracker to reflect the current phase accurately.
+- **Design-phase iteration (P0–P4):** ARCH and contracts are expected to evolve. No CCR is needed — simply update the documents and log a Decision (D-###) in PROGRESS if the change is significant. The `/advise` workflow can help structure these decisions.
 
 ## Story & task naming conventions
 - **Stories:** `S-V###` (e.g., `S-V001`, `S-V002`). The `V` prefix denotes the product version.
@@ -109,7 +114,8 @@ For everything else (including `process/PROGRESS.md`, setup guides, workflows, d
   - **Evidence log** for `make check` outputs
 
 ### Executable contracts (`product/contracts/*`)
-- Changes require a **CCR entry** + human decision in `process/PROGRESS.md`.
+- **P0–P4 (design phases):** Changes are expected (drafts). Log significant changes as Decisions (D-###) in PROGRESS. No CCR required.
+- **P5–P7 (build phases):** Changes require a **CCR entry** + human decision in `process/PROGRESS.md`.
 - No per-file trace table is required in the contract files.
 
 ### Response UPDATE requirements
@@ -128,3 +134,4 @@ In every response, the **UPDATE** section must state:
 | 2026-02-08T19:58:27Z | Seed (generator) | Updated operator guide path | Consolidated operator guidance into `process/guides/HUMAN_OPERATOR_GUIDE.md`; updated process artifact path. |
 | 2026-04-03T11:06:00Z | Agent (audit fix) | Fixed `.agent/` → `.agents/` path; added Phase Model (P0–P12) section; added Story & Task naming conventions; connected workflows to response protocol | Audit findings: undefined phases, missing naming spec, broken path, workflow-protocol disconnect. |
 | 2026-04-03T12:35:00Z | Agent (audit fix) | Added lightweight response mode; added phase regression guidance; mapped P12 to `/explore` | Fixes W-03, W-05, I-06 from `.agents/` audit. |
+| 2026-04-03T14:00:00Z | Agent (process update) | Expanded lightweight mode to P0–P4 design phases; made ARCH/contract draft status during P0–P4 explicit; added /advise workflow reference | Shift to two-phase model: relaxed ceremony in design, disciplined build in P5+. |
