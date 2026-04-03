@@ -8,18 +8,28 @@ end title
 skinparam shadowing false
 skinparam ArrowColor #333333
 skinparam SequenceLifeLineBorderColor #333333
+skinparam SequenceLifeLineBackgroundColor #F4F6F7
 skinparam SequenceParticipantBorderColor #333333
 skinparam SequenceParticipantFontColor #111111
-skinparam NoteBackgroundColor #FFF9D6
+skinparam NoteBackgroundColor #FFF3CD
 skinparam NoteBorderColor #333333
 skinparam ParticipantPadding 25
 skinparam BoxPadding 10
 
-actor Human
-participant Agent
-database RepoFS as "Repo/FS"
-participant CI
-participant Cloud
+actor Human #C8E6C9
+participant Agent #F8D7DA
+database RepoFS as "Repo/FS" #CCE5FF
+participant CI #CCE5FF
+participant Cloud #CCE5FF
+
+legend bottom right
+  **ACTOR COLOR KEY:**
+  |<back:#C8E6C9>    </back>| **HUMAN** (Manual Decision/Review)
+  |<back:#F8D7DA>    </back>| **AGENT** (Autonomous Execution)
+  |<back:#CCE5FF>    </back>| **SYSTEM** (Verification / FileSystem / Cloud)
+  |<back:#E8F5E9>    </back>| **Human-Dependent Domain Loop**
+  |<back:#FFEBEE>    </back>| **Agent-Isolated Domain Loop**
+endlegend
 
 note over Human,Agent
 Truth sources (files in repo):
@@ -31,7 +41,7 @@ Verifier (deterministic):
 - `make check` runs lint/typecheck/tests (and contract validation if enabled)
 end note
 
-loop VERSION LIFECYCLE (MVP -> V1.1 -> V2 ...)
+loop #FFF3CD VERSION LIFECYCLE (MVP -> V1.1 -> V2 ...)
   Agent -> RepoFS: READ process/PROGRESS.md (current_version, gates, policy)
   Agent -> RepoFS: READ product/PRD.md (roadmap, scope, story sequence)
 
@@ -56,7 +66,7 @@ loop VERSION LIFECYCLE (MVP -> V1.1 -> V2 ...)
   ' ---------------------------
   ' P0 INSTALL AND WIRE
   ' ---------------------------
-  group P0 INSTALL AND WIRE (Setup)
+  group #E8F5E9 P0 INSTALL AND WIRE (Setup)
     Agent -> RepoFS: VERIFY required artifacts exist (process/*, product/*, Makefile, pyproject.toml)
     alt Missing artifacts
       Agent --> Human: PROMPT "Missing artifacts detected. Approve creation of templates?"
@@ -82,7 +92,7 @@ loop VERSION LIFECYCLE (MVP -> V1.1 -> V2 ...)
   ' ---------------------------
   ' P1-P4 READY TO BUILD
   ' ---------------------------
-  group P1-P4 READY TO BUILD (Scope, Architecture, Contracts, Policy)
+  group #E8F5E9 P1-P4 READY TO BUILD (Scope, Architecture, Contracts, Policy)
     ' P1 Functional framing: agent can propose PRD from vision-only seed
     Agent -> RepoFS: READ product/PRD.md (vision + seed)
     Agent -> RepoFS: DRAFT missing PRD sections (S-V###, acceptance/DoD, sequence, optional UC tags)
@@ -158,11 +168,11 @@ loop VERSION LIFECYCLE (MVP -> V1.1 -> V2 ...)
   ' ---------------------------
   ' P5-P7 STORY DELIVERY LOOP
   ' ---------------------------
-  group P5-P7 STORY DELIVERY (Story loop -> Task loop -> Verification + CCR)
+  group #FFEBEE P5-P7 STORY DELIVERY (Story loop -> Task loop -> Verification + CCR)
     Agent -> RepoFS: READ product/PRD.md (story sequence + acceptance)
     Agent -> RepoFS: READ process/PROGRESS.md (trackers + policy)
 
-    loop STORY LOOP (for each S-V### in PRD sequence)
+    loop #FFF3CD STORY LOOP (for each S-V### in PRD sequence)
       Agent -> RepoFS: MARK Story S-V### = IN_PROGRESS (process/PROGRESS.md)
 
       ' P5 JIT planning per story
@@ -184,7 +194,7 @@ loop VERSION LIFECYCLE (MVP -> V1.1 -> V2 ...)
       end
 
       ' P6 Task loop
-      loop TASK LOOP (for each T-V###.## in checklist order)
+      loop #FFEBEE TASK LOOP (for each T-V###.## in checklist order)
         Agent -> RepoFS: MARK Task T-V###.## = IN_PROGRESS (process/PROGRESS.md)
         Agent -> RepoFS: IMPLEMENT minimal code change + unit tests
         Agent -> CI: RUN `make check`
@@ -261,7 +271,7 @@ loop VERSION LIFECYCLE (MVP -> V1.1 -> V2 ...)
   ' ---------------------------
   ' P8-P12 HARDENING + RELEASE
   ' ---------------------------
-  group P8-P12 HARDENING AND RELEASE
+  group #E8F5E9 P8-P12 HARDENING AND RELEASE
     Agent -> CI: RUN hardening (integration/e2e) if enabled by policy
     CI --> Agent: RESULT pass/fail + evidence
     alt FAIL

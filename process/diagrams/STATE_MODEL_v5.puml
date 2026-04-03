@@ -1,0 +1,204 @@
+@startuml STATE_MODEL_v5
+title STATE_MODEL_v5 — Autonomous Engine Matrix
+
+skinparam shadowing false
+skinparam ArrowColor #333333
+skinparam StateBorderColor #333333
+skinparam StateFontColor #111111
+
+state "**RELEASE / VERSION**\n----\n**File Location:** process/PROGRESS.md & process/archive/\n**ID Format:** V### (e.g. V1.0)\n----\n**Description:** The highest level of organizational scope.\nMaps sequentially to global project milestones (Gates G0-G5).\nGoverns when iterations are deployed, triggering the `/release`\nworkflow and the archiving of legacy session logs." as RELEASE #E8F5E9 {
+  state "**Planning** (Phases P0-P4) [HUMAN/AGENT]\n----\nReviewing previous releases.\nLocking down scope limits.\nDrafting global blueprints." as Planning #FFF3CD
+  state "**Building** (Phases P5-P7) [AGENT]\n----\nHeavy cyclical dev envelope.\nIterating across all stories\nuntil the backlog is consumed." as Building #F8D7DA
+  state "**Hardening** (Phase P8) [HUMAN/AGENT]\n----\nPost-MVP cleanup. Stabilizing\ntests, running E2E workflows,\nand preparing for deploy." as Hardening #FFF3CD
+  state "**Deployed** [HUMAN]\n----\nThe repository is frozen.\nFunctionality is live and\nshipped to production." as Deployed #C8E6C9
+  state "**Archived** [AGENT]\n----\nAll metadata and logs are\nmoved into WIP folders to\nreduce LLM context drag." as Archived_R #F8D7DA
+
+  [*] --> Planning : <b><color:#2e7d32>/seed</color></b>, <b><color:#2e7d32>/plan</color></b>
+  Planning --> Building : <b><color:#2e7d32>/next</color></b> loops
+  Building --> Hardening : <b><color:#2e7d32>/release</color></b>
+  Hardening --> Building : regression/fix
+  Hardening --> Deployed : g5 passed
+  Deployed --> Archived_R : next version start
+  Archived_R --> [*]
+}
+
+state "**STORY**\n----\n**File Location:** product/PRD.md\n**ID Format:** S-V### (e.g. S-V001)\n----\n**Description:** The functional boundary of human intent.\nGroups atomic tasks into a verifiable feature or 'vertical slice'.\nDesigned to be deliverable in under 1 day. Must pass formal\nHuman Acceptance before being marked DONE." as STORY #E8F5E9 {
+  state "**Planned** [HUMAN]\n----\nDocumented in the PRD.\nScope is defined, but no JIT\ntasks have been generated yet." as Planned_S #C8E6C9
+  state "**InProgress** [AGENT]\n----\nThe Agent is currently spinning\nup tasks, writing component\ncode, and parsing contracts." as InProgress_S #F8D7DA
+  state "**AcceptanceReview** [HUMAN]\n----\nThe Agent has finished all tasks\nand explicitly requested the Human\nto execute a DoD handshake." as AcceptanceReview #C8E6C9
+  state "**Blocked** [SYSTEM]\n----\nThe Story cannot proceed.\nAn external dependency or a\nhard CCR holds up completion." as Blocked_S #CCE5FF
+  state "**Done** [HUMAN]\n----\nThe Human has officially\npassed the Story. No further\nfeatures will be added here." as Done_S #C8E6C9
+  state "**Archived** [AGENT]\n----\nPost-release sweep has\ncleaned the Story out of active\nprocessing memory." as Archived_S #F8D7DA
+
+  [*] --> Planned_S
+  Planned_S --> InProgress_S : start story
+  InProgress_S --> AcceptanceReview : all tasks done
+  AcceptanceReview --> Done_S : acceptance met
+  AcceptanceReview --> InProgress_S : feedback/fix
+  InProgress_S --> Blocked_S : CCR or external blocker
+  Blocked_S --> InProgress_S : unblocked
+  Done_S --> Archived_S : post-release sweep
+}
+
+state "**TASK**\n----\n**File Location:** process/PROGRESS.md\n**ID Format:** T-### (e.g. T-001)\n----\n**Description:** Atomic, low-level execution steps (JIT).\nGenerated dynamically by the Agent to fulfill Story criteria.\nLOW/MED risk tasks are fully autonomous, whereas HIGH risk tasks\nblock the system execution pipeline awaiting your explicit approval." as TASK #FFEBEE {
+  state "**Planned** [AGENT]\n----\nThe Agent generated this\nchecklist item based on\ncurrent PRD requirements." as Planned_T #F8D7DA
+  state "**InProgress** [AGENT]\n----\nThe Agent is actively hitting\nthe codebase, writing tests,\nor refactoring existing logic." as InProgress_T #F8D7DA
+  state "**Verifying** [AGENT]\n----\nExecution is paused to verify\nlogic via terminal to confirm\ndeterministic build." as Verifying #F8D7DA
+  state "**Blocked** [SYSTEM]\n----\nExecution suspended. The agent\nneeds human input, or a hard\nCCR must be resolved first." as Blocked_T #CCE5FF
+  state "**Cancelled** [AGENT]\n----\nThe task was deemed obsolete\nor a related CCR was rejected." as Cancelled #F8D7DA
+  state "**Done** [AGENT]\n----\nLinting passed. Tests passed.\nEvidence has been permanently\nlogged in PROGRESS.md." as Done_T #F8D7DA
+  state "**Archived** [AGENT]\n----\nFlushed out of the live task\ntracker to prevent UI bloat." as Archived_T #F8D7DA
+
+  state Task_Check_Gate <<choice>>
+
+  [*] --> Planned_T
+  Planned_T --> InProgress_T : start
+  InProgress_T --> Verifying : code+tests written
+  Verifying --> Task_Check_Gate : executes <b><color:#c62828>/check</color></b>
+  Task_Check_Gate --> Done_T : [PASS] check green
+  Task_Check_Gate --> InProgress_T : [FAIL] check fails
+  InProgress_T --> Blocked_T : CCR / dep missing
+  Blocked_T --> InProgress_T : CCR approved
+  Blocked_T --> Cancelled : rescope/reject
+  Done_T --> Archived_T : mid-release
+  Cancelled --> Archived_T : mid-release
+}
+
+state "**DECISION**\n----\n**File Location:** process/PROGRESS.md & product/ARCH.md\n**ID Format:** D-### (e.g. D-001)\n----\n**Description:** Formal architectural governance tracker.\nLogs the exploration and ratification of major technical shifts.\nOnly 'Ratified' decisions permanently alter the canonical ARCH.md reference." as DECISION #E8F5E9 {
+  state "**Proposed** [HUMAN/AGENT]\n----\nA potential architectural\nshift or rule is formulated." as Proposed_D #FFF3CD
+  state "**Discussed** [AGENT]\n----\nThe Agent researches tradeoffs,\nmapping impacts via explore." as Discussed_D #F8D7DA
+  state "**Ratified** [HUMAN]\n----\nThe rule is officially locked in,\npermanently binding ARCH.md." as Ratified_D #C8E6C9
+  state "**Rejected** [HUMAN]\n----\nThe proposal is discarded.\nNo architecture changes made." as Rejected_D #C8E6C9
+  state "**Archived** [AGENT]\n----\nSwept from live tracking\nalong with the release phase." as Archived_D #F8D7DA
+
+  state Decision_Gate <<choice>>
+
+  [*] --> Proposed_D : <b><color:#2e7d32>/advise</color></b>
+  Proposed_D --> Discussed_D : <b><color:#c62828>/explore</color></b>
+  Discussed_D --> Decision_Gate : human inputs
+  Decision_Gate --> Ratified_D : [APPROVE]
+  Decision_Gate --> Rejected_D : [REJECT]
+  Ratified_D --> Archived_D : mid-release
+  Rejected_D --> Archived_D : mid-release
+}
+
+state "**ISSUE**\n----\n**File Location:** process/PROGRESS.md\n**ID Format:** I-### (e.g. I-001)\n----\n**Description:** Tracks open architectural questions, logic bugs,\nand arbitrary development blockages. Maintains a persistent record\ninside PROGRESS.md so contextual data isn't lost during long sessions." as ISSUE #E8F5E9 {
+  state "**Open** [HUMAN/AGENT]\n----\nA bug, an open system question,\nor a blocker was requested." as Open #FFF3CD
+  state "**InProgress** [AGENT]\n----\nThe Agent is actively hunting\ndown the solution or patch." as InProgress_I #F8D7DA
+  state "**Resolved** [HUMAN/AGENT]\n----\nThe required fix was shipped\nor the question was answered." as Resolved #FFF3CD
+  state "**Archived** [AGENT]\n----\nIssue closed and swept from\nthe live bug tracking log." as Archived_I #F8D7DA
+
+  [*] --> Open : identified
+  Open --> InProgress_I : <b><color:#c62828>/explore</color></b>
+  InProgress_I --> Resolved : fixed/answered
+  InProgress_I --> Open : blocked
+  Resolved --> Archived_I : <b><color:#c62828>/archive</color></b>
+}
+
+state "**CCR** (Contract Change Request)\n----\n**File Location:** process/PROGRESS.md\n**ID Format:** CCR-### (e.g. CCR-001)\n----\n**Description:** Critical escalation protocol triggered by the Agent.\nIf contract drift/mismatch is detected, the Agent halts execution to\nprevent rogue workarounds. You must manually 'Approve', 'Reject',\nor 'Defer' before the Agent is allowed to touch tracked interfaces." as CCR #E8F5E9 {
+  state "**Raised** [AGENT]\n----\nAgent detects the PRD or Spec\nis misaligned with reality.\nAll local work is halted." as Raised #F8D7DA
+  state "**Decided** [HUMAN]\n----\nThe ball is in the Human's\ncourt. Waiting to hear how\nthe contract should mutate." as Decided #C8E6C9
+  state "**Applied** [AGENT]\n----\nThe Human explicitly APPROVED.\nThe interface files are being\nrewritten to match spec." as Applied #F8D7DA
+  state "**Deferred** [HUMAN]\n----\nHuman pushed this request\nto backlog. The related task\nremains indefinitely Blocked." as Deferred #C8E6C9
+  state "**Rejected** [HUMAN]\n----\nThe Human refused the change.\nThe Agent must formulate an\nalternative technical path." as Rejected #C8E6C9
+  state "**Verified** [AGENT]\n----\nContract updated. Checks run\ngreen. System returns to normal." as Verified #F8D7DA
+  state "**Archived** [AGENT]\n----\nIssue closed and wiped from\nlive tracking logs." as Archived_C #F8D7DA
+
+  state CCR_Decision_Gate <<choice>>
+
+  [*] --> Raised : <b><color:#c62828>/ccr</color></b>
+  Raised --> Decided : human requested
+  Decided --> CCR_Decision_Gate : decision made
+  CCR_Decision_Gate --> Applied : [APPROVE]
+  CCR_Decision_Gate --> Rejected : [REJECT]
+  CCR_Decision_Gate --> Deferred : [DEFER]
+  Applied --> Verified : check runs green
+  Verified --> Archived_C : <b><color:#c62828>/archive</color></b>
+  Rejected --> Archived_C : <b><color:#c62828>/archive</color></b>
+  Deferred --> Archived_C : <b><color:#c62828>/archive</color></b>
+}
+
+' ==========================================
+' Legends
+' ==========================================
+legend bottom right
+  **ACTOR COLOR KEY:**
+  |<back:#C8E6C9>    </back>| **Owned by HUMAN** (Manual Decision/Review) |
+  |<back:#F8D7DA>    </back>| **Owned by AGENT** (Autonomous Execution) |
+  |<back:#FFF3CD>    </back>| **Shared Ownership** (Collaborative Actions) |
+  |<back:#CCE5FF>    </back>| **SYSTEM Block** (Requires External Resolution) |
+
+  **CONTAINER DEPENDENCY KEY:**
+  |<back:#E8F5E9>    </back>| **Human-Dependent Domain** (Contains at least 1 mandatory Human Gate) |
+  |<back:#FFEBEE>    </back>| **Agent-Isolated Domain** (Execution happens completely autonomously) |
+
+  **MARKDOWN TRACKER NOTATION:**
+  | **`[ ]`** | **Planned** (Pending execution) |
+  | **`[/]`** | **Active** (In-Progress / Investigating) |
+  | **`[x]`** | **Done** (Applied / Resolved / Passed) |
+  | **`[-]`** | **Blocked** (Halted / Cancelled phase) |
+
+  **PATH LOGIC KEY:**
+  | **➔ Solid Arrow** | Internal Lifecycle / Sequential State Transition |
+  | **⇢ Dashed Arrow** | Cross-Domain Trigger / Dependency Escalation |
+
+  **ARTIFACT ID GLOSSARY:**
+  | **ID FORMAT** | **TRACKED AS** | **STORED IN** | **CREATED BY** |
+  | **V###** (e.g. V1.0) | Release / Iteration Phase | process/PROGRESS.md (and archives) | [HUMAN/AGENT] |
+  | **S-V###** (e.g. S-001) | Story / Feature Scope | product/PRD.md & process/PROGRESS.md | [HUMAN] |
+  | **T-###** (e.g. T-001) | Low-level execution Task | process/PROGRESS.md | [AGENT] |
+  | **CCR-###** (e.g. CCR-001) | Contract Escalation Gate | process/PROGRESS.md | [AGENT] |
+  | **I-###** (e.g. I-001) | Global Issue / Persistent Bug | process/PROGRESS.md | [HUMAN/AGENT] |
+  | **D-###** (e.g. D-001) | Architectural Governance | process/PROGRESS.md ➔ product/ARCH.md | [HUMAN/AGENT] |
+
+  **WORKFLOW REGISTRY (10/10 Mapped):**
+  | **<b><color:#2e7d32>/advise</color></b>** | [HUMAN] Explores arbitrary architectural shifts to push a Decision (D-###). |
+  | **<b><color:#c62828>/archive</color></b>** | [AGENT] Sweeps all closed/legacy states into read-only WIP files. |
+  | **<b><color:#c62828>/ccr</color></b>**   | [AGENT] Formally raises a Contract Change Request escalation block. |
+  | **<b><color:#c62828>/check</color></b>** | [AGENT] QA Validation gate (make check). Executed before pushing code. |
+  | **<b><color:#c62828>/explore</color></b>**| [AGENT] Unstructured sandbox. Used natively for Issue discovery & Decisions. |
+  | **<b><color:#2e7d32>/help</color></b>**   | [HUMAN] Prints the workflow index map. |
+  | **<b><color:#2e7d32>/next</color></b>**   | [HUMAN] Master JIT engine trigger. Initiates loop to grab the next Task. |
+  | **<b><color:#2e7d32>/plan</color></b>**   | [HUMAN] Absorbs README constraints into formal PRD-level Stories. |
+  | **<b><color:#2e7d32>/release</color></b>**| [HUMAN] Formal Hardening manual trigger crossing G4 gates. Preps a V### version. |
+  | **<b><color:#2e7d32>/seed</color></b>**   | [HUMAN] Initializes framework & validates environment dependencies. |
+
+  **ACTIVE SKILLS & RULES (`.agents/`):**
+  | **process-steward** | **Rule+Skill:** Global physics engine. Governs phase limits, traceability matrices, and protocol laws. |
+  | **check**           | **Skill:** Automated QA validation suite. Called natively within Task Verification gates. |
+
+  **SDLC MASTER PHASE MATRIX:**
+  | **Phase A (P0-P4)** | **Planning & Governance:** Absorbing rules, defining PRD scope, structuring Architecture. |
+  | **Phase B (P5-P7)** | **Heavy Execution:** Relentless dev loops. Writing JIT Tasks, deploying code, tracking CCRs. |
+  | **Phase C (P8)**    | **Deploy & Hardening:** E2E manual QA. Checking off G4 logic, cutting the V### tag, archiving logs. |
+endlegend
+
+' ==========================================
+' Cross-Domain Structural Routing (2x3 Grid Topology)
+' ==========================================
+
+' Physical Matrix Grid Layout
+RELEASE -[hidden]right-> STORY
+STORY -[hidden]right-> TASK
+
+RELEASE -[hidden]down-> DECISION
+DECISION -[hidden]right-> ISSUE
+ISSUE -[hidden]right-> CCR
+
+' Active Relational Edges
+RELEASE -[#0056b3,dashed,thickness=2]right-> STORY : Contains
+STORY -[#0056b3,dashed,thickness=2]right-> TASK : JIT Breakdown
+
+RELEASE -[#FFBB33,dashed,thickness=2]down-> ISSUE : E2E failures spawn bugs
+
+ISSUE -[#FFBB33,dashed,thickness=2]up-> STORY : Can block
+ISSUE -[#FFBB33,dashed,thickness=2]right-> CCR : Investigatory overlap
+
+TASK -[#FF4444,dashed,thickness=2]down-> CCR : Mismatch halts & triggers
+CCR -[#00C851,dashed,thickness=2]up-> TASK : Approval updates spec & unblocks
+CCR -[#FF4444,dashed,thickness=2]up-> STORY : Rejection forces re-scoping
+
+DECISION -[#00C851,dashed,thickness=2]up-> STORY : Ratification unlocks specs
+ISSUE -[#0056b3,dashed,thickness=2]left-> DECISION : Debate triggers architecture review
+
+@enduml

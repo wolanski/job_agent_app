@@ -1,0 +1,375 @@
+@startuml USER_JOURNEY
+title 
+Human Operator Journey (What to do & when)
+Simplified Agile Workflow
+end title
+
+skinparam shadowing false
+skinparam ArrowColor #333333
+skinparam ActivityBorderColor #333333
+skinparam ActivityBackgroundColor #C8E6C9
+skinparam ActivityDiamondBackgroundColor #FFCDD2
+skinparam ActivityDiamondBorderColor #333333
+skinparam NoteBackgroundColor #FFF3CD
+skinparam NoteBorderColor #333333
+
+legend right
+  **ACTOR COLOR KEY:**
+  |<back:#C8E6C9>    </back>| **HUMAN** (Actions the operator physically types)
+  |<back:#E8F5E9>    </back>| **Human-Dependent Domain**
+  |<back:#FFE082>    </back>| <<GATE>> **Manual Checkpoint** (Mandatory Review)
+  |<back:#FFCDD2>    </back>| **Logic Decision / Branch**
+  | **<color:#2e7d32>/workflow</color>** | **Human-Triggered Command**
+  | **<color:#c62828>/workflow</color>** | **Agent-Triggered Command** (or Sandbox)
+endlegend
+
+start
+
+:Write one-line Vision script
+----
+**Context:** The foundational constraint layer. This single line dictates 
+Scope Boundaries. Anything falling outside this Vision during P5-P7 
+development loops will be forcefully rejected by the Agent.
+**File:** `product/PRD.md` 
+**Action:** Open the file natively inside your IDE. Navigate to the top mapping 
+block titled `# Vision`. Delete any placeholder text and type a single, highly 
+explicit sentence describing the core functionality of the MVP application you 
+intend to build. Do not write extensive UI layout preferences here; constrain 
+the instruction purely to the macro backend application logic.;
+note right
+    **Architecture Constraint Rule:** 
+    An ambiguous or multi-paragraph Vision script will cascade 
+    into endless system execution loop drift natively in Phase B. 
+    The narrower the baseline parameter constraint, the faster 
+    and significantly stabler the MVP deploy time will be.
+end note
+
+:Execute **<color:#2e7d32>/seed</color>** to validate workspace
+----
+**Context:** Environment verification checkpoint. Guarantees the CI simulator 
+(`make check`) and physical repo hierarchy match the expected baseline state 
+before any code generation protocols can fire.
+**File:** `IDE Chat Console`
+**Action:** Open your primary IDE chat console. Type exactly `/seed` and hit enter 
+to fire the initialization webhook. The Agent will immediately spin up and run 
+a validation sequence spanning your `pyproject.toml`, `Makefile`, and the `process/` 
+directory tree. Wait approximately 10 seconds for the Agent to respond confirming 
+all parameters pass the G0 verification gate before proceeding.;
+note left
+    **Agent Autonomy Subroutine:**
+    While you wait, the Agent natively initializes 
+    the core operational state trackers (`PROGRESS.md` 
+    & `/archives`), establishing the literal `G0` Verification 
+    mathematical baseline the app acts upon.
+end note
+
+partition "Phase A (P0-P4): Planning & Governance" #E8F5E9 {
+    :Execute **<color:#2e7d32>/plan</color>**
+    ----
+    **Context:** Absorbs your Vision limits into strict verifiable logic. Generates 
+    the fundamental Architecture rules (`ARCH.md`) that strictly govern what 
+    dependencies and logic structures the Agent is allowed to code.
+    **File:** `IDE Chat Console`
+    **Action:** Return to the IDE chat console and execute the `/plan` command. 
+    The Agent will cross-referencing your `# Vision` against its internal constraints, 
+    halting roughly 30 seconds later to output a massive proposed mapping. Specifically 
+    look for it to generate the `S-V###` master Story backlog alongside the initial 
+    foundational architecture drafts. Do not execute any further commands until it 
+    explicitly requests your visual review.;
+    
+    note right
+        **Agent Autonomy Subroutine:**
+        The Process Steward autonomously absorbs 
+        your vision. It begins dynamically updating files:
+         - Converts vision into a Story Backlog `S-V###`
+         - Maps required API structures in `contracts/`
+         - Drafts global limits inside `ARCH.md`
+    end note
+    
+    if (Is the Agent unsure about a design logic choice?) then (yes)
+      :Execute **<color:#2e7d32>/advise</color>** or **<color:#c62828>/explore</color>**
+      ----
+      **Context:** Prevents hallucination. When encountering major unknowns, 
+      this sandbox forces the Agent to parse filesystems and read dependencies 
+      *without* unpredictably altering source code.
+      **File:** `IDE Chat Console`
+      **Action:** If the Agent's generated Plan contains hallucinatory drift or you wish 
+      to override a design choice (e.g. using a different database ORM), explicitly type 
+      your concerns into chat. You can use `/advise` to ask for structured rules logic, 
+      or `/explore` to force the Agent to dive into the codebase safely. Ensure the Agent 
+      formally logs a `D-###` architectural Decision ratifying your choice before moving on.;
+      note left
+          **Sandbox Engine:**
+          Typing `/explore` physically detaches the execution 
+          head from the `P0-P7` framework phase sequence, 
+          letting the system generate "throwaway" test scripts 
+          in `/tmp` safely with zero database risk.
+      end note
+    else (no)
+    endif
+    
+    :**Review & Approve** the Plan <<GATE>>
+    ----
+    **Context:** The Point-Of-No-Return for architecture. Once approved, `ARCH.md` 
+    becomes officially `Read-Only` during active development, locking out rewrites.
+    **Files:** `product/PRD.md` & `product/ARCH.md`
+    **Action:** You must physically open both `product/PRD.md` and `product/ARCH.md` 
+    inside your editor. Read through the generated Story sequences and the explicit rules 
+    constraints. If they perfectly align with your target MVP scope, return to the chat 
+    console and explicitly type "Approved". This formal handshake permanently locks the primary 
+    architecture files into Read-Only mode for the remainder of the active development pipeline.
+    **Governance:** If you manually overwrite any boundaries inside `ARCH.md` during 
+    this physical review, you MUST manually append a trace log [UTC | Actor | Change] 
+    to the bottom of the document before proceeding.;
+    note right
+        **Governance Lockdown:**
+        Once `ARCH.md` receives human approval loop clearance, 
+        the repository assumes strict execution mode. Any 
+        subsequent unapproved Human manipulations directly altering 
+        the baseline logic will crash the Agent execution engine.
+    end note
+    note left #FFCDD2
+        **ANTI-PATTERN: Scope Creep**
+        Never physically approve a massive S-### Story that 
+        would take a human longer than 1 day to build natively. 
+        If proposed scope is massive, immediately REJECT the 
+        plan and command the Agent to slice the feature tighter.
+    end note
+}
+
+partition "Phase B (P5-P7): Heavy Execution Loop" #E8F5E9 {
+    repeat
+        :Execute **<color:#2e7d32>/next</color>**
+        ----
+        **Context:** The highly-constrained Just-In-Time (JIT) execution trigger. 
+        Safely constricts the Agent's autonomy window to exactly one single Task 
+        checklist (`T-###`) from the tracker to prevent rogue code sprawl.
+        **File:** `IDE Chat Console`
+        **Action:** Open the IDE chat console and physically type the `/next` macro command. 
+        This acts as the master execution trigger. The Agent will immediately parse the 
+        `PROGRESS.md` logic array, locate the next unresolved `T-###` atomic task, and 
+        autonomously execute against it. You do not need to provide any further context 
+        snippets or file paths; the Agent natively tracks the exact file requirements 
+        completely autonomously based on its JIT loop array.;
+        
+        note left
+            **Agent Autonomy Subroutine:**
+            Behind the scenes, the Process Steward is natively:
+            1. Slicing S-V### Stories into atomic Tasks
+            2. Writing physical Python implementations
+            3. Running test verifications via `make check`
+            4. Updating evidence trace logs in `PROGRESS.md`
+        end note
+        
+        if (Did the Agent classify the active Task as HIGH-RISK?) then (yes)
+            :Explicit Human Risk Override <<GATE>>
+            ----
+            **Context:** The JIT Engine drafted a task that alters destructive logic 
+            boundaries (e.g. dropping database columns, rewriting deployment scripts). 
+            Execution is permanently paralyzed until granted permission.
+            **File:** `process/PROGRESS.md`
+            **Action:** Read the task payload in the tracker. You must literally type 
+            "Approve" in the IDE chat to release the Agent to execute the dangerous code.;
+        else (no)
+        endif
+
+        if (Does the Agent detect Contract Drift during dev?) then (Yes (System Paralyzed))
+            :Execute **<color:#c62828>/ccr</color>** workflow <<GATE>>
+            ----
+            **Context:** The master safeguard against "Silent Drift". If reality 
+            deviates from `ARCH.md` laws, the Agent immediately halts logic execution 
+            until a human expressly rewrites the hard specs.
+            **File:** `process/PROGRESS.md`
+            **Action:** If execution halts on a CCR Block, immediately open `process/PROGRESS.md` 
+            and read the exact `CCR-###` entry the Agent raised detailing the contract mismatch. 
+            You hold sovereign override authority. In the IDE chat, you must explicitly state how 
+            to proceed. Typing "APPROVE CCR" permanently overrides the API layout in the `ARCH` 
+            contracts. Typing "REJECT CCR" forces the Agent to discard its logic branch and 
+            rewrite the code to honor the original baseline structure.;
+            
+            note right
+                **Contract Defense Logic:**
+                If a 3rd party API updates or logic fails entirely, the 
+                Agent cannot 'hack' a workaround without Human consent.
+                 1. **Approve:** Rewrites the ARCH contracts to match.
+                 2. **Reject:** Forces Agent to find a different path.
+                 3. **Defer:** Abandons the active task loop sequence.
+                --
+                **Traceability Governance:** If you APPROVE a change 
+                to the Contract baseline, you are strictly required 
+                to append exactly one new tracking matrix row to the 
+                `CONTRACTS.md` Traceability log explicitly defining why.
+            end note
+            note left #FFCDD2
+                **ANTI-PATTERN: Blind Approval**
+                Never blindly type "APPROVE" to bypass a system blocker. 
+                If the Agent deletes a required field struct merely 
+                to bypass a failing QA test, your downstream logic 
+                will permanently collapse. Read the physical proposal.
+            end note
+        else (No (Smooth Execution))
+            :Wait for Agent to finish execution loop
+            ----
+            **Context:** JIT processing in flight. The Steward sequentially writes 
+            logic, writes identical tests, and hammers the local `make check` suite 
+            hundreds of times until code behaves 100% deterministically.
+            **File:** `Terminal logs`
+            **Action:** Physically remove your hands from the keyboard. The Process 
+            Steward is currently writing raw logic, drafting parallel unit tests, and 
+            repeatedly hammering the local validations. You will see terminal windows 
+            flashing rapidly as the automated QA verification engine repeatedly passes 
+            or fails. Absolutely do not interrupt the Agent mid-flight, nor type code into 
+            the IDE, until it explicitly issues a "Task Completed" response natively in chat.;
+        endif
+
+        if (Is the Agent hallucinating / ignoring architecture frameworks?) then (yes)
+            :Agent Hard Reset Override
+            ----
+            **Context:** LLMs inevitably drift. If the Agent repeatedly violates 
+            Read-Only boundaries or ignores the PRD limits entirely, it has lost focus.
+            **File:** `IDE Chat Console`
+            **Action:** Interrupt the Agent. Paste the exact "Hard Reset Sequence" prompt: 
+            "Stop. Re-read process/PROCESS_REFERENCE.md and process/PROGRESS.md. Resume 
+            in Process Steward mode. Do not modify approval files without explicit approval.";
+            note left #FFCDD2
+                **ANTI-PATTERN: The Runaway AI**
+                Never let an Agent argue with the framework rules. 
+                If it attempts to bypass `ARCH.md` without CCR, or 
+                forgets its identity as the Process Steward, fire 
+                the Hard Reset script to reboot the workflow state.
+            end note
+        else (no)
+        endif
+
+        if (Is the LLM context window dragging or bloated?) then (yes)
+            :Execute **<color:#c62828>/archive</color>**
+            ----
+            **Context:** Mitigates severe LLM context degradation. Once the live memory 
+            buffer exceeds limits, trimming log history restores baseline inference speeds.
+            **File:** `IDE Chat Console`
+            **Action:** If you notice the Agent's response times degrading significantly or 
+            it begins routinely forgetting specific constraints, the live memory block is 
+            bloated. Open the chat console and type the `/archive` macro. The system will 
+            aggressively sweep all successfully completed `[x]` legacy tasks out of `PROGRESS.md` 
+            and shift them permanently into the `archive/` data structure, instantly 
+            restoring lightning-fast inference performance.;
+            note right
+                **Mathematical Governor:**
+                The `/archive` system absolutely never touches or deletes 
+                functional Source Code. It strictly flushes dead operational 
+                metadata tracking strings from the root `PROGRESS.md` array.
+            end note
+        else (no)
+        endif
+
+    repeat while (Is the active Story completely executed?) is (No)
+    
+    :**Review** Story Acceptance Criteria <<GATE>>
+    ----
+    **Context:** Deep Validation Check. Ensures the automated mathematical tests 
+    the Agent passed actually structurally translate to a functionally usable 
+    Human interface as mapped out by the baseline scope limits.
+    **File:** Local `app` Execution binary (or UI)
+    **Action:** The Agent has formally requested a Story boundary check. You must 
+    boot up the native application environment locally (via `npm run dev` or the 
+    Python binary equivalent). Open your browser or target interface and physically 
+    stress-test the raw logic the Agent just built. Cross-reference your results 
+    exactly against the explicit Acceptance Criteria mapped in the `PRD.md` file 
+    to determine if the logic passes standard QA metrics.;
+    note right #FFCDD2
+        **ANTI-PATTERN: Fake QA**
+        An automated "Green Build" passing `make check` 
+        tests natively does NOT mean the feature actually 
+        works for humans! You MUST physically interact with 
+        the Interface or Outputs before typing "Passed".
+    end note
+    
+    if (Does physical execution match the PRD boundaries?) then (Fail (Bug Found))
+        :Report regression
+        ----
+        **Context:** This feeds physical reality back into the Agent's isolated JIT 
+        engine, immediately forcing a logic rewrite or architectural bridge patch.
+        **File:** `IDE Chat Console`
+        **Action:** If your physical validation discovers a broken UI hook, a failed 
+        backend call, or a behavioral element that does not match the strict PRD logic, 
+        do not fix it yourself. Copy the raw error trace, or explicitly describe what 
+        is functioning incorrectly. Paste this feedback directly into the IDE chat. This 
+        immediately boots the Agent out of the review phase and throws it back into 
+        a `P6: Task Iteration` patch loop.;
+        note left
+            **Boundary Validation Loop:**
+            The Agent physically restarts the atomic 
+            iteration loop, rewriting isolated application code 
+            until it resolves the failing physical boundary.
+        end note
+    else (Pass (Valid))
+        :Story Officially Passed
+        ----
+        **Context:** Feature officially locked. Future edits to this code block 
+        will require opening a new issue block. System snaps to next Story.
+        **File:** `IDE Chat Console`
+        **Action:** If the physical application sequence tests out perfectly and fully 
+        honors the Acceptance Criteria, formalize the conclusion. In the IDE Chat console, 
+        simply state: "Passed, you may close out the active story." The Agent will 
+        permanently log `S-###` as Done in the master tracker, securely save the final 
+        evidence artifacts, and prime the architecture to attack the next Story block.;
+    endif
+}
+
+partition "Phase C (P8-P12): Release & Deploy" #E8F5E9 {
+    :Execute **<color:#2e7d32>/release</color>** <<GATE>>
+    ----
+    **Context:** Bridges local MVP development loops with Live environments. 
+    Executes a comprehensive, unified E2E regression check across all components.
+    **File:** `IDE Chat Console`
+    **Action:** Once the entire Backlog array is categorically empty, open the Chat 
+    console and trigger the `/release` command. This forces the Agent to break out 
+    of single-feature iteration loops and run a massive End-to-End global system 
+    verification patch. Wait while it executes full repository test suites. Once it 
+    finishes, it will generate the formal Release Notes and stage the code branch 
+    for Production mapping.;
+    note right
+        **Global QA Sweep Engine:**
+        Inside Phase C, the system abandons atomic 
+        Task-Feature level `make check` gating and runs 
+        the definitive suite validations against the entire 
+        unified codebase architecture simultaneously.
+    end note
+    
+    :Deploy & Evaluate
+    ----
+    **Context:** Live code delivery sequence. This pushes your locked codebase 
+    outward, generating real-world metrics required to seed Version 2.0.
+    **File:** Your personal Cloud deployment mechanism.
+    **Action:** Navigate out of the IDE and move to your preferred Production 
+    deployment orchestration interface (e.g. Vercel, Fly.io, or your AWS console). 
+    Connect the V-Tagged code branch to your deployment logic and physically launch 
+    the live version.;
+    
+    if (Did the Production Server build successfully?) then (Fail (Crash))
+        :Deployment Rollback Trigger
+        ----
+        **Context:** Escaping out of Release phase sequence. The system must 
+        abandon the V### tag and draft a P0-Severity regression bug natively.
+        **File:** `IDE Chat Console`
+        **Action:** Tell the Agent: "Deployment failed due to [X]. Return to 
+        Phase A and execute `/plan` to draft a P0 resolution Story.";
+        note left
+            **Backward Escape Routing:**
+            A live failure explicitly kicks the 
+            SDLC loop backward out of Phase C 
+            forcing a brand new PRD iteration.
+        end note
+    else (Pass (Stable Deploy))
+        :Version V### Officially Live
+        ----
+        **Context:** End of Version Lifecycle.
+        **Action:** Evaluate telemetry and system constraints. To initiate 
+        the next major product loop, you must clean `PROGRESS.md` tags, draft 
+        brand new Stories into `product/PRD.md`, and physically cycle 
+        all the way back up to **Phase A** to trigger `/plan` anew.;
+    endif
+}
+
+stop
+@enduml
