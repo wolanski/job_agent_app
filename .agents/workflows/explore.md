@@ -3,6 +3,7 @@ description: explore — Investigatory or exploratory work (no linear pipeline)
 ---
 
 # /explore — Investigatory or exploratory work
+**Phases:** Any (especially useful in Phase A / P0–P4 for spikes, and P12 for retrospectives)
 
 Use this workflow for tasks that don't fit the linear `/seed → /plan → /next → /release` pipeline:
 - Debugging sessions

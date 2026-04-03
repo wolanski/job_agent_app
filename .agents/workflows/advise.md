@@ -3,6 +3,7 @@ description: advise — Get structured recommendations on a decision
 ---
 
 # /advise — Get structured recommendations
+**Phases:** Any (most valuable in Phase A / P0–P4)
 
 Use this workflow when facing a decision where you want the agent's analysis before choosing. Especially useful during design phases (P0–P4) and for unfamiliar technical areas.
 

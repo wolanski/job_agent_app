@@ -7,7 +7,7 @@
 - Architecture (static): `product/ARCH.md` (**drafts in P0–P4**; **approval-controlled / RO during build P5+**)
 - Interfaces: `product/contracts/*` (**drafts in P0–P4**; **RO during build P5+ unless CCR approved**)
 - State + evidence: `process/PROGRESS.md` (single source of truth)
-- Process diagrams (human reference):
+- Process diagrams (human-facing reference, optional reads unless explicitly requested):
   - `process/diagrams/PROCESS_MAIN.puml`
   - `process/diagrams/STATE_MODEL.puml`
   - `process/diagrams/PROCESS_STEWARD_SEQUENCE.puml` (detailed sequence)

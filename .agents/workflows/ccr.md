@@ -3,6 +3,7 @@ description: ccr — Raise a Contract Change Request (CCR)
 ---
 
 # /ccr — Raise a Contract Change Request (CCR)
+**Phases:** Any (required in P5–P7 for ARCH/contract changes)
 
 READ:
 - process/PROGRESS.md

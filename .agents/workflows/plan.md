@@ -3,6 +3,7 @@ description: plan — Build-ready context + Story plan (Stories-first)
 ---
 
 # /plan — Build-ready context + Story plan (Stories-first)
+**Phases:** P1–P4 (Functional Framing → Story Baseline)
 
 READ:
 - product/PRD.md

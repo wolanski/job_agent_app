@@ -3,6 +3,7 @@ description: check — Run the validation gate (make check)
 ---
 
 # /check — Run the validation gate
+**Phases:** Any (mandatory before marking a task Done)
 
 READ:
 - process/PROGRESS.md (current task context)
