@@ -170,9 +170,10 @@ You (Human) decide if you require:
 ## 8) Post-MVP versions (how the workflow scales)
 
 For a new version (V1.1, V2, …):
-1. Add new stories to `product/PRD.md` (tag them for the new version in the roadmap section).
-2. In `process/PROGRESS.md`, update the **current version label** and reset milestone statuses for the new iteration.
-3. Run `/plan` if architecture/contracts need changes; otherwise proceed with `/next`.
+1. Archive the previous release: move shipped stories, evidence, and CCRs from `process/PROGRESS.md` to `process/archive/R-YYYYMMDD.md` (see PROCESS_REFERENCE § PROGRESS archiving).
+2. Add new stories to `product/PRD.md` (tag them for the new version in the roadmap section).
+3. In `process/PROGRESS.md`, update the **current version label** and reset milestone statuses for the new iteration.
+4. Run `/plan` if architecture/contracts need changes; otherwise proceed with `/next`.
 
 **Do not rename existing story IDs.** Instead, update the roadmap/version mapping.
 

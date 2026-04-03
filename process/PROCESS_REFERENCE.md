@@ -42,7 +42,7 @@ The lightweight response protocol (READ / ACT / ASK) may be used in two situatio
 
 1. **Informational queries** (any phase): For purely informational questions ("What phase are we in?", "Summarize PROGRESS", "Explain X") that involve **no code changes, no state mutations, and no decisions**.
 
-2. **Design-phase responses** (P0–P4): During design phases, any response that does **not** involve production code implementation may use the lightweight protocol. This includes `/explore` findings, `/advise` recommendations, ARCH/contract drafting, story planning, and decision discussion.
+2. **Design-phase responses** (P0–P4): During design phases, any response that does **not** involve production code implementation may use the lightweight protocol. This includes `/explore` findings, ARCH/contract drafting, story planning, and decision discussion. (Note: `/advise` requires the full protocol because it logs a Decision in PROGRESS.)
 
 Use the full 6-section protocol (READ / DECIDE / ACT / VERIFY / UPDATE / ASK) for:
 - All implementation work (P5+)
@@ -94,6 +94,24 @@ You may create new `.md` and `.puml` files when requested or beneficial:
 
 Governance note:
 - If a change modifies the **rules**, **gates**, or **authority** model, treat it as approval-controlled and log a Decision in `process/PROGRESS.md`.
+
+## PROGRESS archiving (post-release)
+After a release gate (G5) is passed, archive shipped data to keep `process/PROGRESS.md` lean for the agent's context window:
+1. Create `process/archive/R-YYYYMMDD.md` (using the release ID from PROGRESS § Release notes).
+2. Move to the archive file:
+   - Completed stories and their JIT task tables
+   - Closed CCR entries (APPROVED/REJECTED)
+   - Resolved Issues (CLOSED)
+   - Decisions related to shipped stories
+   - Evidence log entries for the shipped release
+   - The release notes block for that release
+3. In PROGRESS.md:
+   - Remove the archived rows from each table
+   - Reset "Current story" and "Current task" to [NONE]
+   - Update the phase tracker for the new version
+4. Register the archive file in PROGRESS § Artifacts added.
+
+The archive files are read-only historical records. Do not modify them after creation.
 
 ## Traceability policy (lean)
 

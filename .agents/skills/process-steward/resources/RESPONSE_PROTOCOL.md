@@ -17,6 +17,7 @@
 **UPDATE**
 - [what you updated in PROGRESS / PRD / contracts (if approved)]
 - [task/story status changes]
+- [which trace-controlled docs received a new trace row, if any (see PROCESS_REFERENCE § Traceability policy)]
 
 **ASK**
 - [the minimal set of questions/approvals needed from the human]

@@ -13,7 +13,7 @@ Notes:
 - `process/diagrams/*` are **human-facing references**. You are not required to read them unless the human explicitly asks.
 
 ## Load the Process Steward skill when needed
-Load the skill when entering a `/plan`, `/next`, `/advise`, or `/ccr` workflow, or when you need the response protocol template or CCR escalation steps. Skip for simple informational queries and lightweight `/explore` sessions.
+Load the skill when entering any state-changing workflow (`/seed`, `/plan`, `/next`, `/advise`, `/ccr`, `/release`), or when you need the response protocol template or CCR escalation steps. Skip for `/help`, `/explore` (unless it produces state changes), and simple informational queries.
 If available, read:
 - `.agents/skills/process-steward/SKILL.md`
 
@@ -47,25 +47,6 @@ Rules:
 - Do **not** add trace tables/rows to other files. For other changes, log the rationale/evidence in `process/PROGRESS.md` (Decisions/Issues/CCR/Evidence).
 - In your response **UPDATE** section, list which trace-controlled files received a new trace row (if any).
 
-
-## Product artifact authoring (agent allowed, approval-controlled)
-- You MAY propose and draft updates to:
-  - `product/PRD.md`
-  - `product/ARCH.md`
-  - `product/contracts/CONTRACTS.md`
-  - `product/contracts/*`
-- But you MUST:
-  1) present the change as a proposal (summary + intended diff),
-  2) log it in `process/PROGRESS.md` (Decision or CCR),
-  3) ask for explicit human approval,
-  4) apply only after approval is recorded.
-
-## Creating new artifacts
-When requested (or when it improves product delivery), you MAY create new:
-- Markdown docs under `product/docs/` (product docs) or `process/guides/` (operator/process docs)
-- PlantUML diagrams under `product/diagrams/` or `process/diagrams/`
-
-Rules:
-- Register new artifacts in `process/PROGRESS.md` (Artifacts Added section)
-- Link to them from PRD/ARCH/PROCESS_REFERENCE as appropriate
-- Do not create duplicate sources of truth
+## Product artifact authoring & new artifacts
+You may propose drafts to governance docs and create new `.md`/`.puml` files.
+All authoring rules (registration, allowed paths) are in `process/PROCESS_REFERENCE.md` § Creating new artifacts.
