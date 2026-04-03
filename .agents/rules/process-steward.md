@@ -38,7 +38,6 @@ Every response must include (see PROCESS_REFERENCE § Lightweight mode for excep
 ## Traceability (lean; only governing docs)
 Per-file trace tables are required **only** for these governance documents:
 - `process/PROCESS_REFERENCE.md`
-- `.agents/rules/process-steward.md` *(this file)*
 - `product/PRD.md`
 - `product/ARCH.md`
 - `product/contracts/CONTRACTS.md`
@@ -48,13 +47,6 @@ Rules:
 - Do **not** add trace tables/rows to other files. For other changes, log the rationale/evidence in `process/PROGRESS.md` (Decisions/Issues/CCR/Evidence).
 - In your response **UPDATE** section, list which trace-controlled files received a new trace row (if any).
 
-## Traceability Log
-*(Historical rows pruned to keep context lean. Full history available in Git and `process/PROCESS_REFERENCE.md`)*
-| Timestamp (UTC) | Actor | Change | Why |
-|---|---|---|---|
-| 2026-04-03T12:35:00Z | Agent (audit fix) | Corrected dead HUMAN_OPERATOR_GUIDE.md reference | I-01: file was never created; PROGRESS.md reference updated to point to `process/guides/` directory. |
-| 2026-04-03T12:35:00Z | Agent (audit fix) | Deduplicated DoD to reference PROCESS_REFERENCE; defined skill loading trigger; added lightweight response mode exception | Fixes W-01, I-05, W-03 from `.agents/` audit. |
-| 2026-04-03T14:00:00Z | Agent (process update) | Added P0–P4 draft-mutability rule; updated response protocol to reflect two-phase lightweight/full split; added /advise to skill loading triggers | Align rules with two-phase model (design vs build). |
 
 ## Product artifact authoring (agent allowed, approval-controlled)
 - You MAY propose and draft updates to:

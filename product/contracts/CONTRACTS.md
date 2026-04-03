@@ -40,11 +40,6 @@ If implementation reveals a contract gap:
 4) If approved: update `product/contracts/*` and re-run validation
 
 ## Traceability Log
+*(Historical rows cleared to preserve clean template state)*
 | Timestamp (UTC) | Actor | Change | Why |
 |---|---|---|---|
-| 2026-02-08T12:00:00Z | Seed (generator) | Initial v4 template | Pack created/updated for Antigravity and folder split (product vs process). |
-| 2026-02-08T15:53:51Z | Seed (generator) | Adjusted contracts list for FastAPI-only starter | Removed TS types; clarified schemas.py + OpenAPI snapshot option. |
-| 2026-02-08T16:22:00Z | Seed (consistency fix) | Clarified contract file list and removed duplicate OpenAPI entry | Avoid confusion; align with v9 FastAPI+uv folder layout. |
-| 2026-02-08T19:14:13Z | Seed (docs cleanup) | Added  as canonical validation reference in CONTRACTS.md | Reduce README sprawl; keep contract guidance in canonical index file. |
-| 2026-02-08T19:14:26Z | Seed (docs cleanup) | Added make check as canonical validation reference in CONTRACTS.md | Reduce README sprawl; keep contract guidance in canonical index file. |
-| 2026-04-03T15:07:00Z | Agent (audit fix) | Moved to product/contracts/ directory | Clarified directory boundaries; product/ root isolated for human-authored docs. |

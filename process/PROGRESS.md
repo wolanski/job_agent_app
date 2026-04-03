@@ -4,11 +4,11 @@
 > Human guide: see `README.md` (repo root).
 
 ## 0. Current status
-- Current version: [MVP]
-- Current release: [R-YYYYMMDD-01]
-- Current phase: [P0..P12]
-- Current story: [S-V001 or NONE]
-- Current task: [T-... or NONE]
+- Current version: [NONE]
+- Current release: [NONE]
+- Current phase: P0
+- Current story: [NONE]
+- Current task: [NONE]
 
 ## 1. Policy (how the agent is allowed to operate)
 - Approval level: STORY (human approves story set and acceptance; tasks JIT)
@@ -50,56 +50,35 @@
 
 | UC tag | Meaning | Notes |
 |---|---|---|
-| UC:AUTH | Authentication/session | |
-| UC:... | ... | |
 
 ## 5. Story tracker (authoritative operational list)
 | Story ID | Title | UC tags (optional) | Risk | Status | Evidence |
 |---|---|---|---:|---|---|
-| S-V001 | ... | UC:AUTH | MED | TODO | |
-| S-V002 | ... | | LOW | TODO | |
 
 ## 6. Current story JIT tasks (rewrite this section per story)
-### Story: S-V001
+### Story: [NONE]
 | Task ID | Title | Risk | Status | Evidence |
 |---|---|---:|---|---|
-| T-V001.01 | ... | LOW | PLANNED | |
-| T-V001.02 | ... | MED | PLANNED | |
 
 ## 7. CCR log (Contract Change Requests)
 > Raised when product/contracts/spec must change. Rule: **STOP** and ask; no workaround.
 | CCR ID | Date | Related task | Summary | Decision | Evidence |
 |---|---|---|---|---|---|
-| CCR-001 | YYYY-MM-DD | T-V001.02 | ... | PENDING | link/log |
 
 ## 8. Issues log
 | ID | Date | Type | Summary | Status | Link |
 |---|---|---|---|---|---|
-| I-001 | 2026-04-03 | Question | Persistence/database strategy not yet decided. Use `/advise` to explore options (SQLite, PostgreSQL, etc.) before P5. | OPEN | product/PRD.md § Open questions |
 
 ## 9. Decisions log
 | ID | Date | Decision | Rationale | Impact |
 |---|---|---|---|---|
-| D-001 | 2026-04-03 | Adopted two-phase model (Collaborative Design + Disciplined Build); added /advise workflow | ML/Architect user benefits from exploratory design before committing to frozen-ARCH build. Reduces ceremony in P0–P4, preserves rigor in P5+. | README, help, SKILL.md, PROCESS_REFERENCE, rules/process-steward updated; advise.md created |
-| D-002 | 2026-04-03 | Added contract conformance test; fixed health endpoint contract mismatch; updated root README for /explore and /advise; flagged persistence as I-001 | Review identified runtime contract gap, missing /explore+/advise in human guide, stale references, and no persistence guidance. | main.py, test_health.py, test_contract_conformance.py, schemas.py, Makefile, README.md, PROCESS_REFERENCE.md, PRD.md, PROGRESS.md, SKILL.md, check/SKILL.md, plan.md updated |
 
 ## 10. Evidence log (checks and artifacts)
 | Date | What ran | Result | Where |
 |---|---|---|---|
-| YYYY-MM-DD | check | PASS | CI link or console output |
 
 ## 11. Artifacts added (append)
 | Date | Artifact | Type | Purpose | Link |
 |---|---|---|---|---|
-| YYYY-MM-DD | ... | doc/diagram/contract | ... | relative path |
 
 ## 12. Release notes (append per release)
-### Release R-YYYYMMDD-01
-- Scope shipped:
-  - Stories: S-V001, S-V002
-- Known issues:
-  - ...
-- How to verify:
-  - ...
-- Rollback notes:
-  - ...

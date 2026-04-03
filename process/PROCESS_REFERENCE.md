@@ -102,7 +102,6 @@ Governance note:
 ### Trace-controlled documents (per-file log required)
 If you modify any file in this list, you **must append exactly one new row** to its **Traceability Log** table (append-only, UTC `YYYY-MM-DDThh:mm:ssZ`).
 - `process/PROCESS_REFERENCE.md`
-- `.agents/rules/process-steward.md`
 - `product/PRD.md`
 - `product/ARCH.md`
 - `product/contracts/CONTRACTS.md` *(policy/invariants/index)*
@@ -127,15 +126,6 @@ In every response, the **UPDATE** section must state:
 - which sections/entries were appended/updated in `process/PROGRESS.md`.
 
 ## Traceability Log
+*(Historical rows cleared to preserve clean template state)*
 | Timestamp (UTC) | Actor | Change | Why |
 |---|---|---|---|
-| 2026-02-08T12:00:00Z | Seed (generator) | Updated paths + DoD | Split product vs process and standardized `make check`. |
-| 2026-02-08T15:52:05Z | Seed (generator) | Clarified uv-based validation entrypoint | Align process DoD with FastAPI+uv Makefile gate. |
-| 2026-02-08T16:10:00Z | Seed (generator) | Scoped traceability policy to 5 governing docs | Reduce noise; PROGRESS + Git remain authoritative for other changes. |
-| 2026-02-08T17:05:19Z | Seed (generator) | Added explicit diagram list + referenced PROCESS_STEWARD_SEQUENCE + aligned verifier wording to `make check` | Keep process reference aligned with v7 pack artifacts and verifier. |
-| 2026-02-08T17:32:05Z | Seed (generator) | Reorganized process folder (guides vs canonical truth) | Clarify that `process/` holds canonical truth and that operator docs live under `process/guides/human/`; updated new-artifact paths accordingly. |
-| 2026-02-08T19:58:27Z | Seed (generator) | Updated operator guide path | Consolidated operator guidance into `process/guides/HUMAN_OPERATOR_GUIDE.md`; updated process artifact path. |
-| 2026-04-03T11:06:00Z | Agent (audit fix) | Fixed `.agent/` → `.agents/` path; added Phase Model (P0–P12) section; added Story & Task naming conventions; connected workflows to response protocol | Audit findings: undefined phases, missing naming spec, broken path, workflow-protocol disconnect. |
-| 2026-04-03T12:35:00Z | Agent (audit fix) | Added lightweight response mode; added phase regression guidance; mapped P12 to `/explore` | Fixes W-03, W-05, I-06 from `.agents/` audit. |
-| 2026-04-03T14:00:00Z | Agent (process update) | Expanded lightweight mode to P0–P4 design phases; made ARCH/contract draft status during P0–P4 explicit; added /advise workflow reference | Shift to two-phase model: relaxed ceremony in design, disciplined build in P5+. |
-| 2026-04-03T15:30:00Z | Agent (review fix) | Added P0–P4 draft status to Source of Truth header; added contracts-first project note | Fixes I-07 (missing draft status in header) and W-03 (inverted stories-first guidance). |

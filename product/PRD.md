@@ -114,10 +114,6 @@ UC tags are **optional labels** used only to group related stories.
 ---
 
 ## Traceability Log
+*(Historical rows cleared to preserve clean template state)*
 | Timestamp (UTC) | Actor | Change | Why |
 |---|---|---|---|
-| 2026-02-08T12:00:00Z | Seed (generator) | Initial PRD template | Provide a minimal scope truth file for the process. |
-| 2026-02-08T15:52:05Z | Seed (generator) | Aligned PRD IDs with process gates and FastAPI+uv assumptions | Keep templates consistent with starter pack wiring. |
-| 2026-02-08T17:32:05Z | Seed (generator) | Reorganized repo folders (product vs process) | Clarify what belongs to product truth vs process truth. |
-| 2026-02-08T18:18:12Z | Seed (generator) | Converted PRD to stories-first with optional UC tags | Reduce bureaucracy; keep Stories as the Human–Agent handshake boundary. |
-| 2026-04-03T15:30:00Z | Agent (review fix) | Added persistence open question (I-001) | W-02: no database/persistence guidance; flagged as prerequisite decision. |
