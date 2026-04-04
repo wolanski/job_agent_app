@@ -1,0 +1,478 @@
+@startuml IDEATION_PROCESS_v2
+
+title **Architect's Design Process v2**\n(Hierarchical with Decisions, Parallelism, and Feedback Loops)\nPrequel to PROCESS_MAIN.puml
+
+skinparam shadowing false
+skinparam ArrowColor #333333
+skinparam ActivityBorderColor #333333
+skinparam ActivityFontColor #111111
+skinparam NoteBackgroundColor #FFF9D6
+skinparam NoteBorderColor #333333
+skinparam PartitionBorderColor #999999
+skinparam PartitionFontSize 14
+skinparam DiamondBorderColor #333333
+skinparam DiamondBackgroundColor #FFFDE7
+skinparam DiamondFontSize 11
+
+floating note left
+  **Architect's Design Process**
+  (Solo, Pre-Agent Ideation)
+  ====
+  **Output Truth Sources:**
+  ""product/PRD.md"" = scope
+  ""product/ARCH.md"" = arch
+  ""product/contracts/*"" = APIs
+  ----
+  **Color Key:**
+  <back:#D9ECFF>  Human design work  </back>
+  <back:#FFF9D6>  Artifact output  </back>
+  <back:#FFFDE7>  Decision gate  </back>
+  <back:#DFF7E1>  Agent activity  </back>
+  <back:#FFF2CC>  Gate milestone  </back>
+  ----
+  **Handoff:** /seed -> G0
+  **Continues:** PROCESS_MAIN.puml
+end note
+
+start
+
+' =============================================
+' H1: WHAT & WHY — Sequential Foundation
+' =============================================
+
+partition "**H1: WHAT & WHY** (Problem Space)" #E8F4FD {
+
+  :**Step 1: Vision & Value**
+  ----
+  Define business model, value
+  proposition, and market fit.
+  Identify core problem, target
+  user, and why it matters.
+  ----
+  -> lean_canvas.pdf
+  -> wardley_map.png; <<#D9ECFF>>
+
+  note right
+    **Lean Canvas** (Maurya)
+    **Business Model Canvas**
+    **Wardley Mapping**
+    ----
+    Output: **PRD.md S1**
+  end note
+
+  :**Step 2: Actors & Personas**
+  ----
+  Identify all actors: end users,
+  system integrations, admin roles.
+  Define goals, interaction channels
+  (Web UI, API, CLI, mobile).
+  ----
+  -> personas.fig
+  -> c4_context.drawio; <<#D9ECFF>>
+
+  note right
+    **User Personas** (Cooper)
+    **Actor-Goal Lists** (UML)
+    **C4 Context Diagram** (L1)
+    ----
+    Output: **PRD.md S1-2**
+    + **ARCH.md S4** (trust)
+  end note
+
+  :**Step 3: Scope Boundaries**
+  ----
+  In-scope (MVP), out-of-scope,
+  deferred to V2+. Constraints:
+  budget, timeline, compliance.
+  ----
+  -> scope_matrix.md; <<#D9ECFF>>
+
+  note right
+    **MoSCoW** Prioritization
+    **Kano Model**
+    **TOGAF Arch Vision**
+    ----
+    Output: **PRD.md S2**
+  end note
+
+  :Artifacts: **PRD.md S1-2**
+  Vision + Actors + Scope; <<#FFF9D6>>
+}
+
+' =============================================
+' H2: LOGICAL DESIGN — Fan-Out After Stories
+' =============================================
+
+partition "**H2: LOGICAL DESIGN** (Decomposition & Flows)" #F0F7E6 {
+
+  :**Step 4: Use Case Modeling**
+  ----
+  Map all system use cases. Group
+  by functional area using UC tags
+  (UC:SEARCH, UC:INGEST, UC:AUTH).
+  Establish functional topology
+  and service boundaries.
+  ----
+  -> diagrams/use_cases.puml
+  -> event_storm.png
+  -> context_map.png; <<#D9ECFF>>
+
+  note right
+    **UML Use Case Diagrams**
+    **DDD Bounded Contexts**
+    **Event Storming** (Brandolini)
+    ----
+    Output: **PRD.md S5** UC Tags
+  end note
+
+  :**Step 5: Story Decomposition**
+  ----
+  Break use cases into vertical
+  slices (S-V###), each <=1 day.
+  Acceptance via Given/When/Then.
+  Risk tags: LOW / MED / HIGH.
+
+  **Scrum -> Process Steward:**
+  Theme = strategic (not tracked)
+  Epic  = UC tag (label only)
+  Story = S-V### (PRD.md S4)
+  Task  = T-V###.## (JIT, agent)
+  ----
+  -> story_map.png; <<#D9ECFF>>
+
+  note right
+    **User Story Mapping** (Patton)
+    **INVEST** criteria
+    **Gherkin** Given/When/Then
+    ----
+    Output: **PRD.md S4** Backlog
+  end note
+
+  fork
+
+    :**Step 6: Requirements**
+    **(FR + NFR)**
+    ----
+    FRs = stories (Step 5).
+    NFRs: latency, throughput,
+    uptime, security, observability.
+    ----
+    -> PRD.md S3 (tables); <<#D9ECFF>>
+
+    note left
+      **Quality Attribute Scenarios**
+      **12-Factor App**
+      **OWASP Top 10** (security NFRs)
+      ----
+      Output: **PRD.md S3**
+      + **ARCH.md S1** Constraints
+    end note
+
+  fork again
+
+    :**Step 7: User Journeys & UI**
+    ----
+    Trace happy-path per actor.
+    Design info hierarchy and
+    component structure. Select
+    frontend tech stack.
+    ----
+    -> user_flows.fig
+    -> wireframes.fig
+    -> component_tree.drawio; <<#D9ECFF>>
+
+    note right
+      **User Journey Maps**
+      **Atomic Design** (Frost)
+      **Wireframing** (low-fi)
+      ----
+      Output: **product/diagrams/**
+      Refines **PRD.md S4** acceptance
+    end note
+
+  end fork
+
+  if (NFRs invalidate\narchitecture\nassumptions?) then (yes)
+    :Revise use cases and
+    stories to align with
+    performance/scale
+    constraints;
+    note right
+      **Feedback Loop**
+      Return to Step 4-5.
+      NFR constraints may force
+      scope reduction or story
+      re-sequencing.
+    end note
+    -[#FF6600,dashed]->
+  else (no)
+  endif
+
+  if (Frontend\nneeded?) then (yes)
+    :Include frontend in
+    architecture scope.
+    Wireframes from Step 7
+    drive component design.;
+  else (API only)
+    :Backend-only scope.
+    No UI components
+    in architecture.;
+  endif
+
+  :Artifacts: **PRD.md S3-5**
+  Stories + Requirements + UC Tags
+  + **product/diagrams/** (UI); <<#FFF9D6>>
+}
+
+' =============================================
+' H3: PHYSICAL DESIGN — Architecture First,
+'     Then Three Parallel Tracks
+' =============================================
+
+partition "**H3: PHYSICAL DESIGN** (Architecture, Data, Cloud, APIs)" #FFF8E8 {
+
+  :**Step 8: Architecture (C4)**
+  ----
+  Design at three zoom levels:
+  Context (actors + externals),
+  Container (services, DBs, MQs),
+  Component (modules in each
+  container). Record key ADRs.
+  ----
+  -> diagrams/c4_*.puml; <<#D9ECFF>>
+
+  note right
+    **C4 Model** (Simon Brown)
+    **Hexagonal Architecture**
+    (Ports & Adapters)
+    **ADRs** (Nygard format)
+    ----
+    Output: **ARCH.md S4** (C4-lite)
+    + **ARCH.md S1** (ADR principles)
+  end note
+
+  if (Monolith or\ndistributed?) then (distributed)
+    :Multi-service architecture.
+    Define service boundaries,
+    API gateways, message queues,
+    separate data stores.;
+  else (monolith)
+    :Single-service MVP.
+    Modular monolith with
+    clean internal boundaries.
+    Defer splitting to V2+.;
+  endif
+
+  ' --- Three parallel tracks after architecture ---
+
+  fork
+
+    ' Track A: Tech Stack (independent)
+    :**Step 9: Tech Stack**
+    ----
+    Select technology for every
+    layer: frontend, backend, DB,
+    cache, auth, CI/CD, monitoring,
+    IaC. Each choice is an ADR.
+    ----
+    -> tech_comparison_matrix; <<#D9ECFF>>
+
+    note left
+      **Technology Radar**
+      (ThoughtWorks)
+      **TOGAF Tech Architecture**
+      **12-Factor App**
+      ----
+      Output: **ARCH.md S2**
+    end note
+
+  fork again
+
+    ' Track B: Data -> API (sequential)
+    :**Step 10: Data Model (ERD)**
+    ----
+    Design entities, relationships,
+    constraints, indexes. Define
+    Pydantic models as DTO source
+    of truth (extra="forbid").
+    ----
+    -> diagrams/erd.puml
+    -> contracts/schemas.py; <<#D9ECFF>>
+
+    note right
+      **ERD** (Chen / Crow's Foot)
+      **DDD Aggregates**
+      **Pydantic StrictModel**
+      ----
+      Output: **contracts/schemas.py**
+    end note
+
+    :**Step 11: API Design**
+    ----
+    Define HTTP API: endpoints,
+    methods, schemas, error envelope,
+    cursor pagination, auth scheme.
+    OpenAPI spec written BEFORE code.
+    **Schemas from Step 10 feed
+    directly into OpenAPI components.**
+    ----
+    -> contracts/openapi.yaml; <<#D9ECFF>>
+
+    note right
+      **Contract-First Design**
+      **RESTful Guidelines**
+      **Cursor Pagination**
+      ----
+      Output: **contracts/openapi.yaml**
+      Every endpoint traces to
+      >= 1 story in PRD.md S4
+    end note
+
+  fork again
+
+    ' Track C: Cloud -> Security (sequential)
+    :**Step 12: Cloud Architecture**
+    ----
+    Design deployment: compute
+    (Fargate, Cloud Run), networking
+    (VPC, ALB, CDN), data (RDS,
+    ElastiCache), observability,
+    CI/CD pipeline, IaC strategy.
+    ----
+    -> diagrams/cloud_arch.*; <<#D9ECFF>>
+
+    note left
+      **Well-Architected Framework**
+      (5 pillars: OpEx, Security,
+      Reliability, Perf, Cost)
+      **IaC** (Terraform/Pulumi)
+      **GitOps** for deploys
+      ----
+      Output: **ARCH.md S4** (topology)
+      + **ARCH.md S6** (extensions)
+    end note
+
+    :**Step 13: Security & Compliance**
+    ----
+    Define auth (JWT, OAuth2),
+    authorization (RBAC/ABAC),
+    data classification (PII),
+    secrets management, threat
+    model (top 3 attack vectors).
+    **Cloud topology from Step 12
+    shapes secrets management.**
+    ----
+    -> diagrams/threat_model; <<#D9ECFF>>
+
+    note left
+      **OWASP Top 10**
+      **STRIDE** threat modeling
+      **Data Classification**
+      (public/internal/confidential)
+      ----
+      Output: **ARCH.md S7** Security
+    end note
+
+  end fork
+
+  if (Threat model requires\nnew auth/RBAC stories?) then (yes)
+    :Add security stories
+    to PRD.md S4 Backlog.
+    Update risk tags and
+    story sequence.;
+    note right
+      **Feedback Loop**
+      Security analysis (Step 13)
+      generates new stories that
+      feed back to PRD.md S4.
+      May affect Step 5 scope.
+    end note
+    -[#FF6600,dashed]->
+  else (no)
+  endif
+
+  :Artifacts: **ARCH.md S1-7**
+  + **contracts/** (schemas.py,
+  openapi.yaml)
+  + **product/diagrams/** (C4,
+  ERD, cloud, threat model); <<#FFF9D6>>
+}
+
+' =============================================
+' HANDOFF: Distillation with Validation Loop
+' =============================================
+
+partition "**HANDOFF** (Distillation & Agent Initialization)" #F5F0FF {
+
+  repeat
+
+    :**Step 14: Artifact Distillation**
+    ----
+    Consolidate all design outputs.
+    Cross-validate consistency:
+
+    **Checks:**
+    - OpenAPI paths match Pydantic
+      (names, types, optionality)
+    - Every endpoint traces to
+      >= 1 story in PRD.md S4
+    - ARCH repo map matches actual
+      directory structure
+    - pyproject.toml deps match
+      ARCH.md S2 tech stack
+    ----
+    **Final Artifact Set:**
+    1. product/PRD.md (S1-7)
+    2. product/ARCH.md (S1-7)
+    3. contracts/openapi.yaml
+    4. contracts/schemas.py
+    5. contracts/CONTRACTS.md
+    6. product/diagrams/*; <<#D9ECFF>>
+
+  backward :Consistency check FAILED.\nReturn to affected step:\n- Story/endpoint mismatch -> Step 5\n- Schema/OpenAPI drift -> Step 10-11\n- Repo structure mismatch -> Step 8;
+
+  repeat while (All consistency\nchecks pass?) is (no) not (yes)
+
+  :All artifacts committed to repo
+  ----
+  **product/PRD.md** = scope truth
+  **product/ARCH.md** = arch truth
+  **product/contracts/** = APIs
+  **product/diagrams/** = visuals; <<#FFF9D6>>
+
+  :**Step 15: Execute /seed**
+  ----
+  Human runs **/seed** command.
+  Triggers Phase P0 (Install
+  and Wire). Explicit handoff
+  from architect to agent.
+
+  **What follows (PROCESS_MAIN):**
+  /plan (P1-P4) refines w/ human
+  /next (P5-P7) builds per story
+  /release (P8-P11) hardens; <<#D9ECFF>>
+
+  :**Agent Activates at P0**
+  ----
+  Read: PRD.md, ARCH.md,
+  contracts/*, PROGRESS.md
+  Validate all artifacts exist.
+  Run ""make check"" (baseline).
+  Log evidence in PROGRESS.md.
+  If PASS: record G0 = PASS.
+  If FAIL: log Issues (I-###).
+  ----
+  Development process begins.
+  See: **PROCESS_MAIN.puml**; <<#DFF7E1>>
+
+  :**Gate G0 -- Installed**
+  (artifacts exist + check runnable)
+  ----
+  **PROCESS_MAIN.puml starts here**
+  /plan -> /next -> /release; <<#FFF2CC>>
+
+}
+
+stop
+
+@enduml
