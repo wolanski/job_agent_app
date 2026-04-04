@@ -1,207 +1,216 @@
-@startuml
-title PROCESS_MAIN — Lean Agentic Dev (FastAPI + uv)
-Phases P0..P12 + Gates G0..G5 + Story/Task Loops + CCR
+@startuml PROCESS_MAIN
+title
+PROCESS_MAIN — Functional Execution Pipeline
+Phases P0..P12 + Gates G0..G5 + Workflows
+end title
 
 skinparam shadowing false
 skinparam ArrowColor #333333
 skinparam ActivityBorderColor #333333
 skinparam ActivityFontColor #111111
-skinparam NoteBackgroundColor #FFF9D6
+skinparam ActivityDiamondBackgroundColor #FFCDD2
+skinparam ActivityDiamondBorderColor #333333
+skinparam NoteBackgroundColor #FFF3CD
 skinparam NoteBorderColor #333333
 
 skinparam activity {
-  BackgroundColor<<HUMAN>> #D9ECFF
-  BorderColor<<HUMAN>>     #1F5EA8
+  BackgroundColor<<HUMAN>> #C8E6C9
+  BorderColor<<HUMAN>>     #333333
 
-  BackgroundColor<<AGENT>> #DFF7E1
-  BorderColor<<AGENT>>     #2E7D32
+  BackgroundColor<<AGENT>> #F8D7DA
+  BorderColor<<AGENT>>     #333333
 
-  BackgroundColor<<GATE>> #FFF2CC
-  BorderColor<<GATE>>     #B08900
+  BackgroundColor<<GATE>> #FFE082
+  BorderColor<<GATE>>     #333333
 }
 
 legend right
-  **Actors**
-  - <<HUMAN>> Human
-  - <<AGENT>> Agent (Process Steward)
-  - <<GATE>> Gate / milestone
+  **ACTOR COLOR KEY:**
+  |<back:#C8E6C9>    </back>| <<HUMAN>> Human
+  |<back:#F8D7DA>    </back>| <<AGENT>> Agent (Process Steward)
+  |<back:#FFE082>    </back>| <<GATE>>  System Verification
+  |<back:#FFCDD2>    </back>| **Logic Decision / Escalation**
 
-  **Truth sources (repo)**
-  - `product/PRD.md`        : scope truth (stories, acceptance, DoD, sequencing; optional UC tags)
-  - `process/PROGRESS.md`   : state + evidence truth (trackers, policy, CCR log)
-  - `product/ARCH.md`       : static rules snapshot (**RO during build**)
-  - `product/contracts/*`   : executable contracts (**RO during build unless CCR approved**)
+  **CONTAINER DEPENDENCY KEY:**
+  |<back:#E8F5E9>    </back>| **Human-Dependent Domain**
+  |<back:#FFEBEE>    </back>| **Agent-Isolated Domain**
 
-  **Objective verifier**
-  - `make check` (lint + typecheck + tests + optional contract validation)
+  **WORKFLOW REGISTRY:**
+  | **<b><color:#2e7d32>/seed</color></b>** | Initialize framework. |
+  | **<b><color:#2e7d32>/plan</color></b>** | Draft PRD and sequence. |
+  | **<b><color:#2e7d32>/next</color></b>** | Trigger master Task loop. |
+  | **<b><color:#2e7d32>/advise</color></b>** | Ratify architecture rules. |
+  | **<b><color:#c62828>/explore</color></b>** | Unstructured investigation. |
+  | **<b><color:#c62828>/check</color></b>** | Run E2E validation gates. |
+  | **<b><color:#c62828>/ccr</color></b>** | Raise anomaly escalation. |
+  | **<b><color:#2e7d32>/release</color></b>** | Deploy hardening check. |
+  | **<b><color:#c62828>/archive</color></b>** | Sweeps logs mid-release. |
 
-  **CCR**
-  Contract Change Request. Raised when contracts/spec mismatch is detected.
 endlegend
 
 start
 
-' =========================================================
-' P0 — Install and Wire
-' =========================================================
-partition "HUMAN" {
-  :P0 — Copy pack into repo
-+ rename `agent/` → `.agent/`;
-<<HUMAN>>
-  :P0 — Minimal PRD input
-(Vision + initial story shortlist);
-<<HUMAN>>
-}
+group "Phase A (P0-P4): Planning & Governance"
 
-partition "AGENT" {
-  :P0 — Verify artifacts exist
-+ ensure `make check` runnable;
-<<AGENT>>
-}
-
-:Gate G0 — Installed
-(artifacts exist + check runnable);
-<<GATE>>
-
-' =========================================================
-' P1 — Functional Framing (PRD)
-' =========================================================
-partition "AGENT" {
-  :P1 — Draft PRD scope
-(Stories + acceptance/DoD; optional UC tags);
-<<AGENT>>
-}
-partition "HUMAN" {
-  :Review + approve PRD scope
-(approval-controlled edits);
-<<HUMAN>>
-}
-:Gate G1 — Scope approved;
-<<GATE>>
-
-' =========================================================
-' P2–P4 — Ready-to-build baseline
-' =========================================================
-partition "AGENT" {
-  :P2 — Draft ARCH snapshot (lite)
-(repo map, conventions, key tradeoffs);
-<<AGENT>>
-}
-partition "HUMAN" {
-  :Approve key tradeoffs (only)
-(or request revision);
-<<HUMAN>>
-}
-
-partition "AGENT" {
-  :P3 — Draft executable contracts
-(OpenAPI + schemas/types) + validate;
-<<AGENT>>
-  :P4 — Set story baseline + policy
-(story order, risk flags, approval policy);
-<<AGENT>>
-}
-partition "HUMAN" {
-  :Approve contracts semantics + policy
-(not line-by-line; focus on names/meaning);
-<<HUMAN>>
-}
-:Gate G2 — Ready-to-build
-(contracts validate + `make check` green);
-<<GATE>>
-
-' =========================================================
-' P5–P7 — Story Delivery (nested loops + CCR)
-' =========================================================
-while (Stories remaining?) is (yes)
-
-  partition "AGENT" {
-    :P5 — JIT plan current story
-(task checklist + risk tags);
-    <<AGENT>>
-  }
-
-  partition "HUMAN" {
-    :Approve HIGH-risk tasks only
-(per policy; optional);
-    <<HUMAN>>
-  }
-
-  while (Tasks remaining?) is (yes)
-    partition "AGENT" {
-      :P6 — Implement next task + unit tests;
-      :Run `make check` + log evidence;
-      <<AGENT>>
-
-      if (Contract gap/drift detected?) then (YES)
-        :STOP — Raise CCR-### in PROGRESS
-(evidence + minimal proposal);
-        <<AGENT>>
-
-        partition "HUMAN" {
-          :Decide CCR (approve/reject/defer);
-          <<HUMAN>>
-        }
-
-        if (CCR approved?) then (YES)
-          :Update `product/contracts/*`
-+ re-run `make check`;
-          <<AGENT>>
-        else (NO)
-          :Mark task Blocked/Rescoped
-(per decision);
-          <<AGENT>>
-        endif
-
-      else (NO)
-        :Mark task DONE + update PROGRESS;
-        <<AGENT>>
-      endif
+    ' =========================================================
+    ' P0 — Install and Wire
+    ' =========================================================
+    partition "HUMAN" #E8F5E9 {
+    :P0 — System Initialization (Workspace Setup)
+    The operator drops a one-line Vision script into the
+    PRD.md and physically maps `.agents/` workflows.
+    Execute **<color:#2e7d32>/seed</color>** <<HUMAN>> ;
     }
-  endwhile (no)
 
-  partition "HUMAN" {
-    :P7 — Story handshake
-PASS/FAIL against acceptance;
-    <<HUMAN>>
-  }
+    partition "AGENT" #FFEBEE {
+    :P0 — Verification Subroutine
+    The Agent scans the environment ensuring tools,
+    linters, and validation scripts exist. <<AGENT>> ;
+    }
 
-  partition "AGENT" {
-    :Fix issues if FAIL;
-    :Otherwise mark Story DONE;
-    <<AGENT>>
-  }
+    :Gate G0 — Installed
+    System validated. `make check` runnable. <<GATE>> ;
 
-  :Gate G3 — Story done
-(repeats per story);
-  <<GATE>>
+    ' =========================================================
+    ' P1 — Functional Framing (PRD)
+    ' =========================================================
+    partition "AGENT" #FFEBEE {
+    :P1 — Structural Framing
+    Agent fires **<color:#2e7d32>/plan</color>** logic, drafting the Scope, Acceptance
+    Criteria, and mapping horizontal Stories. <<AGENT>> ;
+    }
 
-endwhile (no)
+    partition "HUMAN" #E8F5E9 {
+    :P1 — Human Baseline Review
+    Operator audits the proposed boundaries of
+    execution to enforce Scope limits. <<HUMAN>> ;
+    }
+    :Gate G1 — Scope approved <<GATE>> ;
 
-' =========================================================
-' P8–P12 — Hardening + Release
-' =========================================================
-partition "AGENT" {
-  :P8 — Integration tests (as needed);
-  :P9 — Agent-run E2E (if available);
-  <<AGENT>>
-}
-partition "HUMAN" {
-  :P10 — Manual E2E (optional by policy);
-  <<HUMAN>>
-}
-:Gate G4 — Release candidate
-(hardening complete + `make check` green);
-<<GATE>>
+    ' =========================================================
+    ' P2–P4 — Ready-to-build baseline
+    ' =========================================================
+    partition "HUMAN" #E8F5E9 {
+    :P2 — Master Governance
+    If the operator needs logic design, they fire **<color:#2e7d32>/advise</color>**.
+    Agent responds via **<color:#c62828>/explore</color>** and updates ARCH.md. <<HUMAN>> ;
+    }
 
-partition "HUMAN" {
-  :P11 — Deploy + smoke test;
-  :P12 — Provide feedback for next scope;
-  <<HUMAN>>
-}
-:Gate G5 — Released
-(deployed + notes recorded);
-<<GATE>>
+    partition "AGENT" #FFEBEE {
+    :P3 — Contract Baselines
+    Agent drafts literal semantic contracts mapping APIs. <<AGENT>> ;
+    :P4 — Policy Setup
+    Agent registers execution sequence into PROGRESS.md. <<AGENT>> ;
+    }
+
+    partition "HUMAN" #E8F5E9 {
+    :P4 — Hardening Policy
+    Operator approves semantics, setting up the exact
+    rules the Agent must execute against. <<HUMAN>> ;
+    }
+    :Gate G2 — Ready-to-build
+    Contracts structurally locked. Codebase is clean. <<GATE>> ;
+
+end group
+
+group "Phase B (P5-P7): Heavy Execution Loop"
+
+    ' =========================================================
+    ' P5–P7 — Story Delivery (nested loops + CCR)
+    ' =========================================================
+    while (Stories remaining in Backlog?) is (yes)
+
+    partition "AGENT" #FFEBEE {
+        :P5 — JIT Task Engine
+        Agent slices the active Story into 5-15 atomic Tasks
+        with specific risk classifications attached. <<AGENT>> ;
+    }
+
+    partition "HUMAN" #E8F5E9 {
+        :P5 — HIGH-Risk Validation
+        Operator approves potentially destructive Tasks. <<HUMAN>> ;
+    }
+
+    partition "AGENT" #FFEBEE {
+        :Execution Phase Trigger
+        Received human loop. Firing **<color:#2e7d32>/next</color>** engine. <<AGENT>> ;
+    }
+
+    while (Tasks remaining in current S-V###?) is (yes)
+        partition "AGENT" #FFEBEE {
+        :P6 — Code Iteration
+        Agent opens files and writes functional physics. <<AGENT>> ;
+        :Validation Loop
+        Code completed. Firing **<color:#c62828>/check</color>** validation gate. <<AGENT>> ;
+
+        if (Code drift or Spec mismatch detected?) then (YES)
+            :ESCALATION
+            System paralyzed. Firing **<color:#c62828>/ccr</color>** workflow. <<AGENT>> ;
+
+            partition "HUMAN" #E8F5E9 {
+            :Contract Change Request
+            Operator must APPROVE, REJECT, or DEFER the bug. <<HUMAN>> ;
+            }
+
+            if (CCR result?) then (APPROVE)
+            :Contract Updates
+            Agent safely alters `products.contract/` baseline. <<AGENT>> ;
+            else (REJECT)
+            :Task Halted
+            Re-scoping logic per constraints. <<AGENT>> ;
+            endif
+
+        else (NO)
+            :Clean Build
+            Task physically closed in PROGRESS.md array. <<AGENT>> ;
+        endif
+        }
+    endwhile (no)
+
+    partition "HUMAN" #E8F5E9 {
+        :P7 — Handshake Protocol
+        Task loop is dead. Operator physically tests the
+        system to ensure Acceptance matches PRD. <<HUMAN>> ;
+    }
+
+    partition "AGENT" #FFEBEE {
+        :P7 — Cleanup iteration
+        Sweep artifacts with **<color:#c62828>/archive</color>** to trim context. <<AGENT>> ;
+    }
+
+    :Gate G3 — Story completely Delivered
+    Loops increment to next S-V###. <<GATE>> ;
+
+    endwhile (no)
+
+end group
+
+group "Phase C (P8-P12): Release & Deploy"
+
+    ' =========================================================
+    ' P8–P12 — Hardening + Release
+    ' =========================================================
+    partition "AGENT" #FFEBEE {
+    :P8 — Global Verification
+    Agent runs deep E2E system regressions globally. <<AGENT>> ;
+    }
+
+    partition "HUMAN" #E8F5E9 {
+    :P10 — Manual Hardening
+    Operator finalizes logic. Firing **<color:#2e7d32>/release</color>**. <<HUMAN>> ;
+    }
+    :Gate G4 — Release Candidate Locked <<GATE>> ;
+
+    partition "HUMAN" #E8F5E9 {
+    :P11 — Live Deployment
+    Code moves from local logic into Production cloud. <<HUMAN>> ;
+    :P12 — Iteration Debrief
+    Feed raw metrics from LIVE back into P0 scope constraints. <<HUMAN>> ;
+    }
+    :Gate G5 — Officially Released
+    All loops completely cycle. <<GATE>> ;
+
+end group
 
 stop
 @enduml

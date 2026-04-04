@@ -3,6 +3,7 @@ description: next — Execute the next safe unit of work
 ---
 
 # /next — Execute the next safe unit of work
+**Phases:** P5–P7 (JIT Planning → Story Handshake, repeats per story)
 
 READ:
 - product/PRD.md

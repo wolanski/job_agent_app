@@ -64,8 +64,8 @@
 ### Story index (plan)
 | Story ID | Title | UC tags (optional) | Notes |
 |---|---|---|---|
-| S-V001 | ... | UC:AUTH | |
-| S-V002 | ... | | |
+| [S-V001] | ... | [UC:AUTH] | |
+| [S-V002] | ... | | |
 
 ---
 
@@ -93,8 +93,8 @@ UC tags are **optional labels** used only to group related stories.
 
 | UC tag | Meaning | Notes |
 |---|---|---|
-| UC:AUTH | Authentication/session | |
-| UC:... | ... | |
+| [UC:AUTH] | [Authentication/session] | |
+| [UC:...] | [...] | |
 
 ---
 
@@ -102,21 +102,18 @@ UC tags are **optional labels** used only to group related stories.
 
 | Version | Target stories (IDs) | Notes |
 |---|---|---|
-| MVP | S-V001, S-V002 | |
-| V1.1 | S-V003, ... | |
+| [MVP] | [S-V001, S-V002] | |
+| [V1.1] | [S-V003, ...] | |
 
 ---
 
 ## 7. Open questions (optional)
 > Canonical Qs should be tracked in `process/PROGRESS.md` as Issues (`I-###`).
-- [Question]
+- What persistence layer should this project use? (SQLite for dev, PostgreSQL for prod, or another option?) Use `/advise` to explore.
 
 ---
 
 ## Traceability Log
+*(Historical rows cleared to preserve clean template state)*
 | Timestamp (UTC) | Actor | Change | Why |
 |---|---|---|---|
-| 2026-02-08T12:00:00Z | Seed (generator) | Initial PRD template | Provide a minimal scope truth file for the process. |
-| 2026-02-08T15:52:05Z | Seed (generator) | Aligned PRD IDs with process gates and FastAPI+uv assumptions | Keep templates consistent with starter pack wiring. |
-| 2026-02-08T17:32:05Z | Seed (generator) | Reorganized repo folders (product vs process) | Clarify what belongs to product truth vs process truth. |
-| 2026-02-08T18:18:12Z | Seed (generator) | Converted PRD to stories-first with optional UC tags | Reduce bureaucracy; keep Stories as the Human–Agent handshake boundary. |

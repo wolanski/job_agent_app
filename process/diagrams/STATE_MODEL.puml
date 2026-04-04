@@ -1,50 +1,97 @@
-@startuml
-title STATE_MODEL — Story + Task + CCR (Semantics)
+@startuml STATE_MODEL
+title STATE_MODEL — All PROGRESS Tracking Semantics
 
 skinparam shadowing false
 skinparam ArrowColor #333333
 skinparam StateBorderColor #333333
 skinparam StateFontColor #111111
-skinparam NoteBackgroundColor #FFF9D6
-skinparam NoteBorderColor #333333
 
-state "TASK" as TASK {
-  [*] --> Planned
-  Planned --> InProgress : start
-  InProgress --> Verifying : code+tests written
-  Verifying --> Done : check green
-  Verifying --> InProgress : check failed/fix
-  InProgress --> Blocked : CCR raised or dependency missing
-  Blocked --> InProgress : CCR approved/unblocked
-  Blocked --> Cancelled : rescope/reject
-  Done --> [*]
-  Cancelled --> [*]
+state "**RELEASE / VERSION**\n----\nMaps to the global project milestones (G0-G5).\nGoverns when you execute <b><color:#0056b3>/release</color></b> and prep\nthe repository for the next iteration." as RELEASE #E3F2FD {
+  state "**Planning**\n----\nAligning PRD scope & architecture." as Planning #CCE5FF
+  state "**Building**\n----\nIterative JIT story delivery loop." as Building #CCE5FF
+  state "**Hardening**\n----\nE2E testing and QA signoffs." as Hardening #FFF3CD
+  state "**Deployed**\n----\nCode shipped to the human." as Deployed #D4EDDA
+  state "**Archived**\n----\nLogs swept for the next version." as Archived_R #E2E3E5
+
+  [*] --> Planning : <b><color:#0056b3>/seed</color></b>, <b><color:#0056b3>/plan</color></b>
+  Planning --> Building : <b><color:#0056b3>/next</color></b> loops
+  Building --> Hardening : <b><color:#0056b3>/release</color></b>
+  Hardening --> Building : regression/fix
+  Hardening --> Deployed : g5 passed
+  Deployed --> Archived_R : next version start
+  Archived_R --> [*]
 }
 
-state "STORY" as STORY {
-  [*] --> Planned
-  Planned --> InProgress : start story
-  InProgress --> AcceptanceReview : all tasks done
-  AcceptanceReview --> Done : acceptance met
-  AcceptanceReview --> InProgress : feedback/fix
-  InProgress --> Blocked : CCR or external blocker
-  Blocked --> InProgress : unblocked
-  Done --> [*]
+state "**STORY**\n----\nThe authoritative boundary of human intent.\nEvery story is a vertical slice (<= 1 day of work).\nThe Human formally reviews / accepts the story\nat the end of its implementation cycle." as STORY #E8F5E9 {
+  state "**Planned**\n----\nTargeted in PRD roadmap." as Planned_S #FFFFFF
+  state "**InProgress**\n----\nActive execution of task lists." as InProgress_S #CCE5FF
+  state "**AcceptanceReview**\n----\nHuman verifying DoD criteria." as AcceptanceReview #FFF3CD
+  state "**Blocked**\n----\nHalted by an open CCR or Issue." as Blocked_S #F8D7DA
+  state "**Done**\n----\nReview handshake passed." as Done_S #D4EDDA
+  state "**Archived**\n----\nSwept mid or post-release." as Archived_S #E2E3E5
+
+  [*] --> Planned_S
+  Planned_S --> InProgress_S : start story
+  InProgress_S --> AcceptanceReview : all tasks done
+  AcceptanceReview --> Done_S : acceptance met
+  AcceptanceReview --> InProgress_S : feedback/fix
+  InProgress_S --> Blocked_S : CCR or external blocker
+  Blocked_S --> InProgress_S : unblocked
+  Done_S --> Archived_S : post-release sweep
 }
 
-state "CCR" as CCR {
+state "**TASK**\n----\nAtomic, JIT steps independently planned by the Agent.\n- Automatically verified via 'make check'\n- LOW/MED tasks execute autonomously\n- HIGH risk tasks require human approval" as TASK #FFF9C4 {
+  state "**Planned**\n----\nJIT created by the steward." as Planned_T #FFFFFF
+  state "**InProgress**\n----\nActively writing code & tests." as InProgress_T #CCE5FF
+  state "**Verifying**\n----\nRunning 'make check' gate." as Verifying #FFF3CD
+  state "**Blocked**\n----\nHalted by CCR or missing dep." as Blocked_T #F8D7DA
+  state "**Cancelled**\n----\nRescoped or rejected CCR." as Cancelled #E2E3E5
+  state "**Done**\n----\nLint+Tests passed internally." as Done_T #D4EDDA
+  state "**Archived**\n----\nSwept to reduce token bloat." as Archived_T #E2E3E5
+
+  [*] --> Planned_T
+  Planned_T --> InProgress_T : start
+  InProgress_T --> Verifying : code+tests
+  Verifying --> Done_T : check green
+  Verifying --> InProgress_T : check failed
+  InProgress_T --> Blocked_T : CCR / dep missing
+  Blocked_T --> InProgress_T : CCR approved
+  Blocked_T --> Cancelled : rescope/reject
+  Done_T --> Archived_T : mid-release
+  Cancelled --> Archived_T : mid-release
+}
+
+state "**CCR**\n----\nTriggered when the Agent detects contract drift.\nForces a hard STOP to prevent rogue workarounds.\nRequires a hard Human decision to proceed." as CCR #FFEBEE {
+  state "**Raised**\n----\nMismatch detected, work HALTED." as Raised #F8D7DA
+  state "**Decided**\n----\nWaiting on Human verdict." as Decided #FFF3CD
+  state "**Applied**\n----\nContract updated per approval." as Applied #CCE5FF
+  state "**Deferred**\n----\nSkipped, task marked blocked." as Deferred #E2E3E5
+  state "**Rejected**\n----\nAlternative approach required." as Rejected #E2E3E5
+  state "**Verified**\n----\nCheck runs green against new spec." as Verified #D4EDDA
+  state "**Archived**\n----\nSwept into history." as Archived_C #E2E3E5
+
   [*] --> Raised
   Raised --> Decided : human decision
   Decided --> Applied : approved
-  Decided --> Rejected : reject/defer
-  Applied --> Verified : re-run check green
-  Verified --> [*]
-  Rejected --> [*]
+  Decided --> Rejected : reject
+  Decided --> Deferred : defer
+  Applied --> Verified : check green
+  Verified --> Archived_C : <b><color:#0056b3>/archive</color></b>
+  Rejected --> Archived_C : <b><color:#0056b3>/archive</color></b>
+  Deferred --> Archived_C : <b><color:#0056b3>/archive</color></b>
 }
 
-note right of CCR
-CCR exists to force STOP-and-ask
-instead of hacking around contracts.
-end note
+state "**ISSUE**\n----\nTracks open questions (I-###) and bugs.\nEnsures blocked items aren't dropped when \nthe context window resets." as ISSUE #F3E5F5 {
+  state "**Open**\n----\nQuestion/Bug identified." as Open #F8D7DA
+  state "**InProgress**\n----\nAgent is investigating fixes." as InProgress_I #CCE5FF
+  state "**Resolved**\n----\nAnswered or patched." as Resolved #D4EDDA
+  state "**Archived**\n----\nSwept into history." as Archived_I #E2E3E5
+
+  [*] --> Open : identified
+  Open --> InProgress_I : investigating
+  InProgress_I --> Resolved : fixed/answered
+  InProgress_I --> Open : blocked
+  Resolved --> Archived_I : <b><color:#0056b3>/archive</color></b>
+}
 
 @enduml

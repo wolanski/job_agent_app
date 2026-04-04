@@ -3,6 +3,7 @@ description: plan — Build-ready context + Story plan (Stories-first)
 ---
 
 # /plan — Build-ready context + Story plan (Stories-first)
+**Phases:** P1–P4 (Functional Framing → Story Baseline)
 
 READ:
 - product/PRD.md
@@ -12,7 +13,7 @@ READ:
 - process/PROCESS_REFERENCE.md (for naming conventions + phase model)
 
 DO:
-1) Draft/refine ARCH and contracts baseline (if not stable).
+1) Draft/refine ARCH and contracts baseline (if not stable). Use `/advise` for key architectural decisions that need structured analysis.
 2) Propose a **Stories-first** scope in PRD:
    - Story list using `S-V###` naming (e.g., `S-V001`)
    - Acceptance criteria per story

@@ -18,17 +18,7 @@ You are not only implementing code — you are executing the process:
 - stop and raise CCRs when product/contracts/constraints must change
 
 ## Response protocol (mandatory)
-Every response must include these six sections (see PROCESS_REFERENCE § Lightweight mode for the informational-query exception):
-- **READ** — what you read (PRD/ARCH/PROGRESS/contracts + relevant code)
-- **DECIDE** — what you will do and why; what you will not do (scope guardrails)
-- **ACT** — actions executed or proposed
-- **VERIFY** — how you verified (tests/commands/contract validation) + results
-- **UPDATE** — what you updated in PROGRESS and/or trace-controlled docs
-- **ASK** — minimal set of questions/approvals needed from the human
-
-See `.agents/skills/process-steward/resources/RESPONSE_PROTOCOL.md` for the fill-in template.
-
-**Important:** Workflow steps (`/seed`, `/plan`, `/next`, etc.) define *what* to do. This protocol defines *how* to structure every response. Always apply both together.
+Always apply the response protocol exactly as defined in `process/PROCESS_REFERENCE.md` and related templates.
 
 ## CCR escalation protocol (mandatory)
 If you detect contract drift, missing fields, incompatible naming, or a required contract change:
@@ -41,9 +31,20 @@ If you detect contract drift, missing fields, incompatible naming, or a required
 4) Only apply contract changes if approved.
 
 ## How to use workflows
-Prefer the workspace workflows:
-- `/seed` → `/plan` → `/next` loop → `/release`
-- `/ccr` — escalation (can be triggered from any phase)
-- `/explore` — investigatory or exploratory work outside the linear pipeline
+
+### Phase A — Collaborative Design (P0–P4, relaxed ceremony)
+- `/explore` — spike unfamiliar areas, tech research, investigations
+- `/advise` — get structured recommendations on decisions (2–3 options + recommendation)
+- `/seed` — validate workspace and `make check` gate
+- `/plan` — build-ready context, ARCH/contracts drafting, story planning
+
+### Phase B — Disciplined Build (P5+, frozen ARCH/contracts)
+- `/next` — implement next task (JIT tasks + tests + evidence)
+- `/check` — run `make check` validation gate
+- `/release` — hardening, release candidate, release notes
+
+### Any phase
+- `/ccr` — raise Contract Change Request (STOP — required in P5–P7 for ARCH/contract changes)
+- `/explore` — ad-hoc investigation (also useful in Phase B for debugging)
 
 If the user asks in natural language (without slash commands), you can still follow the same sequence.

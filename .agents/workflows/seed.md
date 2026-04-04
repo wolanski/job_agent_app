@@ -3,6 +3,7 @@ description: seed — Seed workspace & validate prerequisites
 ---
 
 # /seed — Seed workspace & validate prerequisites
+**Phases:** P0 (Install and Wire)
 
 READ:
 - process/PROCESS_REFERENCE.md

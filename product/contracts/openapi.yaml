@@ -262,7 +262,7 @@ components:
         period:
           type: string
           nullable: true
-          description: Examples: "hour", "month", "year".
+          description: 'Examples: "hour", "month", "year".'
       required: []
 
     TaxonomyTag:
@@ -271,7 +271,7 @@ components:
       properties:
         taxonomy:
           type: string
-          description: Examples: "ESCO", "SSYK", "ISCO".
+          description: 'Examples: "ESCO", "SSYK", "ISCO".'
         code:
           type: string
         label:
@@ -334,15 +334,15 @@ components:
         employment_type:
           type: string
           nullable: true
-          description: Examples: "full_time", "part_time", "contract", "internship".
+          description: 'Examples: "full_time", "part_time", "contract", "internship".'
         remote_type:
           type: string
           nullable: true
-          description: Examples: "on_site", "hybrid", "remote".
+          description: 'Examples: "on_site", "hybrid", "remote".'
         seniority:
           type: string
           nullable: true
-          description: Examples: "junior", "mid", "senior", "lead".
+          description: 'Examples: "junior", "mid", "senior", "lead".'
         salary:
           $ref: "#/components/schemas/Salary"
         apply_url:

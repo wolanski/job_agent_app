@@ -4,7 +4,7 @@ Antigravity loads workspace customizations from this folder.
 
 ## What's inside
 - `rules/` — always-on instructions (system-like constraints)
-- `workflows/` — saved prompts you trigger with `/` (e.g., `/seed`, `/plan`, `/next`, `/explore`, `/release`)
+- `workflows/` — saved prompts you trigger with `/` (e.g., `/explore`, `/advise`, `/seed`, `/plan`, `/next`, `/check`, `/release`)
 - `skills/` — optional "lazy-loaded" specialized guides (metadata + detailed instructions)
 
 The Process Steward workflow is defined by:
@@ -25,13 +25,24 @@ skills/check/                  ← `make check` gate + failure triage
 The **rules** file is thin (constraints + pointers). **PROCESS_REFERENCE** is the single detailed spec. **Skills** provide actionable steps the agent loads on demand.
 
 ## Start
-1) `/seed`
-2) `/plan`
-3) `/next` (repeat)
-4) `/release`
 
-Use `/explore` for investigatory or ad-hoc work outside the linear pipeline.
-Use `/ccr` to raise a Contract Change Request at any time.
+### Phase A — Collaborative Design (relaxed ceremony)
+```
+/explore × N  — spike unfamiliar areas, tech research
+/advise  × N  — get structured recommendations on decisions
+/seed          — validate workspace
+/plan          — informed story planning (ARCH + contracts + stories)
+```
+
+### Phase B — Disciplined Build (frozen ARCH/contracts)
+```
+/next  × N     — implement with frozen ARCH/contracts
+/check         — validate (make check gate)
+/release       — harden and ship
+```
+
+`/ccr` and `/explore` remain available at any phase.
+`/advise` is most valuable in Phase A but can be used anytime.
 
 ## Frontmatter schema
 

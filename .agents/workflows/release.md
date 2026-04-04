@@ -3,6 +3,7 @@ description: release — Hardening and release candidate
 ---
 
 # /release — Hardening and release candidate
+**Phases:** P8–P11 (Integration Testing → Deploy)
 
 READ:
 - process/PROGRESS.md
