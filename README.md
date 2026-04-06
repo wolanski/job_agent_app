@@ -48,7 +48,7 @@ The agent owns:
 
 The development lifecycle runs through three sequential phases. While you can dictate tasks via natural language, using **Workflows** (slash commands like `/plan`, `/next`) acts as "macro buttons" that instantly align the Agent with the canonical framework.
 
-![The Human Operator Journey](process/diagrams/USER_JOURNEY.png)
+![The Human Operator Journey](process/diagrams/DEVELOPMENT_PROCESS.png)
 
 Before entering the primary phases, initialize your workspace:
 - **`/seed`** : Run this immediately when starting a new project. Validates local environment and dependencies.

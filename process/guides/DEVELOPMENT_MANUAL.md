@@ -1,6 +1,6 @@
 # Human Operator Development Manual -- Step-by-Step Guide
 
-> Companion guide for `process/diagrams/USER_JOURNEY.puml`.
+> Companion guide for `process/diagrams/DEVELOPMENT_PROCESS.puml`.
 > Prerequisite: `product/docs/IDEATION_MANUAL.md` completed (all design artifacts committed, Gate G0 passed).
 
 ---
@@ -12,9 +12,9 @@ This manual walks you through the **full development lifecycle** from first code
 The lifecycle has three phases that repeat per version:
 
 ```
-Phase A: COLLABORATIVE DESIGN (P1-P4)    Steps 1-5    -> Approved stories + locked ARCH
-Phase B: DISCIPLINED BUILD (P5-P7)       Steps 6-8    -> Working code, story-by-story
-Phase C: RELEASE & ITERATE (P8-P12)      Steps 9-12   -> Deployed product + version archive
+Phase A: COLLABORATIVE DESIGN (P1-P4)    P1, P1.a, P1.b, P2-P3, P4   -> Approved stories + locked ARCH
+Phase B: DISCIPLINED BUILD (P5-P7)       P5, P6, P6.a, P6.b, P7      -> Working code, story-by-story
+Phase C: RELEASE & ITERATE (P8-P12)      P8-P10, P11, P12, P12.a     -> Deployed product + version archive
 VERSION LOOP                                           -> Repeat for next version
 ```
 
@@ -29,7 +29,7 @@ VERSION LOOP                                           -> Repeat for next versio
 ## Prerequisites
 
 Before starting this manual, ensure:
-- [x] Ideation Process complete (Steps 1-15 of IDEATION_MANUAL.md)
+- [x] Ideation Process complete (H1.1–HO.2 of IDEATION_MANUAL.md)
 - [x] All design artifacts committed to repo (`product/PRD.md`, `product/ARCH.md`, `product/contracts/*`, `product/diagrams/*`)
 - [x] `/seed` executed and Gate G0 = PASS in `process/PROGRESS.md`
 - [x] `make check` runs green
@@ -77,7 +77,7 @@ You interact with the agent primarily through workflow commands typed in the IDE
 
 ---
 
-### Step 1: Scope Framing -- `/plan` (P1)
+### P1: Scope Framing -- `/plan`
 
 **Purpose:** Convert your vision into a concrete, approved story backlog. The agent reads your PRD vision and drafts stories with acceptance criteria, risk tags, and recommended sequencing. This is where human intent becomes buildable scope.
 
@@ -121,7 +121,7 @@ The agent executes the `/plan` workflow:
 
 ---
 
-### Step 2: Research Spike -- `/explore`
+### P1.a: Research Spike -- `/explore`
 
 **Purpose:** Investigate unknowns before committing to design decisions. This is a **safe sandbox** -- the agent reads code, docs, and external references but makes **no production code changes** and records **no architectural decisions**. Use it when you are unsure about a technology, a library's behavior, or how existing code works.
 
@@ -164,7 +164,7 @@ Findings from `/explore` inform your decisions in `/advise` and your scope in `/
 
 ---
 
-### Step 3: Decision Analysis -- `/advise`
+### P1.b: Decision Analysis -- `/advise`
 
 **Purpose:** Get structured analysis when facing a design choice. Unlike `/explore` (which gathers information), `/advise` always produces a **logged Decision (D-###)** with rationale. Use it when you need to choose between alternatives and want the tradeoffs laid out clearly.
 
@@ -220,7 +220,7 @@ Use `/advise` *instead of* `/explore` when you need a **recommendation** (which 
 
 ---
 
-### Step 4: Architecture & Contracts -- `/plan` (P2-P3)
+### P2-P3: Architecture & Contracts -- `/plan`
 
 **Purpose:** Stabilize the architecture and contracts baseline so they can be frozen for build. The agent drafts ARCH.md and contracts; you review and iterate using `/explore` and `/advise` for any unresolved tradeoffs.
 
@@ -270,7 +270,7 @@ This loop is expected and healthy. No ceremony is required for changes during P0
 
 ---
 
-### Step 5: Baseline Approval -- `/plan` (P4)
+### P4: Baseline Approval -- `/plan`
 
 **Purpose:** The point of no return. Once you approve, ARCH.md and contracts become **read-only** for the entire build phase (P5-P7). Any subsequent changes require a formal CCR (Contract Change Request) with your explicit approval.
 
@@ -338,7 +338,7 @@ At this point you should have:
 
 ---
 
-### Step 6: JIT Task Planning -- `/next` (P5)
+### P5: JIT Task Planning -- `/next`
 
 **Purpose:** The agent decomposes the next story into atomic, implementable tasks. Tasks are planned **Just-In-Time** (per-story, not upfront) because the optimal task breakdown often depends on what was learned in previous stories.
 
@@ -386,7 +386,7 @@ When HIGH-risk tasks exist:
 
 ---
 
-### Step 7: Iterative Implementation -- `/next` + `/check` (P6)
+### P6: Iterative Implementation -- `/next` + `/check`
 
 **Purpose:** The agent implements each task minimally, runs tests, and logs evidence. This is the high-velocity execution loop where the agent writes code and you monitor progress.
 
@@ -411,7 +411,7 @@ For each task `T-V###.##`:
 3. **Runs** `make check` automatically (lint, format, typecheck, contract validation, tests).
 4. **If `make check` PASS:** Marks task as DONE, appends evidence to PROGRESS.md S10, advances to next task.
 5. **If `make check` FAIL due to code/lint/test issue:** Fixes minimally and re-runs `make check`. Repeats until green.
-6. **If `make check` FAIL due to contract drift:** STOPS and triggers `/ccr` escalation (see Step 7a).
+6. **If `make check` FAIL due to contract drift:** STOPS and triggers `/ccr` escalation (see P6.a).
 7. **Updates** phase to P6.
 
 #### What `make check` validates
@@ -433,7 +433,7 @@ When `make check` fails, the agent triages before fixing (per `.agents/skills/ch
 
 | Failure type | Agent action | Your action |
 |--------------|-------------|-------------|
-| **Contract failure** (schema mismatch, OpenAPI drift, `test_contract_conformance.py` failure) | STOP. Raise CCR-###. | You decide: APPROVE, REJECT, or DEFER (see Step 7a) |
+| **Contract failure** (schema mismatch, OpenAPI drift, `test_contract_conformance.py` failure) | STOP. Raise CCR-###. | You decide: APPROVE, REJECT, or DEFER (see P6.a) |
 | **Lint / format / typecheck failure** | Fix minimally, re-run `make check`. | None (autonomous) |
 | **Test failure** | Investigate: is the test wrong or the code wrong? If test reflects a contract expectation, treat as contract failure. | None unless escalated |
 | **Environment failure** (missing uv, broken venv, network timeout) | Log Issue (I-###), fix environment, re-run. | May need to help resolve environment issues |
@@ -450,7 +450,7 @@ When `make check` fails, the agent triages before fixing (per `.agents/skills/ch
 
 ---
 
-### Step 7a: Contract Escalation -- `/ccr`
+### P6.a: Contract Escalation -- `/ccr`
 
 **Purpose:** The core safety mechanism of the Antigravity process. When the agent detects a mismatch between implementation reality and the frozen contracts/ARCH, it **STOPS** and escalates to you. No silent workarounds are allowed. This prevents specification drift -- the gap between what was designed and what was built.
 
@@ -500,7 +500,7 @@ The agent triggers a CCR automatically when:
 
 ---
 
-### Step 7b: Context Cleanup -- `/archive`
+### P6.b: Context Cleanup -- `/archive`
 
 **Purpose:** Keep the agent's working memory lean. As PROGRESS.md grows with completed tasks, closed CCRs, and old evidence, the agent's context window fills up, degrading response quality and speed. Archiving moves completed data to a separate file without losing it.
 
@@ -548,7 +548,7 @@ The agent triggers a CCR automatically when:
 
 ---
 
-### Step 8: Story Acceptance -- `/next` (P7)
+### P7: Story Acceptance -- `/next`
 
 **Purpose:** Verify that the completed story actually works for humans, not just for tests. A green `make check` proves the code is syntactically correct and tests pass, but it does **not** prove the feature delivers user value. This is the human quality gate.
 
@@ -576,7 +576,7 @@ The agent:
 1. Marks the story as **DONE** in PROGRESS.md > S5 (Story tracker).
 2. Records **Gate G3** evidence for this story in PROGRESS.md > S2 (Gates).
 3. Clears the JIT task list in PROGRESS.md > S6.
-4. If more stories remain in the backlog, prepares for the next `/next` cycle (returns to Step 6).
+4. If more stories remain in the backlog, prepares for the next `/next` cycle (returns to P5).
 5. If all stories are done, signals readiness for Phase C (release).
 
 #### If you respond FAIL
@@ -605,13 +605,13 @@ The agent:
 
 ### Story Loop
 
-Steps 6-8 **repeat for each story** in the PRD backlog. The cycle is:
+P5–P7 **repeat for each story** in the PRD backlog. The cycle is:
 
 ```
 /next (P5: plan tasks) -> /next /next /next (P6: implement) -> acceptance review (P7: PASS/FAIL)
   |                                                                         |
-  |                        ┌── /ccr if contract drift (Step 7a)             |
-  |                        ├── /archive if context bloated (Step 7b)        |
+  |                        ┌── /ccr if contract drift (P6.a)             |
+  |                        ├── /archive if context bloated (P6.b)        |
   |                        └── /check for ad-hoc validation                 |
   |                                                                         |
   └─────────────────── next story ──────────────────────────────────────────┘
@@ -638,7 +638,7 @@ At this point you should have:
 
 ---
 
-### Step 9: Release Hardening -- `/release` (P8-P10)
+### P8-P10: Release Hardening -- `/release`
 
 **Purpose:** Shift from per-story validation to global system verification. During build, each story was tested in isolation. Release hardening tests that all stories work together correctly -- catching integration regressions, edge cases at story boundaries, and cross-cutting concerns (auth, error handling, logging).
 
@@ -675,7 +675,7 @@ At this point you should have:
 
 ---
 
-### Step 10: Deployment -- `/release` (P11)
+### P11: Deployment -- `/release`
 
 **Purpose:** Ship the release candidate to a live environment. The agent provides the runbook and checklist, but **you** perform the actual deployment. The agent cannot push to production autonomously -- deployment is always a human action.
 
@@ -721,7 +721,7 @@ The agent:
 
 ---
 
-### Step 11: Retrospective -- `/explore` (P12)
+### P12: Retrospective -- `/explore`
 
 **Purpose:** Reflect on the version just shipped. What worked well? What was painful? What should change for the next version? The retrospective produces insights that feed directly into the next version's planning cycle.
 
@@ -752,9 +752,9 @@ The agent:
 
 ---
 
-### Step 12: Version Archive -- `/archive`
+### P12.a: Version Archive -- `/archive`
 
-**Purpose:** Close out the completed version's tracking data and prepare a clean slate for the next version. Unlike mid-release archiving (Step 7b), this is a **full post-release archive** that moves everything from the shipped version into a permanent read-only record.
+**Purpose:** Close out the completed version's tracking data and prepare a clean slate for the next version. Unlike mid-release archiving (P6.b), this is a **full post-release archive** that moves everything from the shipped version into a permanent read-only record.
 
 #### What you do
 
@@ -837,30 +837,30 @@ Stop. Re-read process/PROCESS_REFERENCE.md and process/PROGRESS.md. Resume in Pr
 
 ### Phase A: Collaborative Design (P1-P4)
 
-| Step | You type | What happens | Key output |
+| ID | You type | What happens | Key output |
 |------|----------|-------------|------------|
-| 1 | `/plan` | Agent drafts story backlog | PRD.md S4 stories |
-| 2 | `/explore [question]` | Agent researches (read-only) | Chat summary, optional I-### |
-| 3 | `/advise [decision]` | Agent presents options, you choose | PROGRESS D-###, optional ARCH/contract updates |
-| 4 | `/plan` (continue) | Agent drafts ARCH + contracts | ARCH.md, contracts/* |
-| 5 | "Approved" | Gates G1 + G2 recorded, ARCH/contracts lock | PROGRESS G1, G2 |
+| P1 | `/plan` | Agent drafts story backlog | PRD.md S4 stories |
+| P1.a | `/explore [question]` | Agent researches (read-only) | Chat summary, optional I-### |
+| P1.b | `/advise [decision]` | Agent presents options, you choose | PROGRESS D-###, optional ARCH/contract updates |
+| P2-P3 | `/plan` (continue) | Agent drafts ARCH + contracts | ARCH.md, contracts/* |
+| P4 | "Approved" | Gates G1 + G2 recorded, ARCH/contracts lock | PROGRESS G1, G2 |
 
 ### Phase B: Disciplined Build (P5-P7)
 
-| Step | You type | What happens | Key output |
+| ID | You type | What happens | Key output |
 |------|----------|-------------|------------|
-| 6 | `/next` | Agent decomposes next story into tasks | PROGRESS S6 task list |
-| 6 (if HIGH) | "Approve T-V###.##" | Agent proceeds with HIGH-risk task | Task unblocked |
-| 7 | `/next` (repeat) | Agent implements one task per invocation | Code + tests + evidence |
-| 7a | "APPROVE/REJECT/DEFER CCR-###" | Resolve contract drift escalation | Contracts updated or task blocked |
-| 7b | `/archive` | Sweep completed logs | Lean PROGRESS.md |
-| 8 | "PASS" or "FAIL + notes" | Accept or reject story | Story DONE + G3 evidence |
+| P5 | `/next` | Agent decomposes next story into tasks | PROGRESS S6 task list |
+| P5 (if HIGH) | "Approve T-V###.##" | Agent proceeds with HIGH-risk task | Task unblocked |
+| P6 | `/next` (repeat) | Agent implements one task per invocation | Code + tests + evidence |
+| P6.a | "APPROVE/REJECT/DEFER CCR-###" | Resolve contract drift escalation | Contracts updated or task blocked |
+| P6.b | `/archive` | Sweep completed logs | Lean PROGRESS.md |
+| P7 | "PASS" or "FAIL + notes" | Accept or reject story | Story DONE + G3 evidence |
 
 ### Phase C: Release & Iterate (P8-P12)
 
-| Step | You type | What happens | Key output |
+| ID | You type | What happens | Key output |
 |------|----------|-------------|------------|
-| 9 | `/release` | Agent runs global verification, drafts release notes | G4 evidence, release notes |
-| 10 | "DEPLOYED_OK" or "FAIL + logs" | Confirm deployment result | G5 evidence |
-| 11 | `/explore` + `/advise` | Retrospective and next-version planning | PRD roadmap updated |
-| 12 | `/archive` | Full version archive | process/archive/R-*.md |
+| P8-P10 | `/release` | Agent runs global verification, drafts release notes | G4 evidence, release notes |
+| P11 | "DEPLOYED_OK" or "FAIL + logs" | Confirm deployment result | G5 evidence |
+| P12 | `/explore` + `/advise` | Retrospective and next-version planning | PRD roadmap updated |
+| P12.a | `/archive` | Full version archive | process/archive/R-*.md |

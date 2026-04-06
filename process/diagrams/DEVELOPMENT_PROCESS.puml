@@ -1,6 +1,6 @@
-@startuml USER_JOURNEY_v2
+@startuml DEVELOPMENT_PROCESS
 
-title **Human Operator Journey v2**\n(Stories-first Development Lifecycle)\nContinuation of IDEATION_PROCESS_v2.puml
+title **Human Operator Journey v2**\n(Stories-first Development Lifecycle)\nContinuation of IDEATION_PROCESS.puml
 
 skinparam shadowing false
 skinparam ArrowColor #333333
@@ -19,7 +19,7 @@ floating note left
   (Post-Ideation Development)
   ====
   **Prerequisite:**
-  ""IDEATION_PROCESS_v2.puml""
+  ""IDEATION_PROCESS.puml""
   completed (Gate G0 passed).
   ----
   **Truth Sources:**
@@ -45,7 +45,7 @@ end note
 start
 
 :**Gate G0 -- Installed**
-(from IDEATION_PROCESS_v2.puml)
+(from IDEATION_PROCESS.puml)
 ----
 Artifacts committed to repo.
 ""make check"" runs green.
@@ -60,7 +60,7 @@ Continues: Phase A (P1-P4); <<#FFF2CC>>
 
 partition "**PHASE A: COLLABORATIVE DESIGN** (P1-P4)\nARCH and contracts are DRAFTS -- freely modifiable" #E8F4FD {
 
-  :**Step 1: Scope Framing** -- /plan (P1)
+  :**P1: Scope Framing** -- /plan
   ----
   **Human:** Type ""/plan"" in IDE chat.
   Provide your vision in PRD.md if not
@@ -93,7 +93,7 @@ partition "**PHASE A: COLLABORATIVE DESIGN** (P1-P4)\nARCH and contracts are DRA
 
     fork
 
-      :**Step 2: Research Spike** -- /explore
+      :**P1.a: Research Spike** -- /explore
       ----
       **Human:** Type ""/explore"" followed
       by your question. Examples:
@@ -127,7 +127,7 @@ partition "**PHASE A: COLLABORATIVE DESIGN** (P1-P4)\nARCH and contracts are DRA
 
     fork again
 
-      :**Step 3: Decision Analysis** -- /advise
+      :**P1.b: Decision Analysis** -- /advise
       ----
       **Human:** Type ""/advise"" followed by
       the decision context. Examples:
@@ -165,7 +165,7 @@ partition "**PHASE A: COLLABORATIVE DESIGN** (P1-P4)\nARCH and contracts are DRA
   else (no)
   endif
 
-  :**Step 4: Architecture & Contracts** -- /plan (P2-P3)
+  :**P2-P3: Architecture & Contracts** -- /plan
   ----
   **Human:** Review the agent's ARCH.md
   draft and contracts baseline. Focus on
@@ -190,7 +190,7 @@ partition "**PHASE A: COLLABORATIVE DESIGN** (P1-P4)\nARCH and contracts are DRA
     ARCH and contracts are freely
     editable during P0-P4. No CCR
     required. Iterate as needed.
-    Once approved at Step 5, they
+    Once approved at P4, they
     become **frozen** for build.
     ----
     Output: **ARCH.md S1-7**
@@ -216,7 +216,7 @@ partition "**PHASE A: COLLABORATIVE DESIGN** (P1-P4)\nARCH and contracts are DRA
   else (yes)
   endif
 
-  :**Step 5: Baseline Approval** -- /plan (P4)
+  :**P4: Baseline Approval** -- /plan
   ----
   **Human:** Open product/PRD.md and
   product/ARCH.md in your editor.
@@ -271,7 +271,7 @@ partition "**PHASE B: DISCIPLINED BUILD** (P5-P7)\nARCH and contracts FROZEN -- 
 
   repeat
 
-    :**Step 6: JIT Task Planning** -- /next (P5)
+    :**P5: JIT Task Planning** -- /next
     ----
     **Human:** Type ""/next"" in IDE chat.
     No additional context needed -- the
@@ -321,7 +321,7 @@ partition "**PHASE B: DISCIPLINED BUILD** (P5-P7)\nARCH and contracts FROZEN -- 
       with LOW/MED tasks per policy.; <<#DFF7E1>>
     endif
 
-    :**Step 7: Iterative Implementation** -- /next + /check (P6)
+    :**P6: Iterative Implementation** -- /next + /check
     ----
     **Human:** Keep typing ""/next"" to
     advance through each task. The agent
@@ -354,7 +354,7 @@ partition "**PHASE B: DISCIPLINED BUILD** (P5-P7)\nARCH and contracts FROZEN -- 
 
     if (Agent detects\ncontract drift?) then (yes)
 
-      :**Step 7a: Contract Escalation** -- /ccr
+      :**P6.a: Contract Escalation** -- /ccr
       ----
       **Human:** The agent has **STOPPED**.
       Open PROGRESS.md and read CCR-###.
@@ -397,7 +397,7 @@ partition "**PHASE B: DISCIPLINED BUILD** (P5-P7)\nARCH and contracts FROZEN -- 
 
     if (Context window\nslowing down?) then (yes)
 
-      :**Step 7b: Context Cleanup** -- /archive
+      :**P6.b: Context Cleanup** -- /archive
       ----
       **Human:** If the agent's responses
       degrade or it forgets constraints,
@@ -427,7 +427,7 @@ partition "**PHASE B: DISCIPLINED BUILD** (P5-P7)\nARCH and contracts FROZEN -- 
     else (no)
     endif
 
-    :**Step 8: Story Acceptance** -- /next (P7)
+    :**P7: Story Acceptance** -- /next
     ----
     **Human:** Agent presents the completed
     story for acceptance. Boot the app
@@ -480,7 +480,7 @@ partition "**PHASE B: DISCIPLINED BUILD** (P5-P7)\nARCH and contracts FROZEN -- 
 
 partition "**PHASE C: RELEASE & ITERATE** (P8-P12)" #FFF8E8 {
 
-  :**Step 9: Release Hardening** -- /release (P8-P10)
+  :**P8-P10: Release Hardening** -- /release
   ----
   **Human:** Type ""/release"" in IDE chat.
   All PRD stories must be Done first.
@@ -512,7 +512,7 @@ partition "**PHASE C: RELEASE & ITERATE** (P8-P12)" #FFF8E8 {
   :**Gate G4 -- Release Candidate**
   (hardening complete + E2E green); <<#FFF2CC>>
 
-  :**Step 10: Deployment** -- /release (P11)
+  :**P11: Deployment** -- /release
   ----
   **Human:** Deploy to staging/production
   using your preferred platform (Vercel,
@@ -554,7 +554,7 @@ partition "**PHASE C: RELEASE & ITERATE** (P8-P12)" #FFF8E8 {
   :**Gate G5 -- Released**
   (deployed + smoke OK + notes filed); <<#FFF2CC>>
 
-  :**Step 11: Retrospective** -- /explore (P12)
+  :**P12: Retrospective** -- /explore
   ----
   **Human:** Share feedback, telemetry
   summaries, user complaints, and next
@@ -583,7 +583,7 @@ partition "**PHASE C: RELEASE & ITERATE** (P8-P12)" #FFF8E8 {
     + **PROGRESS.md** learnings
   end note
 
-  :**Step 12: Version Archive** -- /archive
+  :**P12.a: Version Archive** -- /archive
   ----
   **Human:** Type ""/archive"" to close out
   the completed version's tracking data.

@@ -10,15 +10,15 @@
 The Ideation Process is a **solo, pre-agent design workflow** organized into three hierarchical phases that progressively narrow from abstract problem space to concrete, buildable artifacts. Each step uses proven design frameworks to extract specific insights, and every output maps to an exact location in the repository.
 
 ```
-H1: WHAT & WHY (Problem Space)        Steps  1-3   -> PRD.md S1-S2
-H2: LOGICAL DESIGN (Decomposition)    Steps  4-7   -> PRD.md S3-S5, product/diagrams/
-H3: PHYSICAL DESIGN (Architecture)    Steps  8-13  -> ARCH.md S1-S7, product/contracts/
-HANDOFF (Distillation)                Steps 14-15  -> Consistency check, /seed
+H1: WHAT & WHY (Problem Space)        H1.1-H1.3     -> PRD.md S1-S2
+H2: LOGICAL DESIGN (Decomposition)    H2.1-H2.3b    -> PRD.md S3-S5, product/diagrams/
+H3: PHYSICAL DESIGN (Architecture)    H3.1-H3.3c    -> ARCH.md S1-S7, product/contracts/
+HANDOFF (Distillation)                HO.1-HO.2     -> Consistency check, /seed
 ```
 
 **Who does this?** You (the architect / human operator), working alone or with stakeholders. The coding agent is not involved yet.
 
-**When is it done?** When all consistency checks in Step 14 pass, and you run `/seed` (Step 15) to activate the coding agent at Gate G0.
+**When is it done?** When all consistency checks in HO.1 pass, and you run `/seed` (HO.2) to activate the coding agent at Gate G0.
 
 ---
 
@@ -41,7 +41,7 @@ HANDOFF (Distillation)                Steps 14-15  -> Consistency check, /seed
 
 ---
 
-### Step 1: Vision & Value
+### H1.1: Vision & Value
 
 **Purpose:** Define the business model, value proposition, and market fit. This is the single most important step -- an ambiguous vision cascades into endless drift during implementation. The narrower and more explicit your vision, the faster and more stable the build will be.
 
@@ -110,9 +110,9 @@ HANDOFF (Distillation)                Steps 14-15  -> Consistency check, /seed
 
 ---
 
-### Step 2: Actors & Personas
+### H1.2: Actors & Personas
 
-**Purpose:** Identify every actor that will interact with the system -- human users, admin roles, external APIs, background processes. This step creates the trust boundary map that drives both security design (Step 13) and story decomposition (Step 5).
+**Purpose:** Identify every actor that will interact with the system -- human users, admin roles, external APIs, background processes. This step creates the trust boundary map that drives both security design (H3.3c) and story decomposition (H2.2).
 
 #### Frameworks & Tools
 
@@ -173,7 +173,7 @@ HANDOFF (Distillation)                Steps 14-15  -> Consistency check, /seed
 
 ---
 
-### Step 3: Scope Boundaries
+### H1.3: Scope Boundaries
 
 **Purpose:** Draw a hard line between what is in this version and what is deferred. This is the constraint that prevents scope creep during build. Everything the coding agent builds must fall within these boundaries.
 
@@ -183,7 +183,7 @@ HANDOFF (Distillation)                Steps 14-15  -> Consistency check, /seed
 - **What it is:** A prioritization scheme that categorizes every requirement or feature into: **Must have** (MVP-critical, non-negotiable), **Should have** (important but not blocking), **Could have** (nice-to-have), **Won't have** (explicitly out-of-scope for this version).
 - **Why use it:** Creates an unambiguous priority ordering. During build, when something is harder than expected, you know exactly what to cut (Could/Won't) and what to protect (Must). Prevents the "everything is priority 1" anti-pattern.
 - **How to use it:**
-  1. List all candidate features/capabilities from Steps 1-2.
+  1. List all candidate features/capabilities from H1.1-H1.2.
   2. For each, ask: "If we launched without this, would the product be useless?" If yes -> Must. If no -> Should/Could/Won't.
   3. Aim for: ~60% Must, ~20% Should, ~10% Could, ~10% Won't.
   4. The Must items become your in-scope list. The Won't items become your explicit out-of-scope list.
@@ -209,7 +209,7 @@ HANDOFF (Distillation)                Steps 14-15  -> Consistency check, /seed
 
 #### How to do it
 
-1. List all candidate features from Steps 1-2.
+1. List all candidate features from H1.1-H1.2.
 2. Apply MoSCoW to categorize them. Optionally use Kano to validate the prioritization.
 3. Verify Must-haves against your constraints (TOGAF lens: time, budget, team, platform).
 4. Write the definitive in-scope and out-of-scope lists.
@@ -263,11 +263,11 @@ At this point you should have:
 
 ## H2: LOGICAL DESIGN (Decomposition & Flows)
 
-**Goal:** Break the scope into buildable units. This phase converts your vision and boundaries into concrete use cases, stories with acceptance criteria, requirements, and user journeys. Steps 6 and 7 run **in parallel** because they address independent concerns (technical requirements vs. user experience).
+**Goal:** Break the scope into buildable units. This phase converts your vision and boundaries into concrete use cases, stories with acceptance criteria, requirements, and user journeys. H2.3a and H2.3b run **in parallel** because they address independent concerns (technical requirements vs. user experience).
 
 ---
 
-### Step 4: Use Case Modeling
+### H2.1: Use Case Modeling
 
 **Purpose:** Map all system behaviors into functional groups. Use cases are the bridge between "what the system does" (scope) and "how we slice the work" (stories). They establish the functional topology that shapes your service boundaries and code module structure.
 
@@ -278,7 +278,7 @@ At this point you should have:
 - **Why use it:** Provides a visual inventory of every distinct behavior the system supports. Makes it immediately obvious if you have missed an actor-behavior pair. The system boundary box physically represents your scope.
 - **How to use it:**
   1. Draw a rectangle representing your system boundary.
-  2. Place all actors from Step 2 outside the rectangle.
+  2. Place all actors from H1.2 outside the rectangle.
   3. Inside the rectangle, draw an oval for each distinct behavior: "Search Jobs," "Ingest Job Batch," "Check Health," "Get Job by ID."
   4. Connect each actor to the use cases they participate in.
   5. Look for `<<include>>` relationships (use case A always triggers use case B) and `<<extend>>` relationships (use case A sometimes triggers use case B).
@@ -306,7 +306,7 @@ At this point you should have:
 
 #### How to do it
 
-1. Draw a UML Use Case diagram with all actors from Step 2 and all system behaviors.
+1. Draw a UML Use Case diagram with all actors from H1.2 and all system behaviors.
 2. Optionally run an Event Storming exercise to discover events, commands, and policies.
 3. Group related use cases into bounded contexts using DDD.
 4. Assign **UC tags** to each functional group (e.g., `UC:SEARCH`, `UC:INGEST`, `UC:ADMIN`).
@@ -332,7 +332,7 @@ At this point you should have:
 
 ---
 
-### Step 5: Story Decomposition
+### H2.2: Story Decomposition
 
 **Purpose:** Convert use cases into implementable **vertical slices** (stories). Each story must be deliverable in one day or less by the coding agent. Stories are the **approval boundary** between you and the agent -- the agent can never build what is not in a story.
 
@@ -382,7 +382,7 @@ If you come from Scrum, here is how concepts translate:
 1. Create a story map using User Story Mapping: lay out the user workflow, stack stories by priority.
 2. Slice each story to pass INVEST (especially S: <= 1 day, T: has acceptance criteria).
 3. Write acceptance criteria in Given/When/Then (Gherkin) format for each story.
-4. Assign UC tags from Step 4 to each story.
+4. Assign UC tags from H2.1 to each story.
 5. Assign risk tags: `LOW` (trivial, agent proceeds), `MED` (moderate, agent proceeds but human reviews), `HIGH` (destructive/irreversible, agent asks first).
 6. Sequence the stories (dependency order).
 
@@ -421,9 +421,9 @@ If you come from Scrum, here is how concepts translate:
 
 ---
 
-### Step 6: Requirements (FR + NFR)
+### H2.3a: Requirements (FR + NFR)
 
-> **Runs in parallel with Step 7.**
+> **Runs in parallel with H2.3b.**
 
 **Purpose:** Formalize functional requirements (derived from stories) and non-functional requirements (performance, security, reliability). NFRs shape architecture decisions -- if you need sub-100ms latency, that eliminates certain database choices.
 
@@ -467,7 +467,7 @@ If you come from Scrum, here is how concepts translate:
 2. Write 3-5 non-functional requirements using Quality Attribute Scenarios format.
 3. Review against 12-Factor App principles -- add any missing operational NFRs.
 4. Review against OWASP Top 10 -- add any missing security NFRs.
-5. Check: do any NFRs invalidate your architecture assumptions? (If so, this is the feedback loop back to Steps 4-5.)
+5. Check: do any NFRs invalidate your architecture assumptions? (If so, this is the feedback loop back to H2.1-H2.2.)
 
 #### Expected output and where to add it
 
@@ -495,9 +495,9 @@ If you come from Scrum, here is how concepts translate:
 
 ---
 
-### Step 7: User Journeys & UI
+### H2.3b: User Journeys & UI
 
-> **Runs in parallel with Step 6.**
+> **Runs in parallel with H2.3a.**
 
 **Purpose:** Trace the end-user's path through the system and design the information hierarchy. For API-only products, this step focuses on the API consumer's developer experience (DX). For products with a frontend, it produces wireframes and component structure.
 
@@ -507,7 +507,7 @@ If you come from Scrum, here is how concepts translate:
 - **What it is:** A timeline visualization of a user's steps when interacting with the system, annotated with their thoughts, emotions, pain points, and touchpoints.
 - **Why use it:** Reveals gaps in the story backlog. If the journey shows "Developer reads API docs -> tries first call -> gets error -> reads error message -> fixes call -> succeeds," each touchpoint needs a story or acceptance criterion (good error messages, good docs).
 - **How to use it:**
-  1. Pick one persona from Step 2.
+  1. Pick one persona from H1.2.
   2. Map their end-to-end journey in 5-10 steps.
   3. For each step: note the action, the touchpoint (API endpoint, docs page, CLI), the expected response, and potential pain points.
   4. Repeat for each primary persona.
@@ -547,10 +547,10 @@ If you come from Scrum, here is how concepts translate:
 
 ### H2 Decision Gate: NFR Feedback Loop
 
-After Steps 6 and 7, check: **Do any NFRs invalidate your architecture assumptions?**
+After H2.3a and H2.3b, check: **Do any NFRs invalidate your architecture assumptions?**
 
 - If NFR-001 says "p95 < 50ms" but your planned SQLite database can't deliver that -> revise the architecture assumption or relax the NFR.
-- If this happens, return to Steps 4-5 to re-scope stories and adjust the architecture boundaries.
+- If this happens, return to H2.1-H2.2 to re-scope stories and adjust the architecture boundaries.
 
 This feedback loop is expected. It is cheaper to discover architecture conflicts here than during build.
 
@@ -558,7 +558,7 @@ This feedback loop is expected. It is cheaper to discover architecture conflicts
 
 ### H2 Decision Gate: Frontend Needed?
 
-- **If yes:** Include frontend concerns in the architecture scope (Step 8). Wireframes from Step 7 drive component design. Add frontend tech stack to ARCH.md S2.
+- **If yes:** Include frontend concerns in the architecture scope (H3.1). Wireframes from H2.3b drive component design. Add frontend tech stack to ARCH.md S2.
 - **If API only:** Skip frontend architecture. Backend-only scope keeps the architecture simpler.
 
 ---
@@ -576,24 +576,24 @@ At this point you should have:
 
 ## H3: PHYSICAL DESIGN (Architecture, Data, Cloud, APIs)
 
-**Goal:** Convert logical design into concrete technology decisions. Step 8 (Architecture) runs first, then three tracks run **in parallel** because they address independent concerns: tech stack selection, data + API design, and cloud + security.
+**Goal:** Convert logical design into concrete technology decisions. H3.1 (Architecture) runs first, then three tracks run **in parallel** because they address independent concerns: tech stack selection, data + API design, and cloud + security.
 
 ---
 
-### Step 8: Architecture (C4 Model)
+### H3.1: Architecture (C4 Model)
 
-**Purpose:** Design the system at three zoom levels: Context (done in Step 2), Container (services, databases, queues), and Component (modules within each container). Record key Architecture Decision Records (ADRs).
+**Purpose:** Design the system at three zoom levels: Context (done in H1.2), Container (services, databases, queues), and Component (modules within each container). Record key Architecture Decision Records (ADRs).
 
 #### Frameworks & Tools
 
 **C4 Model** (Simon Brown)
-- **What it is:** A hierarchical approach to diagramming software architecture at four levels: Context (L1, done in Step 2), Container (L2), Component (L3), Code (L4, usually too detailed).
+- **What it is:** A hierarchical approach to diagramming software architecture at four levels: Context (L1, done in H1.2), Container (L2), Component (L3), Code (L4, usually too detailed).
 - **Why use it:** Provides a shared vocabulary and consistent zoom levels. Level 2 (Container) shows your deployment units; Level 3 (Component) shows your code modules. This maps directly to your repo structure.
 - **How to use it:**
   1. **L2 Container diagram:** Draw each deployment unit as a box: "FastAPI Service," "SQLite Database," "Redis Cache" (if applicable). Show how they communicate (HTTP, SQL, etc.).
   2. **L3 Component diagram:** For each container, draw the internal modules: "API Router," "Ingest Service," "Search Service," "DB Adapter." Show dependencies between modules.
   3. Each container/component maps to a path in your repo (e.g., "Ingest Service" -> `app/services/ingest.py`).
-- **What insight it brings:** Makes the code structure visual. When the coding agent creates files, it follows the component structure you define here. Mismatches between the diagram and the code are caught in Step 14.
+- **What insight it brings:** Makes the code structure visual. When the coding agent creates files, it follows the component structure you define here. Mismatches between the diagram and the code are caught in HO.1.
 
 **Hexagonal Architecture / Ports & Adapters** (Alistair Cockburn)
 - **What it is:** An architecture pattern where business logic (core) is surrounded by ports (interfaces) and adapters (implementations). The core knows nothing about HTTP, databases, or external APIs.
@@ -636,7 +636,7 @@ At this point you should have:
 
 ---
 
-### Step 9: Tech Stack (Track A -- parallel)
+### H3.2a: Tech Stack (Track A -- parallel)
 
 **Purpose:** Select the specific technology for every layer of the system. Each technology choice is an implicit ADR.
 
@@ -655,13 +655,13 @@ At this point you should have:
 - **What it is:** A framework for aligning technology choices with business and architecture constraints.
 - **Why use it:** Ensures tech stack choices serve the requirements, not the other way around.
 
-**12-Factor App** (revisited from Step 6)
+**12-Factor App** (revisited from H2.3a)
 - **Why revisit:** Tech stack choices must align with 12-Factor principles. Your dependency manager (uv) handles Factor 2. Your database choice must support Factor 4 (backing services as attached resources).
 
 #### How to do it
 
 1. For each layer (backend, database, cache, auth, testing, CI, monitoring, IaC), list 1-2 candidates.
-2. Select based on: maturity (Adopt-ring), team familiarity, alignment with NFRs, and constraints from Step 3.
+2. Select based on: maturity (Adopt-ring), team familiarity, alignment with NFRs, and constraints from H1.3.
 3. Document each choice with brief rationale.
 
 #### Expected output and where to add it
@@ -674,7 +674,7 @@ At this point you should have:
 
 ---
 
-### Step 10: Data Model / ERD (Track B -- sequential with Step 11)
+### H3.2b: Data Model / ERD (Track B -- sequential with H3.3b)
 
 **Purpose:** Design the data entities, relationships, constraints, and indexes. The Pydantic models in `schemas.py` are the **single source of truth** for data shapes -- they feed both the database layer and the API.
 
@@ -719,9 +719,9 @@ At this point you should have:
 
 ---
 
-### Step 11: API Design (Track B -- sequential after Step 10)
+### H3.3b: API Design (Track B -- sequential after H3.2b)
 
-**Purpose:** Define the HTTP API contract: endpoints, methods, request/response schemas, error envelope, pagination scheme, and auth. The OpenAPI spec is written **before** code (contract-first design). Schemas from Step 10 feed directly into OpenAPI components.
+**Purpose:** Define the HTTP API contract: endpoints, methods, request/response schemas, error envelope, pagination scheme, and auth. The OpenAPI spec is written **before** code (contract-first design). Schemas from H3.2b feed directly into OpenAPI components.
 
 #### Frameworks & Tools
 
@@ -730,7 +730,7 @@ At this point you should have:
 - **Why use it:** Prevents the API from being shaped by implementation accidents. The coding agent builds code that matches the spec, not the other way around. During build (P5-P7), the spec is frozen -- changes require a CCR.
 - **How to use it:**
   1. Write the OpenAPI YAML file with all paths, operations, parameters, and response schemas.
-  2. Reference Pydantic models from Step 10 as the component schemas.
+  2. Reference Pydantic models from H3.2b as the component schemas.
   3. Validate that every endpoint traces to at least one story in PRD.md S4.
 
 **RESTful API Guidelines**
@@ -752,7 +752,7 @@ At this point you should have:
 
 #### How to do it
 
-1. Write the OpenAPI spec (`openapi.yaml`) with all endpoints, referencing schemas from Step 10.
+1. Write the OpenAPI spec (`openapi.yaml`) with all endpoints, referencing schemas from H3.2b.
 2. For each endpoint, verify it maps to at least one story in PRD.md S4.
 3. Define the standard error envelope in both `openapi.yaml` and `schemas.py`.
 4. Define pagination scheme (cursor-based) in both spec and schemas.
@@ -769,7 +769,7 @@ At this point you should have:
 
 ---
 
-### Step 12: Cloud Architecture (Track C -- sequential with Step 13)
+### H3.2c: Cloud Architecture (Track C -- sequential with H3.3c)
 
 **Purpose:** Design the deployment topology: compute, networking, data persistence, observability, CI/CD, and Infrastructure-as-Code. For local-only MVPs, this step may be lightweight (document the local setup and defer cloud to V2).
 
@@ -783,7 +783,7 @@ At this point you should have:
   2. **Operational Excellence:** Structured logging, health endpoint, `make check` CI.
   3. **Security:** API key auth (defer OAuth2), TLS, no secrets in code.
   4. **Reliability:** Graceful shutdown, health checks for orchestrators.
-  5. **Performance:** Validate against NFRs from Step 6.
+  5. **Performance:** Validate against NFRs from H2.3a.
   6. **Cost:** Free-tier compatible for MVP.
 
 **Infrastructure as Code (IaC)** -- Terraform, Pulumi, CDK
@@ -811,13 +811,13 @@ At this point you should have:
 
 ---
 
-### Step 13: Security & Compliance (Track C -- sequential after Step 12)
+### H3.3c: Security & Compliance (Track C -- sequential after H3.2c)
 
-**Purpose:** Define authentication, authorization, data classification, secrets management, and threat model. Cloud topology from Step 12 shapes secrets management (e.g., AWS Secrets Manager vs. environment variables).
+**Purpose:** Define authentication, authorization, data classification, secrets management, and threat model. Cloud topology from H3.2c shapes secrets management (e.g., AWS Secrets Manager vs. environment variables).
 
 #### Frameworks & Tools
 
-**OWASP Top 10** (revisited from Step 6, now with implementation specifics)
+**OWASP Top 10** (revisited from H2.3a, now with implementation specifics)
 - **What it is:** The ten most critical web security risks, now applied to your specific architecture.
 - **Why use it:** Turns abstract security risks into concrete mitigations.
 - **How to use it:**
@@ -868,7 +868,7 @@ At this point you should have:
 
 ### H3 Feedback Loop: Security Stories
 
-If Step 13's threat model reveals new requirements (e.g., "We need rate limiting on the ingest endpoint"), add these as new stories to PRD.md S4. Update the story index and roadmap. This feedback loop from security analysis back to the story backlog is expected and healthy.
+If H3.3c's threat model reveals new requirements (e.g., "We need rate limiting on the ingest endpoint"), add these as new stories to PRD.md S4. Update the story index and roadmap. This feedback loop from security analysis back to the story backlog is expected and healthy.
 
 ---
 
@@ -891,7 +891,7 @@ At this point you should have:
 
 ---
 
-### Step 14: Artifact Distillation & Consistency Checks
+### HO.1: Artifact Distillation & Consistency Checks
 
 **Purpose:** Cross-validate all design outputs before the coding agent starts. Inconsistencies found here are cheap to fix; inconsistencies found during build trigger CCRs and stall progress.
 
@@ -901,16 +901,16 @@ Run each check manually. If any fails, return to the affected step and fix the d
 
 | # | Check | How to verify | If fails, return to |
 |---|-------|---------------|---------------------|
-| 1 | **Every OpenAPI path maps to >= 1 story** | For each path in `openapi.yaml`, find the corresponding S-V### in PRD.md S4 | Step 5 (add missing story) or Step 11 (remove orphan endpoint) |
-| 2 | **Pydantic models match OpenAPI schemas** | Field names, types, optionality, and enum values in `schemas.py` match `openapi.yaml` components | Step 10-11 (align schemas) |
-| 3 | **ARCH repo map matches actual directory structure** | Every path in ARCH.md S3 table exists (or will be created by a story) | Step 8 (update repo map) |
-| 4 | **pyproject.toml deps match ARCH.md S2 tech stack** | Every technology in ARCH.md S2 has a corresponding dependency in pyproject.toml | Step 9 (add missing deps or update ARCH) |
-| 5 | **Every story has acceptance criteria** | Each S-V### in PRD.md S4 has at least 2 AC lines | Step 5 (add criteria) |
-| 6 | **Every story fits in <= 1 day** | No story looks bigger than a single vertical slice | Step 5 (split oversized stories) |
-| 7 | **UC tags used in stories are defined in S5** | Every UC:XXX tag in the story index appears in the UC tag glossary | Step 4 (add missing tags) |
-| 8 | **Constraints in PRD.md S2 match ARCH.md S1** | Same constraints listed in both files | Step 3 / Step 8 (align) |
-| 9 | **NFRs have architecture support** | Each NFR in PRD.md S3 has a corresponding design decision in ARCH.md | Step 6 / Step 8 (add missing support) |
-| 10 | **Security threats have stories or NFRs** | Each threat in ARCH.md S7 is addressed by an NFR or a story | Step 13 / Step 5 (add mitigation) |
+| 1 | **Every OpenAPI path maps to >= 1 story** | For each path in `openapi.yaml`, find the corresponding S-V### in PRD.md S4 | H2.2 (add missing story) or H3.3b (remove orphan endpoint) |
+| 2 | **Pydantic models match OpenAPI schemas** | Field names, types, optionality, and enum values in `schemas.py` match `openapi.yaml` components | H3.2b-H3.3b (align schemas) |
+| 3 | **ARCH repo map matches actual directory structure** | Every path in ARCH.md S3 table exists (or will be created by a story) | H3.1 (update repo map) |
+| 4 | **pyproject.toml deps match ARCH.md S2 tech stack** | Every technology in ARCH.md S2 has a corresponding dependency in pyproject.toml | H3.2a (add missing deps or update ARCH) |
+| 5 | **Every story has acceptance criteria** | Each S-V### in PRD.md S4 has at least 2 AC lines | H2.2 (add criteria) |
+| 6 | **Every story fits in <= 1 day** | No story looks bigger than a single vertical slice | H2.2 (split oversized stories) |
+| 7 | **UC tags used in stories are defined in S5** | Every UC:XXX tag in the story index appears in the UC tag glossary | H2.1 (add missing tags) |
+| 8 | **Constraints in PRD.md S2 match ARCH.md S1** | Same constraints listed in both files | H1.3 / H3.1 (align) |
+| 9 | **NFRs have architecture support** | Each NFR in PRD.md S3 has a corresponding design decision in ARCH.md | H2.3a / H3.1 (add missing support) |
+| 10 | **Security threats have stories or NFRs** | Each threat in ARCH.md S7 is addressed by an NFR or a story | H3.3c / H2.2 (add mitigation) |
 
 #### How to do it
 
@@ -924,7 +924,7 @@ All consistency checks pass. No new files are produced -- this step validates ex
 
 ---
 
-### Step 15: Execute /seed
+### HO.2: Execute /seed
 
 **Purpose:** The formal handoff from architect (you) to coding agent. Running `/seed` triggers Phase P0 (Install and Wire), activating the Process Steward agent.
 
@@ -948,7 +948,7 @@ The agent reads all artifacts, validates the workspace, runs `make check`, and r
 
 #### What follows
 
-After G0 passes, the development lifecycle begins (see `process/diagrams/USER_JOURNEY_v2.puml`):
+After G0 passes, the development lifecycle begins (see `process/diagrams/DEVELOPMENT_PROCESS.puml`):
 
 ```
 /seed (G0) -> /plan (P1-P4, G1+G2) -> /next (P5-P7, G3 per story) -> /release (P8-P11, G4+G5)
@@ -962,45 +962,45 @@ After G0 passes, the development lifecycle begins (see `process/diagrams/USER_JO
 
 | Section | Filled by step |
 |---------|---------------|
-| S0. Metadata | Step 1 |
-| S1. Vision (one-liner, primary user, problem, non-goals) | Step 1 + Step 2 (actors/personas) |
-| S2. Scope boundaries (in-scope, out-of-scope, constraints) | Step 3 |
-| S3. Requirements (FR + NFR tables) | Step 6 |
-| S4. Story Backlog (index + full story definitions) | Step 5 + Step 13 (security stories) |
-| S5. UC tags (glossary table) | Step 4 |
-| S6. Roadmap (versions -> stories) | Step 5 |
+| S0. Metadata | H1.1 |
+| S1. Vision (one-liner, primary user, problem, non-goals) | H1.1 + H1.2 (actors/personas) |
+| S2. Scope boundaries (in-scope, out-of-scope, constraints) | H1.3 |
+| S3. Requirements (FR + NFR tables) | H2.3a |
+| S4. Story Backlog (index + full story definitions) | H2.2 + H3.3c (security stories) |
+| S5. UC tags (glossary table) | H2.1 |
+| S6. Roadmap (versions -> stories) | H2.2 |
 
 ### product/ARCH.md
 
 | Section | Filled by step |
 |---------|---------------|
-| S0. Metadata | Step 1 |
-| S1. Constraints and principles (constraints + ADRs) | Step 3 + Step 6 (NFR constraints) + Step 8 (ADRs) |
-| S2. Tech stack | Step 9 |
-| S3. Repo map | Step 8 |
-| S4. Architecture snapshot (C4-lite + trust + deployment) | Step 2 (trust) + Step 8 (C4) + Step 12 (deployment) |
-| S5. Conventions (naming, errors, logging, testing) | Step 8 + Step 11 |
-| S6. Extension points | Step 12 |
-| S7. Security and privacy | Step 13 |
+| S0. Metadata | H1.1 |
+| S1. Constraints and principles (constraints + ADRs) | H1.3 + H2.3a (NFR constraints) + H3.1 (ADRs) |
+| S2. Tech stack | H3.2a |
+| S3. Repo map | H3.1 |
+| S4. Architecture snapshot (C4-lite + trust + deployment) | H1.2 (trust) + H3.1 (C4) + H3.2c (deployment) |
+| S5. Conventions (naming, errors, logging, testing) | H3.1 + H3.3b |
+| S6. Extension points | H3.2c |
+| S7. Security and privacy | H3.3c |
 
 ### product/contracts/
 
 | File | Filled by step |
 |------|---------------|
-| `schemas.py` (Pydantic models) | Step 10 |
-| `openapi.yaml` (API specification) | Step 11 |
-| `CONTRACTS.md` (naming, errors, invariants, compatibility) | Step 10 + Step 11 |
+| `schemas.py` (Pydantic models) | H3.2b |
+| `openapi.yaml` (API specification) | H3.3b |
+| `CONTRACTS.md` (naming, errors, invariants, compatibility) | H3.2b + H3.3b |
 
 ### product/diagrams/
 
 | File | Filled by step |
 |------|---------------|
-| `c4_context.puml` / `.drawio` | Step 2 |
-| `use_cases.puml` / `.drawio` | Step 4 |
-| `erd.puml` / `.drawio` | Step 10 |
-| `c4_container.puml` / `.drawio` | Step 8 |
-| `c4_component.puml` / `.drawio` | Step 8 |
-| `cloud_arch.*` (optional) | Step 12 |
-| `threat_model.*` (optional) | Step 13 |
-| `user_flows.*` | Step 7 |
-| `wireframes.*` (if frontend) | Step 7 |
+| `c4_context.puml` / `.drawio` | H1.2 |
+| `use_cases.puml` / `.drawio` | H2.1 |
+| `erd.puml` / `.drawio` | H3.2b |
+| `c4_container.puml` / `.drawio` | H3.1 |
+| `c4_component.puml` / `.drawio` | H3.1 |
+| `cloud_arch.*` (optional) | H3.2c |
+| `threat_model.*` (optional) | H3.3c |
+| `user_flows.*` | H2.3b |
+| `wireframes.*` (if frontend) | H2.3b |

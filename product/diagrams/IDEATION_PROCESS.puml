@@ -1,6 +1,6 @@
-@startuml IDEATION_PROCESS_v2
+@startuml IDEATION_PROCESS
 
-title **Architect's Design Process v2**\n(Hierarchical with Decisions, Parallelism, and Feedback Loops)\nPrequel to PROCESS_MAIN.puml
+title **Architect's Design Process v2**\n(Hierarchical with Decisions, Parallelism, and Feedback Loops)\nPrequel to DEVELOPMENT_PROCESS.puml
 
 skinparam shadowing false
 skinparam ArrowColor #333333
@@ -31,7 +31,7 @@ floating note left
   <back:#FFF2CC>  Gate milestone  </back>
   ----
   **Handoff:** /seed -> G0
-  **Continues:** PROCESS_MAIN.puml
+  **Continues:** DEVELOPMENT_PROCESS.puml
 end note
 
 start
@@ -42,7 +42,7 @@ start
 
 partition "**H1: WHAT & WHY** (Problem Space)" #E8F4FD {
 
-  :**Step 1: Vision & Value**
+  :**H1.1: Vision & Value**
   ----
   Define business model, value
   proposition, and market fit.
@@ -60,7 +60,7 @@ partition "**H1: WHAT & WHY** (Problem Space)" #E8F4FD {
     Output: **PRD.md S1**
   end note
 
-  :**Step 2: Actors & Personas**
+  :**H1.2: Actors & Personas**
   ----
   Identify all actors: end users,
   system integrations, admin roles.
@@ -79,7 +79,7 @@ partition "**H1: WHAT & WHY** (Problem Space)" #E8F4FD {
     + **ARCH.md S4** (trust)
   end note
 
-  :**Step 3: Scope Boundaries**
+  :**H1.3: Scope Boundaries**
   ----
   In-scope (MVP), out-of-scope,
   deferred to V2+. Constraints:
@@ -105,7 +105,7 @@ partition "**H1: WHAT & WHY** (Problem Space)" #E8F4FD {
 
 partition "**H2: LOGICAL DESIGN** (Decomposition & Flows)" #F0F7E6 {
 
-  :**Step 4: Use Case Modeling**
+  :**H2.1: Use Case Modeling**
   ----
   Map all system use cases. Group
   by functional area using UC tags
@@ -125,7 +125,7 @@ partition "**H2: LOGICAL DESIGN** (Decomposition & Flows)" #F0F7E6 {
     Output: **PRD.md S5** UC Tags
   end note
 
-  :**Step 5: Story Decomposition**
+  :**H2.2: Story Decomposition**
   ----
   Break use cases into vertical
   slices (S-V###), each <=1 day.
@@ -150,10 +150,10 @@ partition "**H2: LOGICAL DESIGN** (Decomposition & Flows)" #F0F7E6 {
 
   fork
 
-    :**Step 6: Requirements**
+    :**H2.3a: Requirements**
     **(FR + NFR)**
     ----
-    FRs = stories (Step 5).
+    FRs = stories (H2.2).
     NFRs: latency, throughput,
     uptime, security, observability.
     ----
@@ -170,7 +170,7 @@ partition "**H2: LOGICAL DESIGN** (Decomposition & Flows)" #F0F7E6 {
 
   fork again
 
-    :**Step 7: User Journeys & UI**
+    :**H2.3b: User Journeys & UI**
     ----
     Trace happy-path per actor.
     Design info hierarchy and
@@ -199,7 +199,7 @@ partition "**H2: LOGICAL DESIGN** (Decomposition & Flows)" #F0F7E6 {
     constraints;
     note right
       **Feedback Loop**
-      Return to Step 4-5.
+      Return to H2.1-H2.2.
       NFR constraints may force
       scope reduction or story
       re-sequencing.
@@ -211,7 +211,7 @@ partition "**H2: LOGICAL DESIGN** (Decomposition & Flows)" #F0F7E6 {
   if (Frontend\nneeded?) then (yes)
     :Include frontend in
     architecture scope.
-    Wireframes from Step 7
+    Wireframes from H2.3b
     drive component design.;
   else (API only)
     :Backend-only scope.
@@ -231,7 +231,7 @@ partition "**H2: LOGICAL DESIGN** (Decomposition & Flows)" #F0F7E6 {
 
 partition "**H3: PHYSICAL DESIGN** (Architecture, Data, Cloud, APIs)" #FFF8E8 {
 
-  :**Step 8: Architecture (C4)**
+  :**H3.1: Architecture (C4)**
   ----
   Design at three zoom levels:
   Context (actors + externals),
@@ -268,7 +268,7 @@ partition "**H3: PHYSICAL DESIGN** (Architecture, Data, Cloud, APIs)" #FFF8E8 {
   fork
 
     ' Track A: Tech Stack (independent)
-    :**Step 9: Tech Stack**
+    :**H3.2a: Tech Stack**
     ----
     Select technology for every
     layer: frontend, backend, DB,
@@ -289,7 +289,7 @@ partition "**H3: PHYSICAL DESIGN** (Architecture, Data, Cloud, APIs)" #FFF8E8 {
   fork again
 
     ' Track B: Data -> API (sequential)
-    :**Step 10: Data Model (ERD)**
+    :**H3.2b: Data Model (ERD)**
     ----
     Design entities, relationships,
     constraints, indexes. Define
@@ -307,13 +307,13 @@ partition "**H3: PHYSICAL DESIGN** (Architecture, Data, Cloud, APIs)" #FFF8E8 {
       Output: **contracts/schemas.py**
     end note
 
-    :**Step 11: API Design**
+    :**H3.3b: API Design**
     ----
     Define HTTP API: endpoints,
     methods, schemas, error envelope,
     cursor pagination, auth scheme.
     OpenAPI spec written BEFORE code.
-    **Schemas from Step 10 feed
+    **Schemas from H3.2b feed
     directly into OpenAPI components.**
     ----
     -> contracts/openapi.yaml; <<#D9ECFF>>
@@ -331,7 +331,7 @@ partition "**H3: PHYSICAL DESIGN** (Architecture, Data, Cloud, APIs)" #FFF8E8 {
   fork again
 
     ' Track C: Cloud -> Security (sequential)
-    :**Step 12: Cloud Architecture**
+    :**H3.2c: Cloud Architecture**
     ----
     Design deployment: compute
     (Fargate, Cloud Run), networking
@@ -352,14 +352,14 @@ partition "**H3: PHYSICAL DESIGN** (Architecture, Data, Cloud, APIs)" #FFF8E8 {
       + **ARCH.md S6** (extensions)
     end note
 
-    :**Step 13: Security & Compliance**
+    :**H3.3c: Security & Compliance**
     ----
     Define auth (JWT, OAuth2),
     authorization (RBAC/ABAC),
     data classification (PII),
     secrets management, threat
     model (top 3 attack vectors).
-    **Cloud topology from Step 12
+    **Cloud topology from H3.2c
     shapes secrets management.**
     ----
     -> diagrams/threat_model; <<#D9ECFF>>
@@ -382,10 +382,10 @@ partition "**H3: PHYSICAL DESIGN** (Architecture, Data, Cloud, APIs)" #FFF8E8 {
     story sequence.;
     note right
       **Feedback Loop**
-      Security analysis (Step 13)
+      Security analysis (H3.3c)
       generates new stories that
       feed back to PRD.md S4.
-      May affect Step 5 scope.
+      May affect H2.2 scope.
     end note
     -[#FF6600,dashed]->
   else (no)
@@ -406,7 +406,7 @@ partition "**HANDOFF** (Distillation & Agent Initialization)" #F5F0FF {
 
   repeat
 
-    :**Step 14: Artifact Distillation**
+    :**HO.1: Artifact Distillation**
     ----
     Consolidate all design outputs.
     Cross-validate consistency:
@@ -429,7 +429,7 @@ partition "**HANDOFF** (Distillation & Agent Initialization)" #F5F0FF {
     5. contracts/CONTRACTS.md
     6. product/diagrams/*; <<#D9ECFF>>
 
-  backward :Consistency check FAILED.\nReturn to affected step:\n- Story/endpoint mismatch -> Step 5\n- Schema/OpenAPI drift -> Step 10-11\n- Repo structure mismatch -> Step 8;
+  backward :Consistency check FAILED.\nReturn to affected step:\n- Story/endpoint mismatch -> H2.2\n- Schema/OpenAPI drift -> H3.2b-H3.3b\n- Repo structure mismatch -> H3.1;
 
   repeat while (All consistency\nchecks pass?) is (no) not (yes)
 
@@ -440,14 +440,14 @@ partition "**HANDOFF** (Distillation & Agent Initialization)" #F5F0FF {
   **product/contracts/** = APIs
   **product/diagrams/** = visuals; <<#FFF9D6>>
 
-  :**Step 15: Execute /seed**
+  :**HO.2: Execute /seed**
   ----
   Human runs **/seed** command.
   Triggers Phase P0 (Install
   and Wire). Explicit handoff
   from architect to agent.
 
-  **What follows (PROCESS_MAIN):**
+  **What follows (DEVELOPMENT_PROCESS):**
   /plan (P1-P4) refines w/ human
   /next (P5-P7) builds per story
   /release (P8-P11) hardens; <<#D9ECFF>>
@@ -463,12 +463,12 @@ partition "**HANDOFF** (Distillation & Agent Initialization)" #F5F0FF {
   If FAIL: log Issues (I-###).
   ----
   Development process begins.
-  See: **PROCESS_MAIN.puml**; <<#DFF7E1>>
+  See: **DEVELOPMENT_PROCESS.puml**; <<#DFF7E1>>
 
   :**Gate G0 -- Installed**
   (artifacts exist + check runnable)
   ----
-  **PROCESS_MAIN.puml starts here**
+  **DEVELOPMENT_PROCESS.puml starts here**
   /plan -> /next -> /release; <<#FFF2CC>>
 
 }
